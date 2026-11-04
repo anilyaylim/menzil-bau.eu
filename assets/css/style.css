@@ -352,7 +352,8 @@ a { color: inherit; }
 
 /* Page hero (sub pages) */
 .page-hero { position: relative; padding: calc(var(--nav-h) + 72px) 40px 96px; background: var(--sec); overflow: hidden; }
-.page-hero .hero-photo::after { background: linear-gradient(90deg, rgba(18,20,23,.97) 0%, rgba(18,20,23,.86) 55%, rgba(18,20,23,.6) 100%); }
+.page-hero .hero-photo::after { background: linear-gradient(90deg, rgba(18,20,23,.9) 0%, rgba(18,20,23,.62) 48%, rgba(18,20,23,.2) 100%), linear-gradient(0deg, rgba(18,20,23,.5) 0%, rgba(18,20,23,0) 45%); }
+.page-hero .page-title, .page-hero .page-sub, .page-hero .crumbs { text-shadow: 0 2px 14px rgba(0,0,0,.55); }
 .page-hero-inner { position: relative; max-width: 1180px; margin: 0 auto; }
 .crumbs { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ash); margin-bottom: 22px; }
 .crumbs a { color: var(--ash-light); text-decoration: none; } .crumbs a:hover { color: #fff; }
@@ -420,7 +421,10 @@ a.ci:hover .ci-value { color: var(--red-hi); }
 .addr a { color: var(--ash-light); font-size: 12.5px; text-decoration: none; border-bottom: 1px solid var(--steel-line); }
 .addr a:hover { color: #fff; }
 .contact-info .btn { margin-top: 26px; align-self: flex-start; }
-.impressum { margin-top: 0; font-size: 13.5px; color: var(--text-mid); line-height: 1.7; max-width: 760px; }
+.impressum { margin-top: 0; font-size: 13.5px; color: var(--text-mid); line-height: 1.7; }
+.impressum + .impressum { margin-top: 6px; }
+.impressum-facts { color: var(--graphite); }
+.impressum-facts a { color: var(--red); }
 
 /* ══════════ FOOTER ══════════ */
 footer { background: var(--sec-deep); padding: 44px 110px 36px 40px; display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; border-top: 3px solid var(--red); }
@@ -603,3 +607,24 @@ button.cert { font: inherit; text-align: left; color: inherit; cursor: pointer; 
 .cert-foot { flex-direction: column; align-items: stretch; gap: 16px; }
 .cert-foot .cert-chip { align-self: flex-start; }
 .cert-view { justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--concrete); }
+
+/* ── Contact page: spaced cards, light info card + dark form ── */
+.contact-section { padding-top: 72px; padding-bottom: 80px; }
+.contact-section .contact-grid { gap: 24px; background: transparent; align-items: start; }
+.contact-section .contact-info { background: #fff; border: 1px solid var(--concrete-dk); border-top: 3px solid var(--graphite); box-shadow: 0 18px 44px rgba(18,20,23,.06); }
+.contact-section .contact-form-side { background: var(--sec); border-top: 3px solid var(--red); box-shadow: 0 18px 44px rgba(18,20,23,.18); }
+.contact-section .contact-form-side .hero-form-wrap { border-top: none; background: transparent; border: none; padding: 0; backdrop-filter: none; }
+.contact-section .ci { color: var(--graphite); border-bottom-color: var(--concrete-dk); }
+.contact-section a.ci:hover .ci-value { color: var(--red); }
+.contact-section .ci-icon { border-color: var(--concrete-dk); background: var(--concrete-2); color: var(--red); }
+.contact-section .ci-label { color: var(--text-mid); }
+.contact-section .ci-value small { color: var(--text-mid); }
+.contact-section .addr-grid { background: var(--concrete-dk); }
+.contact-section .addr { background: var(--concrete-2); color: var(--graphite); }
+.contact-section .addr a { color: var(--text-mid); border-bottom-color: var(--concrete-dk); }
+.contact-section .addr a:hover { color: var(--red); }
+.impressum-section { padding-top: 56px; padding-bottom: 64px; }
+@media (max-width: 960px) { .contact-section { padding-top: 48px; padding-bottom: 56px; } .contact-section .contact-grid { gap: 20px; } }
+.contact-section .contact-grid > * { min-width: 0; }
+@media (max-width: 960px) { .contact-section .contact-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 480px) { .contact-info .btn { width: 100%; justify-content: center; } }
