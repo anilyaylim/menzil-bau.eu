@@ -167,16 +167,36 @@ CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width
 ARROW = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h11M9 4l4 4-4 4"/></svg>'
 SEND = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l6 5 6-5M2 4h12v9H2V4z"/></svg>'
 
-def seal(top, mid, i):
-    """Generic placeholder seal (no third-party logos)."""
+# Distinct line icons per credential (24×24 grid, drawn white on the red medallion)
+CERT_ICONS = [
+    # trade licence: document with seal
+    '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 10h6M9 13h4"/><circle cx="13.5" cy="17.5" r="2.2"/><path d="M12.3 19.4l-.8 2.6 2-1 2 1-.8-2.6"/>',
+    # chamber of commerce: classical building
+    '<path d="M3 9l9-5 9 5"/><path d="M4 9h16"/><path d="M6 9v9M10 9v9M14 9v9M18 9v9"/><path d="M3 18h18M2 21h20"/>',
+    # liability insurance: shield with check
+    '<path d="M12 3l8 3v6c0 4.6-3.4 8.2-8 9-4.6-.8-8-4.4-8-9V6z"/><path d="M8.5 12.2l2.5 2.5 4.8-5"/>',
+    # ÖNORM: set square + ruler
+    '<path d="M4 20V5l15 15z"/><path d="M8 16v-3l3 3z"/><path d="M4 9h2M4 12h3M4 15h2"/>',
+    # occupational safety: hard hat
+    '<path d="M4 17a8 8 0 0 1 16 0"/><path d="M2.5 17h19v2.5h-19z"/><path d="M10 9.5V6.5h4v3"/><path d="M12 9v8"/>',
+    # foreman school: graduation cap
+    '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.6 2.7 3 6 3s6-1.4 6-3v-5"/><path d="M22 9v6"/>',
+]
+
+def seal(top, i):
+    """Placeholder credential medallion (no third-party logos) – ring text, gold ticks, own icon per credential."""
     pid = f'sealpath{i}'
+    ticks = ''.join(f'<path d="M50 4.5v3" transform="rotate({a} 50 50)"/>' for a in range(0, 360, 15))
+    icon = CERT_ICONS[i % len(CERT_ICONS)]
     return (f'<svg class="cert-seal" viewBox="0 0 100 100" aria-hidden="true">'
-            f'<defs><path id="{pid}" d="M50 50m-38 0a38 38 0 1 1 76 0a38 38 0 1 1-76 0"/></defs>'
-            f'<circle cx="50" cy="50" r="47" fill="#fff" stroke="#121417" stroke-width="2"/>'
-            f'<circle cx="50" cy="50" r="30" fill="{R}"/><circle cx="50" cy="50" r="26" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>'
-            f'<text font-family="\'Barlow Condensed\',sans-serif" font-size="9" font-weight="600" letter-spacing="2.2" fill="#121417"><textPath href="#{pid}">{E(top.upper())} · MENZIL-BAU · </textPath></text>'
-            f'<path d="M38 44l8-6 8 6v12H38z" fill="none" stroke="#fff" stroke-width="2"/><path d="M42 52l3 3 6-6" fill="none" stroke="#fff" stroke-width="2"/>'
-            f'<text x="50" y="69" text-anchor="middle" font-family="\'Barlow Condensed\',sans-serif" font-size="7" font-weight="700" letter-spacing="1" fill="#fff">{E(mid.upper())}</text></svg>')
+            f'<defs><path id="{pid}" d="M50 50m-36 0a36 36 0 1 1 72 0a36 36 0 1 1-72 0"/>'
+            f'<radialGradient id="sealg{i}" cx="40%" cy="35%"><stop offset="0" stop-color="{RH}"/><stop offset="1" stop-color="#7E0007"/></radialGradient></defs>'
+            f'<circle cx="50" cy="50" r="48" fill="#fff" stroke="#B08D57" stroke-width="1.5"/>'
+            f'<g class="seal-ticks" stroke="#B08D57" stroke-width="1.2">{ticks}</g>'
+            f'<circle cx="50" cy="50" r="41.5" fill="none" stroke="#121417" stroke-width=".8" opacity=".35"/>'
+            f'<text font-family="\'Barlow Condensed\',sans-serif" font-size="7.6" font-weight="600" letter-spacing="1.6" fill="#121417"><textPath href="#{pid}" textLength="222" lengthAdjust="spacing">MENZIL-BAU · QUALITÄT · SEIT 2010 · GEPRÜFT ·</textPath></text>'
+            f'<circle cx="50" cy="50" r="27" fill="url(#sealg{i})"/><circle cx="50" cy="50" r="23.5" fill="none" stroke="#fff" stroke-width=".7" opacity=".45"/>'
+            f'<g transform="translate(36 36) scale(1.17)" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{icon}</g></svg>')
 
 COUNTRIES = [('+43', '🇦🇹'), ('+49', '🇩🇪'), ('+41', '🇨🇭'), ('+421', '🇸🇰'), ('+420', '🇨🇿'), ('+36', '🇭🇺'), ('+386', '🇸🇮'),
              ('+385', '🇭🇷'), ('+381', '🇷🇸'), ('+387', '🇧🇦'), ('+382', '🇲🇪'), ('+383', '🇽🇰'), ('+389', '🇲🇰'), ('+355', '🇦🇱'),
@@ -600,7 +620,13 @@ def p_referenzen(c):
 def p_zertifikate(c):
     t = c['t']['p_zertifikate']
     # PLATZHALTER: generic placeholder seals – replace with real credentials
-    badges = ''.join(f'<div class="cert reveal reveal-d{i % 3}">{seal(a, b, i)}<div><div class="cert-name">{E(a)}</div><div class="cert-desc">{E(d)}</div></div></div>' for i, (a, b, d) in enumerate(t['badges']))
+    CHK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg>'
+    badges = ''.join(f'''<div class="cert reveal reveal-d{i % 3}">
+        <span class="cert-no">0{i + 1}</span>
+        {seal(a, i)}
+        <div class="cert-body"><div class="cert-name">{E(a)}</div><div class="cert-desc">{E(d)}</div>
+          <span class="cert-chip">{CHK}{E(b)}</span></div>
+      </div>''' for i, (a, b, d) in enumerate(t['badges']))
     steps = ''.join(f'<div class="step reveal reveal-d{i % 3}"><div class="step-title">{E(a)}</div><div class="step-body">{E(b)}</div></div>' for i, (a, b) in enumerate(t['steps']))
     return head(c) + '<body>\n' + nav(c) + '<main id="main">\n' + page_hero(c, 'p_zertifikate', 'f14') + f'''
 <section class="section concrete">
