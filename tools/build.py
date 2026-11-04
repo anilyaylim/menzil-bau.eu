@@ -21,14 +21,23 @@ YEAR = date.today().year
 R, RH, W = '#B3000A', '#D7141C', '#E9E6E1'
 
 # ═══════════════════════ SVG library ═══════════════════════
-def logo_a(fill='#fff', sub='#E9E6E1', bar='#B08D57', w=210, h=59, label='Menzil-Bau'):
-    return (f'<svg viewBox="0 0 300 84" width="{w}" height="{h}" role="img" aria-label="{label}">'
+FONT = "font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\""
+
+def wordmark(x, y, size, ls, fill='#fff', accent=RH, weight=800):
+    """MENZIL-BAU with M and B accented – as in the original Menzil-Bau logo."""
+    return (f'<text x="{x}" y="{y}" {FONT} font-weight="{weight}" font-size="{size}" letter-spacing="{ls}" fill="{fill}">'
+            f'<tspan fill="{accent}">M</tspan>ENZIL-<tspan fill="{accent}">B</tspan>AU</text>')
+
+LOGO_A_W = 316
+def logo_a(fill='#fff', sub='#E9E6E1', bar='#B08D57', accent=RH, w=230, label='Menzil-Bau'):
+    h = round(w * 84 / LOGO_A_W)
+    return (f'<svg viewBox="0 0 {LOGO_A_W} 84" width="{w}" height="{h}" role="img" aria-label="{label}">'
             f'<rect x="0" y="6" width="72" height="72" fill="{R}"/>'
             f'<path d="M14 62V32L25 21L36 32L47 21L58 32V62" fill="none" stroke="#fff" stroke-width="5.5"/>'
             f'<rect x="32" y="44" width="8" height="18" fill="#fff"/>'
-            f'<text x="88" y="50" font-family="\'Barlow Condensed\',\'Arial Narrow\',sans-serif" font-weight="800" font-size="46" letter-spacing="2" fill="{fill}">MENZIL</text>'
+            + wordmark(88, 50, 46, 1.5, fill, accent) +
             f'<rect x="88" y="60" width="22" height="2" fill="{bar}"/>'
-            f'<text x="118" y="68" font-family="\'Barlow Condensed\',\'Arial Narrow\',sans-serif" font-weight="500" font-size="15" letter-spacing="7" fill="{sub}">BAU · SEIT 2010</text></svg>')
+            f'<text x="118" y="68" {FONT} font-weight="500" font-size="15" letter-spacing="7" fill="{sub}">SEIT 2010</text></svg>')
 
 def logo_b(w=330, h=120, label='Menzil-Bau'):
     """Crane logo – trolley travels, hook sways (SMIL, works inside <use> as well)."""
@@ -41,10 +50,9 @@ def logo_b(w=330, h=120, label='Menzil-Bau'):
             f'<rect x="236" y="8" width="12" height="5" fill="{R}"/>'
             '<g><animateTransform attributeName="transform" type="rotate" values="-6 242 13;6 242 13;-6 242 13" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1"/>'
             f'<path d="M242 13V40" stroke="{W}" stroke-width="1.4"/><path d="M238 40h8v3a4 4 0 1 1-8 0" fill="none" stroke="{RH}" stroke-width="2.4"/></g></g>'
-            '<text x="44" y="102" font-family="\'Barlow Condensed\',\'Arial Narrow\',sans-serif" font-weight="800" font-size="54" letter-spacing="2" fill="#fff">MENZIL</text>'
-            f'<text x="216" y="102" font-family="\'Barlow Condensed\',\'Arial Narrow\',sans-serif" font-weight="300" font-size="54" letter-spacing="2" fill="{RH}">BAU</text>'
+            + wordmark(44, 102, 52, 1) +
             '<rect x="46" y="112" width="22" height="2" fill="#B08D57"/>'
-            '<text x="76" y="117" font-family="\'Barlow Condensed\',\'Arial Narrow\',sans-serif" font-weight="500" font-size="11" letter-spacing="3.4" fill="#8C9198">PLANUNG · ROHBAU · SANIERUNG</text></svg>')
+            f'<text x="76" y="117" {FONT} font-weight="500" font-size="11" letter-spacing="3.4" fill="#8C9198">PLANUNG · ROHBAU · SANIERUNG</text></svg>')
 
 def crane(w=300, h=122):
     return (f'<svg viewBox="0 0 300 122" width="{w}" height="{h}" fill="none" stroke="{W}" stroke-width="2" aria-hidden="true">'
@@ -79,6 +87,54 @@ def mixer(w=290, h=122):
             '<path d="M40 96V84M180 96V84"/>'
             + ''.join(f'<circle cx="{x}" cy="104" r="12"/><g><animateTransform attributeName="transform" type="rotate" from="0 {x} 104" to="360 {x} 104" dur="1.6s" repeatCount="indefinite"/><path d="M{x-7} 104H{x+7}M{x} 97V111" stroke-width="1.6"/></g>' for x in (48, 84, 236)) +
             '</svg>')
+
+def house():
+    """Detached house for the build scene. Each layer is animated by CSS (see .bs-house in style.css)."""
+    G = '#D9B26A'
+    star = lambda x, y, r, d: (f'<path class="h-star" style="animation-delay:{d}s" transform="translate({x} {y})" '
+                               f'd="M0 -{r}L{r*.28} -{r*.28}L{r} 0L{r*.28} {r*.28}L0 {r}L-{r*.28} {r*.28}L-{r} 0L-{r*.28} -{r*.28}Z" fill="{G}"/>')
+    bricks = ''.join(f'<path d="M42 {y}H218" />' for y in range(66, 118, 8))
+    return (f'<svg viewBox="0 0 260 122" width="260" height="122" fill="none" aria-hidden="true">'
+            '<defs><clipPath id="houseClip"><path d="M40 118V60L28 60L130 14L232 60H220V118Z"/></clipPath>'
+            '<linearGradient id="sweepGrad" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>'
+            f'<path d="M0 118.5H260" stroke="{W}" stroke-width="2.4"/>'
+            # blueprint outline
+            f'<g class="h-blueprint" stroke="{G}" stroke-width="1.6">'
+            '<path pathLength="1" d="M40 118V60H220V118"/><path pathLength="1" d="M28 60L130 14L232 60"/>'
+            '<path pathLength="1" d="M116 118V86H144V118M62 74H92V98H62ZM168 74H198V98H168Z"/></g>'
+            # walls
+            f'<g class="h-walls"><rect x="40" y="60" width="180" height="58" fill="#2A2F36" stroke="{W}" stroke-width="2.4"/>'
+            f'<g stroke="{W}" stroke-width="1" opacity=".14">{bricks}</g>'
+            f'<rect class="h-win" x="62" y="74" width="30" height="24" fill="#3A4049" stroke="{W}" stroke-width="2"/><path d="M77 74V98M62 86H92" stroke="{W}" stroke-width="1.2"/>'
+            f'<rect class="h-win" x="168" y="74" width="30" height="24" fill="#3A4049" stroke="{W}" stroke-width="2"/><path d="M183 74V98M168 86H198" stroke="{W}" stroke-width="1.2"/>'
+            f'<path d="M116 118V86H144V118" fill="#121417" stroke="{W}" stroke-width="2"/><circle cx="138" cy="103" r="1.6" fill="{G}"/></g>'
+            # scaffolding
+            '<g class="h-scaffold" stroke="#8C9198" stroke-width="1.4"><path d="M32 118V52M228 118V52M32 98H228M32 78H228M32 58H228M32 98L52 78M208 98L228 78"/></g>'
+            # roof + chimney
+            f'<g class="h-roof"><rect x="172" y="22" width="14" height="26" fill="#2A2F36" stroke="{W}" stroke-width="2"/>'
+            f'<path d="M22 62L130 12L238 62Z" fill="{R}" stroke="{W}" stroke-width="2.4" stroke-linejoin="round"/>'
+            '<path d="M60 45L130 23L200 45" stroke="#fff" stroke-width="1" opacity=".25"/><circle cx="130" cy="40" r="6" fill="#121417" stroke="#fff" stroke-width="1.6"/></g>'
+            # light sweep
+            '<g clip-path="url(#houseClip)"><rect class="h-sweep" x="-60" y="0" width="60" height="122" fill="url(#sweepGrad)" transform="skewX(-18)"/></g>'
+            # sparkles
+            '<g class="h-stars">' + star(14, 30, 7, 0) + star(246, 38, 6, .5) + star(130, 4, 5, .9) + star(60, 18, 4, 1.3) + star(206, 10, 5, .3) + star(250, 92, 4, 1.1) + star(8, 84, 4, .7) + '</g>'
+            '</svg>')
+
+def build_scene(c):
+    """Desktop hero band: machines arrive → construction (progress) → finished house with shine. Loops (14 s)."""
+    b = c['t']['build']
+    return f'''<div class="build-band" aria-hidden="true">
+    <div class="build-stage">
+      <div class="bs-item bs-mixer">{mixer()}</div>
+      <div class="bs-item bs-exc">{excavator()}</div>
+      <div class="bs-item bs-crane">{crane()}</div>
+      <div class="bs-house">{house()}</div>
+      <div class="bs-progress">
+        <div class="bs-label"><span class="bs-l1">{E(b['label'])}</span><span class="bs-l2">&#10003; {E(b['done'])}</span><span class="bs-pct"></span></div>
+        <div class="bs-bar"><i></i></div>
+      </div>
+    </div>
+  </div>'''
 
 def parade(scale=1.0, sets=4):
     one = crane(int(300 * scale), int(122 * scale)) + excavator(int(260 * scale), int(122 * scale)) + mixer(int(290 * scale), int(122 * scale))
@@ -167,13 +223,15 @@ def is_portrait(pid):
 def head(c):
     t = c['t']; title, desc = t['meta'][c['page']]
     return f'''<!DOCTYPE html>
-<html lang="{t['html_lang']}">
+<html lang="{t['html_lang']}" translate="no">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{E(title)}</title>
 <meta name="description" content="{E(desc)}">
 <meta name="theme-color" content="#121417">
+<meta name="google" content="notranslate">
+<meta http-equiv="content-language" content="{t['html_lang']}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}">
@@ -197,11 +255,9 @@ def nav(c):
   <div class="nav-inner">
     <a class="nav-logo" href="index.html" aria-label="Menzil-Bau – Start">
       <span class="nlm">{logo_b(185, 68)}</span>
-      <span class="nlb">{logo_a(w=178, h=50)}</span>
+      <span class="nlb">{logo_a(w=200)}</span>
       <span class="nav-motto"><span class="nav-motto-bar"></span>{E(t['motto'])}</span>
     </a>
-    <div class="nav-conveyor" aria-hidden="true"></div>
-    <div class="nav-mobile-parade" aria-hidden="true"><div class="nav-mobile-parade-track">{parade(.5, 4)}</div></div>
     <button class="nav-hamburger" id="navToggle" aria-label="{E(t['menu'])}" aria-expanded="false" aria-controls="navLinks"><span></span></button>
     <ul class="nav-links" id="navLinks">
       <li><a href="{anchor(c, 'leistungen')}">{E(n['leistungen'])}</a></li>
@@ -271,7 +327,7 @@ def footer(c):
     return f'''<footer>
   <div class="footer-brand-row">
     <div class="footer-brand">
-      {logo_a(w=200, h=56)}
+      {logo_a(w=230)}
       <div class="footer-copy">&copy; {SITE['founded']}–{YEAR} Menzil-Bau · {E(t['rights'])}</div>
       <div class="footer-links"><a href="kontakt.html#impressum">{E(t['impressum'])}</a><a href="{SITE['facebook']}" target="_blank" rel="noopener">Facebook</a></div>
     </div>
@@ -339,7 +395,8 @@ def p_index(c):
     stats = ''.join(f'<div class="stat-item"><div class="stat-number">{n}<span>{u}</span></div><div class="stat-label">{E(l)}</div></div>' for n, u, l in h['stats'])
     prob = ''.join(f'<li>{ICON[PROB_ICONS[i]]}{E(x)}</li>' for i, x in enumerate(t['challenge']['items']))
     sol = ''.join(f'<li>{ICON["check"]}{E(x)}</li>' for x in t['solution']['items'])
-    metrics = ''.join(f'<div class="metric-card"><div class="metric-num">{n}<span class="unit">{u}</span></div><div class="metric-desc">{E(d)}</div></div>' for n, u, d in t['metrics']['items'])
+    hl = t['metrics'].get('highlight')
+    metrics = ''.join(f'<div class="metric-card{" gold" if i == hl else ""}"><div class="metric-num">{n}<span class="unit">{u}</span></div><div class="metric-desc">{E(d)}</div></div>' for i, (n, u, d) in enumerate(t['metrics']['items']))
     svcs = ''.join(f'''<div class="product-card reveal reveal-d{i % 3}">
         <span class="product-num">0{i + 1}</span>
         <div class="product-icon">{SVC_ICONS[i]}</div>
@@ -356,7 +413,7 @@ def p_index(c):
     places = ''.join(f'<span class="place">{E(p)}</span>' for p in PLACES)
     return head(c) + '<body class="has-parade">\n' + nav(c) + f'''<main id="main">
 <section class="hero" id="hero">
-  <div class="machine-parade" aria-hidden="true"><div class="machine-parade-track">{parade(1.0, 4)}</div></div>
+  {build_scene(c)}
   <div class="conveyor"></div>
   <div class="hero-left">
     <div class="hero-photo" style="background-image:url('{photo(c, 'f01', False)}')"></div>
