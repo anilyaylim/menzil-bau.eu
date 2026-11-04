@@ -183,20 +183,29 @@ CERT_ICONS = [
     '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.6 2.7 3 6 3s6-1.4 6-3v-5"/><path d="M22 9v6"/>',
 ]
 
-def seal(top, i):
+# Measured bounding boxes (cx, cy, w, h) of CERT_ICONS in their 24×24 grid – used to centre each icon exactly
+CERT_ICON_BOX = [(12.5, 12.5, 13, 19), (12, 12.5, 20, 17), (12, 12, 16, 18), (11.5, 12.5, 15, 15), (12, 13, 19, 13), (12, 11.5, 20, 15)]
+
+def seal_icon(i, cx=50, cy=50, size=24):
+    bx, by, bw, bh = CERT_ICON_BOX[i % len(CERT_ICON_BOX)]
+    k = size / max(bw, bh)
+    tx, ty = cx - bx * k, cy - by * k
+    return (f'<g transform="translate({tx:.2f} {ty:.2f}) scale({k:.3f})" fill="none" stroke="#fff" stroke-width="{1.9 / k:.2f}" '
+            f'stroke-linecap="round" stroke-linejoin="round">{CERT_ICONS[i % len(CERT_ICONS)]}</g>')
+
+def seal(top, i, uid=''):
     """Placeholder credential medallion (no third-party logos) – ring text, gold ticks, own icon per credential."""
-    pid = f'sealpath{i}'
+    pid = f'sealpath{uid}{i}'
     ticks = ''.join(f'<path d="M50 4.5v3" transform="rotate({a} 50 50)"/>' for a in range(0, 360, 15))
-    icon = CERT_ICONS[i % len(CERT_ICONS)]
     return (f'<svg class="cert-seal" viewBox="0 0 100 100" aria-hidden="true">'
             f'<defs><path id="{pid}" d="M50 50m-36 0a36 36 0 1 1 72 0a36 36 0 1 1-72 0"/>'
-            f'<radialGradient id="sealg{i}" cx="40%" cy="35%"><stop offset="0" stop-color="{RH}"/><stop offset="1" stop-color="#7E0007"/></radialGradient></defs>'
+            f'<radialGradient id="sealg{uid}{i}" cx="40%" cy="35%"><stop offset="0" stop-color="{RH}"/><stop offset="1" stop-color="#7E0007"/></radialGradient></defs>'
             f'<circle cx="50" cy="50" r="48" fill="#fff" stroke="#B08D57" stroke-width="1.5"/>'
             f'<g class="seal-ticks" stroke="#B08D57" stroke-width="1.2">{ticks}</g>'
             f'<circle cx="50" cy="50" r="41.5" fill="none" stroke="#121417" stroke-width=".8" opacity=".35"/>'
             f'<text font-family="\'Barlow Condensed\',sans-serif" font-size="7.6" font-weight="600" letter-spacing="1.6" fill="#121417"><textPath href="#{pid}" textLength="222" lengthAdjust="spacing">MENZIL-BAU · QUALITÄT · SEIT 2010 · GEPRÜFT ·</textPath></text>'
-            f'<circle cx="50" cy="50" r="27" fill="url(#sealg{i})"/><circle cx="50" cy="50" r="23.5" fill="none" stroke="#fff" stroke-width=".7" opacity=".45"/>'
-            f'<g transform="translate(36 36) scale(1.17)" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{icon}</g></svg>')
+            f'<circle cx="50" cy="50" r="27" fill="url(#sealg{uid}{i})"/><circle cx="50" cy="50" r="23.5" fill="none" stroke="#fff" stroke-width=".7" opacity=".45"/>'
+            + seal_icon(i) + '</svg>')
 
 COUNTRIES = [('+43', '🇦🇹'), ('+49', '🇩🇪'), ('+41', '🇨🇭'), ('+421', '🇸🇰'), ('+420', '🇨🇿'), ('+36', '🇭🇺'), ('+386', '🇸🇮'),
              ('+385', '🇭🇷'), ('+381', '🇷🇸'), ('+387', '🇧🇦'), ('+382', '🇲🇪'), ('+383', '🇽🇰'), ('+389', '🇲🇰'), ('+355', '🇦🇱'),
@@ -621,12 +630,27 @@ def p_zertifikate(c):
     t = c['t']['p_zertifikate']
     # PLATZHALTER: generic placeholder seals – replace with real credentials
     CHK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg>'
-    badges = ''.join(f'''<div class="cert reveal reveal-d{i % 3}">
+    DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 11h6M9 14h6M9 17h4"/></svg>'
+    cv = c['t']['cert']
+    badges = ''.join(f'''<button class="cert reveal reveal-d{i % 3}" type="button" data-modal="certModal{i}">
         <span class="cert-no">0{i + 1}</span>
         {seal(a, i)}
-        <div class="cert-body"><div class="cert-name">{E(a)}</div><div class="cert-desc">{E(d)}</div>
-          <span class="cert-chip">{CHK}{E(b)}</span></div>
-      </div>''' for i, (a, b, d) in enumerate(t['badges']))
+        <span class="cert-body"><span class="cert-name">{E(a)}</span><span class="cert-desc">{E(d)}</span>
+          <span class="cert-foot"><span class="cert-chip">{CHK}{E(b)}</span><span class="cert-view">{E(cv['view'])} {ARROW}</span></span></span>
+      </button>''' for i, (a, b, d) in enumerate(t['badges']))
+    cmodals = ''.join(f'''<div class="modal" id="certModal{i}" role="dialog" aria-modal="true" aria-labelledby="certTitle{i}" hidden>
+  <div class="modal-box cert-modal">
+    <button class="modal-close" type="button" aria-label="{E(c['t']['lb']['close'])}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="cert-modal-head">
+      {seal(a, i, 'm')}
+      <div><div class="section-eyebrow">{E(cv['label'])} 0{i + 1}</div>
+        <h2 class="modal-title" id="certTitle{i}">{E(a)}</h2>
+        <span class="cert-chip">{CHK}{E(b)}</span></div>
+    </div>
+    <p class="cert-modal-desc">{E(d)}</p>
+    <div class="cert-doc"><span class="cert-doc-icon">{DOC}</span><strong>{E(cv['pending_title'])}</strong><span>{E(cv['pending'])}</span></div>
+  </div>
+</div>''' for i, (a, b, d) in enumerate(t['badges']))
     steps = ''.join(f'<div class="step reveal reveal-d{i % 3}"><div class="step-title">{E(a)}</div><div class="step-body">{E(b)}</div></div>' for i, (a, b) in enumerate(t['steps']))
     return head(c) + '<body>\n' + nav(c) + '<main id="main">\n' + page_hero(c, 'p_zertifikate', 'f14') + f'''
 <section class="section concrete">
@@ -634,6 +658,7 @@ def p_zertifikate(c):
     <!-- PLATZHALTER: Nachweise werden nach Erhalt der Originaldokumente ersetzt -->
     <div class="cert-grid">{badges}</div>
     <p class="cert-note">{E(t['note'])}</p>
+    {cmodals}
   </div>
 </section>
 <section class="section dark">

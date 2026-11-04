@@ -581,3 +581,25 @@ footer { background: var(--sec-deep); padding: 44px 110px 36px 40px; display: fl
 .cert-chip svg { width: 12px; height: 12px; }
 .cert-grid { background: var(--concrete-dk); }
 .cert-body { align-self: stretch; }
+
+/* certificate cards as buttons + certificate modal */
+button.cert { font: inherit; text-align: left; color: inherit; cursor: pointer; border-left: none; border-right: none; border-bottom: none; width: 100%; }
+.cert-name, .cert-desc { display: block; }
+.cert-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cert-view { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--red); opacity: .75; transition: opacity .2s, gap .2s; }
+.cert-view svg { width: 13px; height: 13px; }
+.cert:hover .cert-view { opacity: 1; gap: 10px; }
+.cert-modal { max-width: 620px; }
+.cert-modal-head { display: flex; align-items: center; gap: 26px; margin-bottom: 20px; padding-right: 40px; }
+.cert-modal-head .cert-seal { width: 132px; height: 132px; flex-shrink: 0; }
+.cert-modal-head .modal-title { font-size: 34px; margin-bottom: 12px; }
+.cert-modal-desc { font-size: 15px; line-height: 1.7; color: var(--text-mid); margin-bottom: 22px; }
+.cert-doc { border: 2px dashed var(--concrete-dk); background: repeating-linear-gradient(-45deg, var(--concrete-2) 0 12px, #fff 12px 24px); min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 32px; color: var(--text-mid); font-size: 13.5px; line-height: 1.6; }
+.cert-doc strong { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; letter-spacing: 1px; text-transform: uppercase; color: var(--graphite); }
+.cert-doc span:last-child { max-width: 380px; }
+.cert-doc-icon { width: 54px; height: 54px; border: 1px solid var(--concrete-dk); background: #fff; display: flex; align-items: center; justify-content: center; color: var(--bronze); margin-bottom: 6px; }
+.cert-doc-icon svg { width: 26px; height: 26px; }
+@media (max-width: 600px) { .cert-modal-head { flex-direction: column; align-items: flex-start; gap: 16px; } .cert-modal-head .cert-seal { width: 104px; height: 104px; } .cert-doc { min-height: 180px; } }
+.cert-foot { flex-direction: column; align-items: stretch; gap: 16px; }
+.cert-foot .cert-chip { align-self: flex-start; }
+.cert-view { justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--concrete); }
