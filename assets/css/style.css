@@ -628,3 +628,21 @@ button.cert { font: inherit; text-align: left; color: inherit; cursor: pointer; 
 .contact-section .contact-grid > * { min-width: 0; }
 @media (max-width: 960px) { .contact-section .contact-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) { .contact-info .btn { width: 100%; justify-content: center; } }
+
+/* contact v3: closer to the header, full width, equal height */
+.contact-section { padding: 28px 40px 72px; }
+.contact-section .section-inner { max-width: none; }
+.contact-section .contact-grid { grid-template-columns: 1fr 1fr; align-items: stretch; }
+.contact-section .contact-info { padding: 40px 48px; justify-content: space-between; }
+.contact-section .ci { padding: 16px 0; }
+.contact-section .addr-grid { margin-top: 18px; }
+.contact-section .contact-info .btn { margin-top: 20px; }
+.contact-section .contact-form-side { padding: 40px 48px; align-items: stretch; }
+.contact-section .contact-form-side .hero-form-wrap { justify-content: space-between; }
+.contact-section .hero-form { flex: 1; justify-content: space-between; }
+.contact-section .hf-textarea { flex: 1; min-height: 110px; }
+@media (max-width: 960px) {
+  .contact-section { padding: 20px 16px 48px; }
+  .contact-section .contact-grid { grid-template-columns: minmax(0, 1fr); }
+  .contact-section .contact-info, .contact-section .contact-form-side { padding: 32px 22px; }
+}
