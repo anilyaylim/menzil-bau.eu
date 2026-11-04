@@ -233,6 +233,7 @@ T['de'] = {
     'regions': {'noe': 'Niederösterreich', 'bgld': 'Burgenland', 'wien': 'Wien'},
     'places_sub': '{n} Standorte in {r} Bundesländern',
     'tabs': {'photos': 'Fotos: Baustelle bis Übergabe', 'plans': 'Architekturpläne', 'plans_eyebrow': 'Einreichpläne', 'plans_title': 'Geplant und<br>eingereicht'},
+    'cert': {'view': 'Nachweis ansehen', 'label': 'Zertifikat', 'pending_title': 'Dokument folgt', 'pending': 'Das Originaldokument wird in Kürze hier hinterlegt. Auf Anfrage senden wir Ihnen gerne eine Kopie.'},  # PLATZHALTER bis Originaldokumente vorliegen
     'lb': {'close': 'Schließen', 'prev': 'Zurück', 'next': 'Weiter'},
 }
 
@@ -393,6 +394,7 @@ T['en'] = {
     'regions': {'noe': 'Lower Austria', 'bgld': 'Burgenland', 'wien': 'Vienna'},
     'places_sub': '{n} locations in {r} federal states',
     'tabs': {'photos': 'Photos: site to handover', 'plans': 'Architectural plans', 'plans_eyebrow': 'Permit plans', 'plans_title': 'Planned and<br>submitted'},
+    'cert': {'view': 'View certificate', 'label': 'Certificate', 'pending_title': 'Document to follow', 'pending': 'The original document will be added here shortly. A copy is available on request.'},  # PLATZHALTER bis Originaldokumente vorliegen
     'lb': {'close': 'Close', 'prev': 'Previous', 'next': 'Next'},
 }
 
@@ -553,6 +555,7 @@ T['tr'] = {
     'regions': {'noe': 'Aşağı Avusturya', 'bgld': 'Burgenland', 'wien': 'Viyana'},
     'places_sub': '{r} eyalette {n} lokasyon',
     'tabs': {'photos': 'Fotoğraflar: şantiyeden teslimata', 'plans': 'Mimari çizimler', 'plans_eyebrow': 'Ruhsat projeleri', 'plans_title': 'Planlandı ve<br>onaya sunuldu'},
+    'cert': {'view': 'Belgeyi görüntüle', 'label': 'Sertifika', 'pending_title': 'Belge eklenecek', 'pending': 'Orijinal belge yakında buraya eklenecek. Talep üzerine bir kopyasını memnuniyetle iletiyoruz.'},  # PLATZHALTER bis Originaldokumente vorliegen
     'lb': {'close': 'Kapat', 'prev': 'Önceki', 'next': 'Sonraki'},
 }
 
