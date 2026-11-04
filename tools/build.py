@@ -676,7 +676,9 @@ def p_kontakt(c):
     a1 = '<br>'.join(E(x) for x in SITE['addr1']); a2 = '<br>'.join(E(x) for x in SITE['addr2'])
     maps = 'https://www.google.com/maps/search/?api=1&query=' + '+'.join(SITE['addr2_plain'].replace(',', '').split())
     return head(c) + '<body>\n' + nav(c) + '<main id="main">\n' + page_hero(c, 'p_kontakt', 'f02') + f'''
-<section class="contact-grid" id="formular">
+<section class="section concrete contact-section" id="formular">
+ <div class="section-inner">
+ <div class="contact-grid">
   <div class="contact-info">
     <a class="ci" href="{SITE['phone_href']}"><span class="ci-icon">{TEL}</span><span><div class="ci-label">{E(t['phone'])}</div><div class="ci-value">{SITE['phone_local']}<small>{SITE['phone']}</small></div></span></a>
     <a class="ci" href="{SITE['whatsapp']}" target="_blank" rel="noopener"><span class="ci-icon">{WA}</span><span><div class="ci-label">{E(t['whatsapp'])}</div><div class="ci-value">{E(t['whatsapp_cta'])}<small>{SITE['phone']}</small></div></span></a>
@@ -691,11 +693,14 @@ def p_kontakt(c):
   <div class="contact-form-side">
     {form(c)}
   </div>
+ </div>
+ </div>
 </section>
-<section class="section concrete" id="impressum">
+<section class="section impressum-section" id="impressum">
   <div class="section-inner">
     <div class="section-eyebrow">{E(t['impressum_title'])}</div>
-    <p class="impressum">{E(t['impressum'])}<br>{E(SITE['company'])} · {E(SITE['addr2_plain'])} · <a href="mailto:{SITE['email']}">{SITE['email']}</a> · {SITE['phone']}</p>
+    <p class="impressum">{E(t['impressum'])}</p>
+    <p class="impressum impressum-facts">{E(SITE['company'])} · {E(SITE['addr2_plain'])} · <a href="mailto:{SITE['email']}">{SITE['email']}</a> · {SITE['phone']}</p>
   </div>
 </section>
 </main>
