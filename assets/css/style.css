@@ -69,7 +69,6 @@ a { color: inherit; }
 .nav-links .nav-cta:hover { background: var(--red-hi) !important; }
 .nav-links .nav-cta::after { display: none; }
 
-.nav-conveyor, .nav-mobile-parade { display: none; }
 .nav-hamburger {
   display: none; background: none; border: 1px solid rgba(255,255,255,.2); border-radius: 4px; color: #fff;
   width: 40px; height: 40px; cursor: pointer; align-items: center; justify-content: center; flex-shrink: 0; position: relative; z-index: 2;
@@ -88,12 +87,6 @@ a { color: inherit; }
   .nav-logo { display: none; }
   .nav-inner { padding: 0 16px 0 0; justify-content: flex-end; }
   .nav-hamburger { display: flex; }
-  .nav-conveyor {
-    display: block; position: absolute; left: 0; right: 72px; bottom: 0; height: 4px; border-radius: 2px;
-    background: repeating-linear-gradient(90deg, var(--red) 0 36px, rgba(179,0,10,.18) 36px 54px);
-    background-size: 54px 100%; animation: navBeltMove 1.4s linear infinite;
-  }
-  .nav-mobile-parade { display: block; position: absolute; bottom: 4px; left: 0; right: 72px; height: 64px; overflow: hidden; pointer-events: none; }
   .nav-links {
     position: fixed; top: var(--nav-h); left: 0; right: 0; max-height: calc(100vh - var(--nav-h)); overflow-y: auto;
     background: rgba(18,20,23,.98); flex-direction: column; align-items: stretch; padding: 10px 0 22px;
@@ -106,13 +99,11 @@ a { color: inherit; }
   .nav-lang a { border: 1px solid rgba(255,255,255,.14); padding: 8px 14px; font-size: 12px; }
   .nav-lang a.active { border-color: var(--red); }
   .nav-links .nav-cta { margin: 14px 28px 0; text-align: center; padding: 14px 16px; }
-  .site-nav.menu-open .nav-mobile-parade, .site-nav.menu-open .nav-conveyor { display: none; }
   .site-nav.menu-open .nav-inner, .site-nav.scrolled .nav-inner { justify-content: space-between; padding-left: 20px; }
   .site-nav.menu-open .nav-logo { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
   .site-nav.menu-open .nav-logo .nlm { display: none; }
   .site-nav.menu-open .nav-logo .nlb { opacity: 1; position: static; transform: none; pointer-events: auto; }
   .site-nav.menu-open .nav-motto { display: flex; }
-  .site-nav.scrolled .nav-mobile-parade, .site-nav.scrolled .nav-conveyor { display: none; }
   .site-nav.scrolled .nav-logo { display: flex; }
   .site-nav.scrolled .nav-logo .nlm { display: none; }
   .site-nav.scrolled .nav-logo .nlb { opacity: 1; position: static; transform: none; pointer-events: auto; }
@@ -122,11 +113,12 @@ a { color: inherit; }
 /* ══════════ HERO ══════════ */
 .hero { position: relative; min-height: 100vh; display: flex; overflow: hidden; padding-top: var(--nav-h); padding-bottom: 150px; background: var(--graphite); }
 .hero-left { flex: 1.1; position: relative; z-index: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 56px 56px 56px 6%; }
-.hero-photo { position: absolute; inset: 0; background-size: cover; background-position: center; filter: grayscale(.3) contrast(1.05); }
-.hero-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18,20,23,.97) 0%, rgba(18,20,23,.88) 50%, rgba(18,20,23,.55) 100%); }
+.hero-photo { position: absolute; inset: 0; background-size: cover; background-position: center; filter: grayscale(.1) contrast(1.04) brightness(1.04); }
+.hero-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18,20,23,.9) 0%, rgba(18,20,23,.66) 42%, rgba(18,20,23,.22) 100%), linear-gradient(0deg, rgba(18,20,23,.55) 0%, rgba(18,20,23,0) 40%); }
+.hero-left .hero-title, .hero-left .hero-sub, .hero-left .hero-eyebrow, .hero-left .hero-stats { text-shadow: 0 2px 14px rgba(0,0,0,.55); }
 .hero-left > *:not(.hero-photo):not(.hero-grid) { position: relative; }
 .hero-grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(195,198,202,.12) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
-.hero-right { flex: .9; position: relative; z-index: 1; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 56px 5%; background: var(--graphite); }
+.hero-right { flex: .9; position: relative; z-index: 1; min-width: 0; display: flex; align-items: flex-start; justify-content: center; padding: 28px 5% 56px; background: var(--graphite); }
 .hero-right::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-55deg, transparent 0 28px, rgba(255,255,255,.022) 28px 29px); pointer-events: none; }
 .hero-logo-mark { margin: 0 0 22px -6px; }
 .hero-logo-mark svg { width: 380px; max-width: 100%; height: auto; }
@@ -140,16 +132,60 @@ a { color: inherit; }
 .stat-number span { color: var(--red-hi); }
 .stat-label { font-size: 10px; font-weight: 500; color: rgba(255,255,255,.82); text-transform: uppercase; letter-spacing: 1.3px; margin-top: 5px; white-space: nowrap; }
 
-/* Parade + belt (DKI machine-parade) */
-.machine-parade { position: absolute; left: 0; right: 0; bottom: 0; height: 140px; overflow: hidden; pointer-events: none; z-index: 9; background: rgba(18,20,23,.94); border-top: 1px solid var(--steel-line); }
-.machine-parade-track, .nav-mobile-parade-track { display: flex; align-items: flex-end; height: 100%; width: max-content; animation: machineMarch 36s linear infinite; }
-.nav-mobile-parade-track { animation-duration: 18s; }
-.machine-parade-track svg, .nav-mobile-parade-track svg { flex-shrink: 0; margin-right: 48px; }
-.nav-mobile-parade-track svg { margin-right: 22px; }
+/* ── Build scene (desktop hero band): machines arrive → construction → finished house ──
+   One 14 s loop; every layer uses the same duration. Base styles = finished scene,
+   so with prefers-reduced-motion the static end state is shown. */
+@property --pct { syntax: '<integer>'; initial-value: 100; inherits: false; }
+.build-band { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; overflow: hidden; pointer-events: none; z-index: 9; background: rgba(18,20,23,.94); border-top: 1px solid var(--steel-line); }
+.build-stage { position: absolute; left: 50%; bottom: 5px; width: 1200px; height: 140px; transform: translateX(-50%); transform-origin: 50% 100%; }
+.bs-item, .bs-house, .bs-progress { position: absolute; bottom: 0; }
+.bs-item svg, .bs-house svg { display: block; }
+.bs-mixer { left: 10px; animation: bsDriveA 14s infinite; }
+.bs-exc   { left: 318px; animation: bsDriveB 14s infinite; }
+.bs-crane { left: 566px; animation: bsCrane 14s infinite; }
+.bs-house { left: 690px; width: 260px; height: 122px; animation: bsHouse 14s infinite; }
+.bs-house::before { content: ''; position: absolute; left: -70px; right: -70px; top: -40px; bottom: -10px; background: radial-gradient(ellipse at 50% 60%, rgba(217,178,106,.38) 0%, rgba(215,20,28,.12) 38%, transparent 68%); animation: bsGlow 14s infinite; }
+.bs-progress { left: 990px; bottom: 34px; width: 196px; animation: bsPanel 14s infinite; }
+.bs-label { position: relative; height: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--ash-light); margin-bottom: 8px; }
+.bs-l1, .bs-l2 { position: absolute; left: 0; top: 0; white-space: nowrap; }
+.bs-l1 { opacity: 0; animation: bsL1 14s infinite; }
+.bs-l2 { color: #D9B26A; animation: bsL2 14s infinite; }
+.bs-pct { position: absolute; right: 0; top: 0; color: #fff; animation: bsPct 14s infinite; counter-reset: p var(--pct); }
+.bs-pct::after { content: counter(p) '%'; }
+.bs-bar { height: 6px; background: rgba(255,255,255,.08); border: 1px solid var(--steel-line); overflow: hidden; }
+.bs-bar i { display: block; height: 100%; background: repeating-linear-gradient(-45deg, var(--red) 0 8px, var(--red-hi) 8px 16px); transform-origin: 0 50%; animation: bsBar 14s infinite; }
+.h-blueprint { opacity: 0; stroke-dashoffset: 0; animation: bsBlueprint 14s infinite; }
+.h-blueprint path { stroke-dasharray: 1 1; animation: bsDraw 14s infinite; }
+.h-walls { transform-box: fill-box; transform-origin: 50% 100%; animation: bsWalls 14s infinite; }
+.h-scaffold { opacity: 0; animation: bsScaffold 14s infinite; }
+.h-roof { animation: bsRoof 14s infinite; }
+.h-win { fill: #F2C46B; animation: bsWin 14s infinite; }
+.h-sweep { transform: skewX(-18deg) translateX(400px); animation: bsSweep 14s infinite; }
+.h-stars { transform-box: fill-box; transform-origin: center; animation: bsGlow 14s infinite; }
+.h-star { transform-box: fill-box; transform-origin: center; animation: bsTwinkle 1.6s ease-in-out infinite; }
+
+@keyframes bsDriveA { 0% { transform: translateX(-110vw); animation-timing-function: cubic-bezier(.2,.7,.25,1); } 24% { transform: translateX(0); } 88% { transform: translateX(0); opacity: 1; } 95%, 100% { transform: translateX(0); opacity: 0; } }
+@keyframes bsDriveB { 0% { transform: translateX(-110vw); animation-timing-function: cubic-bezier(.2,.7,.25,1); } 20% { transform: translateX(0); } 88% { transform: translateX(0); opacity: 1; } 95%, 100% { transform: translateX(0); opacity: 0; } }
+@keyframes bsCrane  { 0%, 4% { transform: translateY(150px); animation-timing-function: cubic-bezier(.2,.7,.25,1); } 16% { transform: translateY(0); } 88% { transform: translateY(0); opacity: 1; } 95%, 100% { transform: translateY(0); opacity: 0; } }
+@keyframes bsHouse  { 0%, 88% { opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes bsPanel  { 0%, 21% { opacity: 0; transform: translateY(8px); } 24%, 88% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes bsL1     { 0%, 37% { opacity: 1; } 39%, 100% { opacity: 0; } }
+@keyframes bsL2     { 0%, 38% { opacity: 0; } 40%, 100% { opacity: 1; } }
+@keyframes bsPct    { 0%, 24% { --pct: 0; } 38%, 100% { --pct: 100; } }
+@keyframes bsBar    { 0%, 24% { transform: scaleX(0); } 38%, 100% { transform: scaleX(1); } }
+@keyframes bsBlueprint { 0%, 21% { opacity: 0; } 23%, 36% { opacity: 1; } 42%, 100% { opacity: 0; } }
+@keyframes bsDraw   { 0%, 22% { stroke-dashoffset: 1; } 30%, 100% { stroke-dashoffset: 0; } }
+@keyframes bsWalls  { 0%, 25% { transform: scaleY(0); } 36%, 100% { transform: scaleY(1); } }
+@keyframes bsScaffold { 0%, 25% { opacity: 0; } 27%, 37% { opacity: 1; } 41%, 100% { opacity: 0; } }
+@keyframes bsRoof   { 0%, 35% { opacity: 0; transform: translateY(-34px); } 36% { opacity: 1; animation-timing-function: cubic-bezier(.3,1.6,.5,1); } 40%, 100% { opacity: 1; transform: none; } }
+@keyframes bsWin    { 0%, 40% { fill: #3A4049; } 43%, 100% { fill: #F2C46B; } }
+@keyframes bsSweep  { 0%, 41% { transform: skewX(-18deg) translateX(0); } 50%, 100% { transform: skewX(-18deg) translateX(400px); } }
+@keyframes bsGlow   { 0%, 40% { opacity: 0; transform: scale(.6); } 46% { opacity: 1; transform: scale(1.06); } 54%, 88% { opacity: .8; transform: scale(1); } 95%, 100% { opacity: 0; } }
+@keyframes bsTwinkle { 0%, 100% { transform: scale(.4) rotate(0deg); opacity: .4; } 50% { transform: scale(1.15) rotate(45deg); opacity: 1; } }
+@media (max-width: 1240px) { .build-stage { transform: translateX(-50%) scale(.82); } }
 .conveyor { position: absolute; bottom: 0; left: 0; right: 0; height: 5px; z-index: 10; background: repeating-linear-gradient(90deg, var(--red) 0 40px, rgba(179,0,10,.2) 40px 60px); background-size: 60px 100%; animation: beltMove 1.8s linear infinite; }
 @keyframes beltMove { from { background-position: 0 0; } to { background-position: 60px 0; } }
 @keyframes navBeltMove { from { background-position: 0 0; } to { background-position: 54px 0; } }
-@keyframes machineMarch { from { transform: translateX(-50%); } to { transform: translateX(0); } }
 
 /* Form */
 .hero-form-wrap { position: relative; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.12); border-top: 3px solid var(--red); padding: 38px 34px; backdrop-filter: blur(8px); width: 100%; max-width: 560px; display: flex; flex-direction: column; }
@@ -230,6 +266,8 @@ a { color: inherit; }
 .metric-card:hover::after, .metric-card.in::after { transform: scaleX(1); }
 .metric-num { font-family: 'Barlow Condensed', sans-serif; font-size: 72px; font-weight: 800; color: #fff; line-height: 1; }
 .metric-num .unit { font-size: 40px; color: var(--red-hi); }
+.metric-card.gold .metric-num { color: #D9B26A; text-shadow: 0 0 28px rgba(217,178,106,.35); }
+.metric-card.gold::after { background: linear-gradient(90deg, #B08D57, #E7C98A); }
 .metric-desc { font-size: 13.5px; color: var(--ash-light); margin-top: 14px; line-height: 1.65; }
 
 /* Services */
@@ -414,7 +452,7 @@ footer { background: #0C0D0F; padding: 44px 40px 36px; display: flex; align-item
 }
 @media (max-width: 960px) {
   .hero { flex-direction: column; padding-bottom: 0; min-height: unset; }
-  .machine-parade, .hero > .conveyor { display: none; }
+  .build-band, .hero > .conveyor { display: none; }
   .hero-left { padding: 48px 28px 44px; }
   .hero-right { padding: 40px 24px 56px; }
   .hero-form-wrap { max-width: none; padding: 28px 20px; }

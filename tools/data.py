@@ -134,6 +134,7 @@ T['de'] = {
         ],
     },
     'metrics': {
+        'highlight': 2,  # Index der hervorgehobenen Zahl (gold)
         'eyebrow': 'Menzil in Zahlen', 'title': 'Erfahrung, die man<br>auf der Baustelle sieht',
         'items': [('15', '+', 'Jahre als eigenständiges Bauunternehmen – Menzil-Bau wurde 2010 gegründet, die Bauerfahrung des Gründers reicht bis 1996 zurück'),
                   ('15', '+', 'Gemeinden in Niederösterreich, im Burgenland und in Wien, in denen wir bereits gebaut, geplant oder saniert haben'),
@@ -226,6 +227,7 @@ T['de'] = {
         'impressum_title': 'Impressum',
         'impressum': 'Inhaltlich verantwortlich: MENZIL S.R.O., Gorkeho 3, 81102 Bratislava. Technische Umsetzung und Hosting begründen keine inhaltliche Haftung.',
     },
+    'build': {'label': 'Baufortschritt', 'done': 'Schlüsselfertig'},
     'lb': {'close': 'Schließen', 'prev': 'Zurück', 'next': 'Weiter'},
 }
 
@@ -288,6 +290,7 @@ T['en'] = {
         ],
     },
     'metrics': {
+        'highlight': 2,
         'eyebrow': 'Menzil in numbers', 'title': 'Experience you can<br>see on site',
         'items': [('15', '+', 'Years as an independent construction company – Menzil-Bau was founded in 2010, the founder\'s site experience goes back to 1996'),
                   ('15', '+', 'Municipalities across Lower Austria, Burgenland and Vienna where we have built, planned or renovated'),
@@ -380,6 +383,7 @@ T['en'] = {
         'impressum_title': 'Legal notice',
         'impressum': 'Responsible for content: MENZIL S.R.O., Gorkeho 3, 81102 Bratislava. Technical implementation and hosting do not establish liability for content.',
     },
+    'build': {'label': 'Construction progress', 'done': 'Turnkey ready'},
     'lb': {'close': 'Close', 'prev': 'Previous', 'next': 'Next'},
 }
 
@@ -442,6 +446,7 @@ T['tr'] = {
         ],
     },
     'metrics': {
+        'highlight': 2,
         'eyebrow': 'Rakamlarla Menzil', 'title': 'Şantiyede görülen<br>tecrübe',
         'items': [('15', '+', 'Yıllık bağımsız inşaat firması. Menzil-Bau 2010’da kuruldu, kurucunun şantiye tecrübesi 1996’ya dayanıyor'),
                   ('15', '+', 'Aşağı Avusturya, Burgenland ve Viyana’da inşa ettiğimiz, planladığımız veya yenilediğimiz belediye'),
@@ -534,6 +539,7 @@ T['tr'] = {
         'impressum_title': 'Künye',
         'impressum': 'İçerikten sorumlu: MENZIL S.R.O., Gorkeho 3, 81102 Bratislava. Teknik uygulama ve barındırma içerik sorumluluğu doğurmaz.',
     },
+    'build': {'label': 'İnşaat ilerlemesi', 'done': 'Anahtar teslim'},
     'lb': {'close': 'Kapat', 'prev': 'Önceki', 'next': 'Sonraki'},
 }
 
