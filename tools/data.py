@@ -19,7 +19,8 @@ SITE = {
     'company': 'MENZIL S.R.O.',
     # Adresse 1 = Österreich (wie auf der bisherigen Website nur "AUSTRIA"), Adresse 2 = Firmensitz
     'addr1': ['Menzil-Bau', 'Niederösterreich · Österreich'],  # PLATZHALTER (genaue Adresse folgt)
-    'addr2': ['MENZIL S.R.O.', 'Gorkeho 3', '81102 Bratislava · Slowakei'],
+    'addr2': ['MENZIL S.R.O. · Gorkeho 3', '81102 Bratislava · Slowakei'],
+    'addr2_plain': 'Gorkeho 3, 81102 Bratislava',  # für Impressum / Google Maps
     'hours': 'Mo – Fr · 07:30 – 17:00',
     'founded': 2010,
 }
@@ -228,6 +229,10 @@ T['de'] = {
         'impressum': 'Inhaltlich verantwortlich: MENZIL S.R.O., Gorkeho 3, 81102 Bratislava. Technische Umsetzung und Hosting begründen keine inhaltliche Haftung.',
     },
     'build': {'label': 'Baufortschritt', 'done': 'Schlüsselfertig'},
+    'legal': {'title': 'Impressum', 'eyebrow': 'Rechtliches', 'company': 'Firma', 'address': 'Firmensitz', 'contact': 'Kontakt'},  # PLATZHALTER Text (Lorem ipsum)
+    'regions': {'noe': 'Niederösterreich', 'bgld': 'Burgenland', 'wien': 'Wien'},
+    'places_sub': '{n} Standorte in {r} Bundesländern',
+    'tabs': {'photos': 'Fotos: Baustelle bis Übergabe', 'plans': 'Architekturpläne', 'plans_eyebrow': 'Einreichpläne', 'plans_title': 'Geplant und<br>eingereicht'},
     'lb': {'close': 'Schließen', 'prev': 'Zurück', 'next': 'Weiter'},
 }
 
@@ -384,6 +389,10 @@ T['en'] = {
         'impressum': 'Responsible for content: MENZIL S.R.O., Gorkeho 3, 81102 Bratislava. Technical implementation and hosting do not establish liability for content.',
     },
     'build': {'label': 'Construction progress', 'done': 'Turnkey ready'},
+    'legal': {'title': 'Legal notice', 'eyebrow': 'Legal', 'company': 'Company', 'address': 'Registered office', 'contact': 'Contact'},  # PLATZHALTER Text (Lorem ipsum)
+    'regions': {'noe': 'Lower Austria', 'bgld': 'Burgenland', 'wien': 'Vienna'},
+    'places_sub': '{n} locations in {r} federal states',
+    'tabs': {'photos': 'Photos: site to handover', 'plans': 'Architectural plans', 'plans_eyebrow': 'Permit plans', 'plans_title': 'Planned and<br>submitted'},
     'lb': {'close': 'Close', 'prev': 'Previous', 'next': 'Next'},
 }
 
@@ -540,6 +549,10 @@ T['tr'] = {
         'impressum': 'İçerikten sorumlu: MENZIL S.R.O., Gorkeho 3, 81102 Bratislava. Teknik uygulama ve barındırma içerik sorumluluğu doğurmaz.',
     },
     'build': {'label': 'İnşaat ilerlemesi', 'done': 'Anahtar teslim'},
+    'legal': {'title': 'Künye', 'eyebrow': 'Yasal bilgiler', 'company': 'Firma', 'address': 'Merkez', 'contact': 'İletişim'},  # PLATZHALTER Text (Lorem ipsum)
+    'regions': {'noe': 'Aşağı Avusturya', 'bgld': 'Burgenland', 'wien': 'Viyana'},
+    'places_sub': '{r} eyalette {n} lokasyon',
+    'tabs': {'photos': 'Fotoğraflar: şantiyeden teslimata', 'plans': 'Mimari çizimler', 'plans_eyebrow': 'Ruhsat projeleri', 'plans_title': 'Planlandı ve<br>onaya sunuldu'},
     'lb': {'close': 'Kapat', 'prev': 'Önceki', 'next': 'Sonraki'},
 }
 
@@ -554,3 +567,12 @@ def _places():
             seen[town] = loc
     return sorted(seen.values(), key=lambda s: s.split(' ', 1)[-1] if s[0].isdigit() else s)
 PLACES = _places()
+
+# Bundesland per location (for the grouped "Projektstandorte" block); default = Niederösterreich
+REGION_OF = {'7210 Mattersburg': 'bgld', '7201 Neudörfl': 'bgld', 'Wien': 'wien'}
+
+LOREM = [
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum.',
+    'Maecenas faucibus mollis interdum. Vestibulum id ligula porta felis euismod semper. Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.',
+    'Curabitur blandit tempus porttitor. Donec sed odio dui. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis.',
+]  # PLATZHALTER – echter Impressumstext folgt

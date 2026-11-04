@@ -10,7 +10,7 @@ import os, sys, html
 from datetime import date
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
-from data import SITE, PHOTOS, PROJECTS, LANGS, LANG_NAMES, PAGES, T, PLACES
+from data import SITE, PHOTOS, PROJECTS, LANGS, LANG_NAMES, PAGES, T, PLACES, REGION_OF, LOREM
 try:
     from PIL import Image
 except ImportError:  # sizes only used for gallery layout
@@ -329,7 +329,7 @@ def footer(c):
     <div class="footer-brand">
       {logo_a(w=230)}
       <div class="footer-copy">&copy; {SITE['founded']}–{YEAR} Menzil-Bau · {E(t['rights'])}</div>
-      <div class="footer-links"><a href="kontakt.html#impressum">{E(t['impressum'])}</a><a href="{SITE['facebook']}" target="_blank" rel="noopener">Facebook</a></div>
+      <div class="footer-links"><a href="kontakt.html#impressum" data-modal="legalModal">{E(t['impressum'])}</a><a href="{SITE['facebook']}" target="_blank" rel="noopener">Facebook</a></div>
     </div>
     <div class="footer-machine-mobile" aria-hidden="true">{crane(130, 53)}</div>
   </div>
@@ -340,6 +340,7 @@ def footer(c):
   </div>
 </footer>
 <button id="scroll-top" aria-label="Nach oben">&#8593;</button>
+{legal_modal(c)}
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Galerie">
   <span class="lb-count"></span>
   <button class="lb-btn lb-close" aria-label="{E(c['t']['lb']['close'])}">&#10005;</button>
@@ -352,6 +353,39 @@ def footer(c):
 </body>
 </html>
 '''
+
+def legal_modal(c):
+    L = c['t']['legal']
+    paras = ''.join(f'<p>{E(x)}</p>' for x in LOREM)
+    return f'''<div class="modal" id="legalModal" role="dialog" aria-modal="true" aria-labelledby="legalTitle" hidden>
+  <div class="modal-box">
+    <button class="modal-close" type="button" aria-label="{E(c['t']['lb']['close'])}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="section-eyebrow">{E(L['eyebrow'])}</div>
+    <h2 class="modal-title" id="legalTitle">{E(L['title'])}</h2>
+    <dl class="modal-facts">
+      <div><dt>{E(L['company'])}</dt><dd>{E(SITE['company'])}</dd></div>
+      <div><dt>{E(L['address'])}</dt><dd>{E(SITE['addr2_plain'])}</dd></div>
+      <div><dt>{E(L['contact'])}</dt><dd><a href="mailto:{SITE['email']}">{SITE['email']}</a> · {SITE['phone']}</dd></div>
+    </dl>
+    <div class="modal-body">{paras}</div>
+  </div>
+</div>'''
+
+MAP_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>'
+PIN_S = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
+
+def places_block(c):
+    t = c['t']; groups = {'noe': [], 'bgld': [], 'wien': []}
+    for p in PLACES:
+        groups[REGION_OF.get(p, 'noe')].append(p)
+    cols = ''.join(f'''<div class="region"><div class="region-name">{E(t['regions'][k])}<span>{len(v)}</span></div>
+          <ul>{''.join(f'<li>{PIN_S}<span>{E(x)}</span></li>' for x in v)}</ul></div>''' for k, v in groups.items() if v)
+    sub = t['places_sub'].format(n=len(PLACES), r=sum(1 for v in groups.values() if v))
+    return f'''<div class="places-card reveal">
+      <div class="places-head"><span class="places-icon">{MAP_ICON}</span>
+        <div><div class="places-eyebrow">{E(t['featured']['places_title'])}</div><div class="places-title">{E(sub)}</div></div></div>
+      <div class="places-regions">{cols}</div>
+    </div>'''
 
 def page_hero(c, pk, img):
     t = c['t'][pk]
@@ -410,7 +444,6 @@ def p_index(c):
         <div class="proj-img"><img src="{photo(c, pid)}" alt="{E(nm)} – Menzil-Bau" loading="lazy" width="720" height="540"></div>
         <div class="proj-body"><div class="proj-tag">{E(tag)}</div><div class="proj-name">{E(nm)}</div></div>
       </button>''' for i, (pid, tag, nm) in enumerate(fe['cards']))
-    places = ''.join(f'<span class="place">{E(p)}</span>' for p in PLACES)
     return head(c) + '<body class="has-parade">\n' + nav(c) + f'''<main id="main">
 <section class="hero" id="hero">
   {build_scene(c)}
@@ -475,7 +508,7 @@ def p_index(c):
       <p class="section-intro">{E(fe['intro'])}</p>
     </div>
     <div class="proj-grid">{cards}</div>
-    <div class="places"><span class="places-label">{E(fe['places_title'])}</span>{places}</div>
+    {places_block(c)}
     <div class="btn-row"><a href="projekte.html" class="btn btn-dark">{E(fe['more'])} {ARROW}</a></div>
   </div>
 </section>
@@ -507,19 +540,28 @@ def p_projekte(c):
             if land % 5 == 1: cls = 'wide'
         lab = t['gfilters'][p['cat']]
         gal.append(f'<button class="g-item {cls}" type="button" data-cat="{p["cat"]}" data-lb="{photo(c, p["id"], False)}" data-lb-group="gallery" data-lb-cap="{E(f"<b>Menzil-Bau</b>{E(lab)}")}" data-lb-alt="{E(lab)}"><img src="{photo(c, p["id"])}" alt="{E(lab)} – Menzil-Bau" loading="lazy"></button>')
+    tb = c['t']['tabs']
+    CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>'
+    PLN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h18v18H3z"/><path d="M3 12h8V3M11 12v9M15 12h6M15 12v4"/></svg>'
     return head(c) + '<body>\n' + nav(c) + '<main id="main">\n' + page_hero(c, 'p_projekte', 'f15') + f'''
-<section class="section concrete" id="plaene">
+<section class="section tabs-section" id="projekte-tabs">
   <div class="section-inner">
-    <div class="filters" data-filter-group="projGrid" role="group">{fbar}</div>
-    <div class="proj-grid" id="projGrid">{cards}</div>
-  </div>
-</section>
-<section class="section" id="impressionen">
-  <div class="section-inner">
-    <div class="section-eyebrow">{E(t['gallery_eyebrow'])}</div>
-    <h2 class="section-title">{t['gallery_title']}</h2>
-    <div class="filters" data-filter-group="gallery" role="group">{gbar}</div>
-    <div class="gallery" id="gallery">{''.join(gal)}</div>
+    <div class="tabs" role="tablist" aria-label="{E(t['eyebrow'])}">
+      <button class="tab active" role="tab" id="tab-impressionen" aria-controls="impressionen" aria-selected="true" type="button">{CAM}<span>{E(tb['photos'])}</span><span class="n">{len(PHOTOS)}</span></button>
+      <button class="tab" role="tab" id="tab-plaene" aria-controls="plaene" aria-selected="false" tabindex="-1" type="button">{PLN}<span>{E(tb['plans'])}</span><span class="n">{len(PROJECTS)}</span></button>
+    </div>
+    <div class="tab-panel" role="tabpanel" id="impressionen" aria-labelledby="tab-impressionen">
+      <div class="section-eyebrow">{E(t['gallery_eyebrow'])}</div>
+      <h2 class="section-title">{t['gallery_title']}</h2>
+      <div class="filters" data-filter-group="gallery" role="group">{gbar}</div>
+      <div class="gallery" id="gallery">{''.join(gal)}</div>
+    </div>
+    <div class="tab-panel" role="tabpanel" id="plaene" aria-labelledby="tab-plaene" hidden>
+      <div class="section-eyebrow">{E(tb['plans_eyebrow'])}</div>
+      <h2 class="section-title">{tb['plans_title']}</h2>
+      <div class="filters" data-filter-group="projGrid" role="group">{fbar}</div>
+      <div class="proj-grid" id="projGrid">{cards}</div>
+    </div>
   </div>
 </section>
 </main>
@@ -581,7 +623,7 @@ def p_zertifikate(c):
 def p_kontakt(c):
     t = c['t']['p_kontakt']; ft = c['t']['footer']
     a1 = '<br>'.join(E(x) for x in SITE['addr1']); a2 = '<br>'.join(E(x) for x in SITE['addr2'])
-    maps = 'https://www.google.com/maps/search/?api=1&query=' + '+'.join(' '.join(SITE['addr2'][1:]).replace('·', '').split())
+    maps = 'https://www.google.com/maps/search/?api=1&query=' + '+'.join(SITE['addr2_plain'].replace(',', '').split())
     return head(c) + '<body>\n' + nav(c) + '<main id="main">\n' + page_hero(c, 'p_kontakt', 'f02') + f'''
 <section class="contact-grid" id="formular">
   <div class="contact-info">
@@ -602,7 +644,7 @@ def p_kontakt(c):
 <section class="section concrete" id="impressum">
   <div class="section-inner">
     <div class="section-eyebrow">{E(t['impressum_title'])}</div>
-    <p class="impressum">{E(t['impressum'])}<br>{E(SITE['company'])} · {E(', '.join(SITE['addr2'][1:]))} · <a href="mailto:{SITE['email']}">{SITE['email']}</a> · {SITE['phone']}</p>
+    <p class="impressum">{E(t['impressum'])}<br>{E(SITE['company'])} · {E(SITE['addr2_plain'])} · <a href="mailto:{SITE['email']}">{SITE['email']}</a> · {SITE['phone']}</p>
   </div>
 </section>
 </main>

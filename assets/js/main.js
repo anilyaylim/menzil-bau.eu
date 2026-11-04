@@ -116,6 +116,64 @@
     });
   });
 
+  /* ── Tabs (projects page) ── */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabs [role="tab"]'));
+  function selectTab(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+    var panel = document.getElementById(tab.getAttribute('aria-controls'));
+    panel.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    if (history.replaceState) history.replaceState(null, '', '#' + panel.id);
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(t); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        selectTab(tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length], true);
+      }
+    });
+  });
+  if (tabs.length && location.hash) {
+    var fromHash = tabs.filter(function (t) { return '#' + t.getAttribute('aria-controls') === location.hash; })[0];
+    if (fromHash) selectTab(fromHash);
+  }
+
+  /* ── Modal (legal notice) ── */
+  var lastModalFocus = null;
+  function openModal(m) {
+    lastModalFocus = document.activeElement;
+    m.hidden = false; document.body.style.overflow = 'hidden';
+    requestAnimationFrame(function () { m.classList.add('open'); });
+    m.querySelector('.modal-close').focus();
+  }
+  function closeModal(m) {
+    m.classList.remove('open'); document.body.style.overflow = '';
+    setTimeout(function () { m.hidden = true; }, 200);
+    if (lastModalFocus) lastModalFocus.focus();
+  }
+  document.querySelectorAll('[data-modal]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var m = document.getElementById(a.dataset.modal);
+      if (!m) return;
+      e.preventDefault(); openModal(m);
+    });
+  });
+  document.querySelectorAll('.modal').forEach(function (m) {
+    m.querySelector('.modal-close').addEventListener('click', function () { closeModal(m); });
+    m.addEventListener('click', function (e) { if (e.target === m) closeModal(m); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal.open').forEach(closeModal);
+  });
+
   /* ── Lightbox ── */
   var lb = document.getElementById('lightbox');
   if (lb) {
