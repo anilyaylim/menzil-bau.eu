@@ -405,12 +405,14 @@ def page_index(c):
     </div>
     <div class="model-tabs" role="group" aria-label="{E(mgroup)}">{model_tabs}</div>
     <div class="model-view" id="modelView">
-      <div class="model-info" id="modelInfo"></div>
+      <div class="model-stage" id="modelStage">
       <div class="model-tools">
         <button type="button" id="mReplay" aria-label="{E(mplay)}" title="{E(mplay)}">{PLAY}</button>
         <button type="button" id="mSpin" class="on" aria-label="{E(mspin)}" title="{E(mspin)}">{ROT}</button>
       </div>
       <div class="model-hint">{DRAG} {E(mhint)}</div>
+      </div>
+      <div class="model-info" id="modelInfo"></div>
     </div>
     {model_data}
   </div>
@@ -425,16 +427,16 @@ def page_index(c):
 </section>
 
 <section class="scatter" id="projekte">
-  <div class="scatter-sticky">
-    <div class="sw" style="left:5%;top:9%">{E(sw[0])}</div>
-    <div class="sw red" style="left:5%;top:29%">{E(sw[1])}</div>
-    <div class="sw" style="left:5%;top:52%">{E(sw[2])}</div>
-    <div class="sw red" style="left:5%;top:72%">{E(sw[3])}</div>
-    <a class="sp" href="{CL}projekte.html" style="right:5%;top:7%;width:230px;height:290px"><img src="{A}photos/f13-t.jpg" alt="{E(feat.get('f13', ''))} – Menzil-Bau"></a>
-    <a class="sp" href="{CL}projekte.html" style="right:24%;top:20%;width:250px;height:180px"><img src="{A}photos/f52-t.jpg" alt="{E(feat.get('f52', ''))} – Menzil-Bau"></a>
-    <a class="sp" href="{CL}projekte.html" style="right:4%;top:53%;width:270px;height:190px"><img src="{A}photos/f15-t.jpg" alt="{E(feat.get('f15', ''))} – Menzil-Bau"></a>
-    <a class="sp" href="{CL}projekte.html" style="right:25%;top:57%;width:200px;height:250px"><img src="{A}photos/f64-t.jpg" alt="{E(feat.get('f64', ''))} – Menzil-Bau"></a>
-  </div>
+  <div class="scatter-sticky"><div class="scatter-inner">
+    <div class="sw" style="left:0;top:10%">{E(sw[0])}</div>
+    <div class="sw red" style="left:0;top:30%">{E(sw[1])}</div>
+    <div class="sw" style="left:0;top:53%">{E(sw[2])}</div>
+    <div class="sw red" style="left:0;top:73%">{E(sw[3])}</div>
+    <a class="sp" href="{CL}projekte.html" style="right:0;top:8%;width:240px;height:300px"><img src="{A}photos/f13-t.jpg" alt="{E(feat.get('f13', ''))} – Menzil-Bau"></a>
+    <a class="sp" href="{CL}projekte.html" style="right:270px;top:22%;width:250px;height:180px"><img src="{A}photos/f52-t.jpg" alt="{E(feat.get('f52', ''))} – Menzil-Bau"></a>
+    <a class="sp" href="{CL}projekte.html" style="right:0;top:56%;width:280px;height:200px"><img src="{A}photos/f15-t.jpg" alt="{E(feat.get('f15', ''))} – Menzil-Bau"></a>
+    <a class="sp" href="{CL}projekte.html" style="right:310px;top:52%;width:210px;height:260px"><img src="{A}photos/f64-t.jpg" alt="{E(feat.get('f64', ''))} – Menzil-Bau"></a>
+  </div></div>
 </section>
 
 <section class="stack-sec">
@@ -474,8 +476,9 @@ def page_index(c):
   const bv = createViewer(document.getElementById('buildStage'), {{ autoRotate: reduce ? 0 : 0.35, camPos: [24, 17, 28], target: [0, 3.2, 0], fov: 30 }});
   const bm = makeModel('efh'); bm.setProgress(reduce ? 1 : 0); bv.setModel(bm);
   window.__buildProgress = p => bm.setProgress(Math.min(1, p * 1.08));
-  const view = document.getElementById('modelView'), info = document.getElementById('modelInfo');
-  const mv = createViewer(view, {{ interactive: true, autoRotate: reduce ? 0 : 1.1, camPos: [26, 16, 30], target: [0, 4, 0], fov: 30 }});
+  const view = document.getElementById('modelStage'), info = document.getElementById('modelInfo');
+  const small = matchMedia('(max-width: 760px)').matches;
+  const mv = createViewer(view, {{ interactive: true, autoRotate: reduce ? 0 : 1.1, camPos: small ? [34, 22, 40] : [26, 16, 30], target: [0, 4, 0], fov: 30 }});
   let current = null, anim = 0;
   function play(model) {{
     cancelAnimationFrame(anim);
