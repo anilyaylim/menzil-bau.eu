@@ -563,3 +563,13 @@ a.c-card:hover { transform: none; box-shadow: 0 16px 36px rgba(18,20,23,.1); }
 .pstep { justify-content: flex-start; gap: 34px; }
 .pstep b { min-height: 1.1em; }
 @media (max-width: 760px) { .process { padding: 50px 0 40px; } .pstep { min-height: 0; gap: 18px; } }
+
+/* section heads: description sits right next to the headline, bottom-aligned, larger */
+.models-head, .process-head, .panel-head { display: grid; grid-template-columns: auto minmax(0, 480px); justify-content: start; align-items: end; column-gap: clamp(32px, 6vw, 96px); row-gap: 18px; }
+.models-head p, .process-head p, .panel-head p { justify-self: start; max-width: 480px; font-size: clamp(17px, 1.35vw, 20px); font-weight: 600; line-height: 1.5; color: var(--ink); opacity: 1; padding-bottom: .55em; }
+.panel-head p { color: #fff; opacity: .95; }
+@media (max-width: 1000px) {
+  .models-head, .process-head, .panel-head { grid-template-columns: 1fr; }
+  .models-head p, .process-head p, .panel-head p { padding-bottom: 0; font-size: 17px; }
+}
+html { scroll-padding-top: 96px; }

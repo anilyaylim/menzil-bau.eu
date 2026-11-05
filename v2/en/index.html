@@ -271,7 +271,7 @@
     anim = requestAnimationFrame(tick);
   }
   function load(type) {
-    current = makeModel(type); mv.setModel(current); play(current);
+    current = pre[type] || makeModel(type); pre[type] = null; mv.setModel(current); play(current);
     info.innerHTML = document.getElementById('info-' + type).innerHTML;
     document.querySelectorAll('.model-tab').forEach(b => { const on = b.dataset.model === type; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
   }
@@ -279,6 +279,15 @@
   document.getElementById('mReplay').addEventListener('click', () => play(current));
   const spin = document.getElementById('mSpin');
   spin.addEventListener('click', () => { spin.classList.toggle('on'); mv.controls.autoRotate = spin.classList.contains('on'); });
+  // prepare everything while the browser is idle, so scrolling past the 3D sections never stalls
+  const idle = window.requestIdleCallback || (f => setTimeout(f, 300));
+  const pre = {};
+  idle(() => {
+    bv.warm();
+    for (const k of ['efh', 'dh', 'mfh']) { pre[k] = makeModel(k); }
+    mv.setModel(pre.efh); pre.efh.setProgress(1); mv.warm();
+    pre.efh.setProgress(0); current = pre.efh;
+  });
   let started = false;
   new IntersectionObserver(([e]) => { if (e.isIntersecting && !started) { started = true; load('efh'); } }, { threshold: 0.3 }).observe(view);
 </script>
