@@ -527,3 +527,30 @@ a.c-card:hover { transform: none; box-shadow: 0 16px 36px rgba(18,20,23,.1); }
   .nav.open .nav-cta-m { display: none; }
 }
 @media (max-width: 400px) { .nav-logo svg { height: 34px; } .nav { padding-left: 14px; } .nav .pill-red.nav-cta { padding: 8px 12px; font-size: 12.5px; } }
+
+/* round 4 */
+/* headlines: enough line spacing so İ/Ü/Ş accents never touch the line above */
+.hero-title { line-height: 1; }
+.mega { line-height: .98; }
+.sub-hero h1 { line-height: 1; }
+.build-title { line-height: 1; }
+.line { padding-top: .2em; margin-top: -.2em; }
+.sw { line-height: 1; }
+
+/* 3D models: canvas lives in .model-stage */
+.model-stage { position: absolute; inset: 0; }
+@media (max-width: 760px) {
+  .model-view { height: auto; display: flex; flex-direction: column; cursor: default; }
+  .model-stage { position: relative; inset: auto; height: 380px; cursor: grab; }
+  .model-info { position: relative; left: auto; top: auto; width: auto; margin: 0 12px 12px; box-shadow: none; border: 1px solid var(--paper-3); background: #fff; }
+  .model-tools { top: 14px; left: 14px; bottom: auto; right: auto; }
+  .model-hint { bottom: 14px; right: 14px; }
+}
+
+/* scatter: centred box so words and photos sit closer together */
+.scatter-inner { position: relative; height: 100%; width: min(1180px, calc(100% - 80px)); margin: 0 auto; }
+@media (max-width: 760px) { .scatter-inner { display: contents; } }
+@media (max-width: 760px) {
+  .model-tabs { display: flex; width: 100%; flex-wrap: nowrap; }
+  .model-tab { flex: 1; padding: 10px 6px; font-size: 13px; white-space: nowrap; }
+}
