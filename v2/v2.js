@@ -22,14 +22,15 @@
   }));
 
   /* nav: hide on scroll down, show on scroll up; burger */
-  const nav = document.querySelector('.nav');
+  const nav = document.querySelector('.nav'), navWrap = document.querySelector('.nav-wrap'), burger = document.querySelector('.nav-burger');
   let lastY = 0;
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
-    nav.classList.toggle('hide', y > 300 && y > lastY && !nav.classList.contains('open'));
+    navWrap.classList.toggle('hide', y > 300 && y > lastY + 2 && !nav.classList.contains('open'));
+    if (y < lastY - 2 || y < 300) navWrap.classList.remove('hide');
     lastY = y;
   }, { passive: true });
-  document.querySelector('.nav-burger').addEventListener('click', () => nav.classList.toggle('open'));
+  burger.addEventListener('click', () => { const o = nav.classList.toggle('open'); burger.setAttribute('aria-expanded', o); });
 
   /* hero slideshow (Ken Burns crossfade) */
   const slides = [...document.querySelectorAll('.hero-media img')];
@@ -54,8 +55,7 @@
   const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
   intro.from('.hero .line > span', { yPercent: 115, duration: 1.3, stagger: 0.1 }, 0.15)
        .from('.hero-eyebrow, .hero-sub, .hero-ctas', { y: 24, opacity: 0, duration: 1, stagger: 0.08 }, 0.55)
-       .from('.hero-badge, .hero-scroll', { y: 20, opacity: 0, duration: 0.8 }, 0.9)
-       .from('.nav', { yPercent: -160, duration: 1 }, 0.2);
+       .from('.hero-badge, .hero-scroll', { y: 20, opacity: 0, duration: 0.8 }, 0.9);
   // hero card shrinks slightly while scrolling away
   gsap.to('.hero-card', { scale: 0.94, borderRadius: 40, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
