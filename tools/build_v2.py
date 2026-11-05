@@ -64,6 +64,7 @@ V = {
   'places': ('Standorte', 'Bundesländer', 'Von Wien bis ins Burgenland: Hier haben wir bereits geplant, gebaut, zugebaut oder saniert.'),
   'cookie': ('Cookies &amp; Datenschutz', 'Diese Website verwendet nur technisch notwendige Speicherung (z.&nbsp;B. diese Auswahl) und lädt Schriften und 3D-Bibliotheken von externen Servern. Tracking-Cookies werden nicht gesetzt.', 'Akzeptieren', 'Ablehnen'),
   'top': 'Nach oben',
+  'process_p': 'Klare Schritte, feste Ansprechpartner, keine Überraschungen: So läuft Ihr Bauvorhaben mit Menzil-Bau ab – vom ersten Gespräch bis zur Schlüsselübergabe.',
   'contact': (['Lassen Sie', ('uns reden.', 'red')], 'Wir melden uns innerhalb von 24 Stunden.'),
   'certs': (['Berechtigt.', 'Versichert.', ('Geprüft.', 'red')], 'Nachweis ansehen'),
   'foot': ('Seiten', 'Kontakt', 'Adressen', 'Motion-Version', 'Klassische Version ansehen'),
@@ -105,6 +106,7 @@ V = {
   'places': ('locations', 'federal states', 'From Vienna to Burgenland: where we have already planned, built, extended or renovated.'),
   'cookie': ('Cookies &amp; privacy', 'This website only uses technically necessary storage (e.g. this choice) and loads fonts and 3D libraries from external servers. No tracking cookies are set.', 'Accept', 'Decline'),
   'top': 'Back to top',
+  'process_p': 'Clear steps, one contact person, no surprises: this is how your project runs with Menzil-Bau – from the first conversation to the handover of the keys.',
   'contact': (['Let’s', ('talk.', 'red')], 'We reply within 24 hours.'),
   'certs': (['Licensed.', 'Insured.', ('Proven.', 'red')], 'View certificate'),
   'foot': ('Pages', 'Contact', 'Addresses', 'Motion version', 'View classic version'),
@@ -146,6 +148,7 @@ V = {
   'places': ('lokasyon', 'eyalet', 'Viyana’dan Burgenland’a: planladığımız, inşa ettiğimiz, ek bina yaptığımız ya da yenilediğimiz yerler.'),
   'cookie': ('Çerezler ve gizlilik', 'Bu site yalnızca teknik olarak gerekli depolamayı (ör. bu tercih) kullanır; yazı tipleri ve 3D kütüphaneleri harici sunuculardan yüklenir. İzleme çerezi kullanılmaz.', 'Kabul et', 'Reddet'),
   'top': 'Yukarı çık',
+  'process_p': 'Net adımlar, sabit muhatap, sürpriz yok: Menzil-Bau ile projeniz ilk görüşmeden anahtar teslimine kadar böyle ilerler.',
   'contact': (['Hadi', ('konuşalım.', 'red')], '24 saat içinde dönüş yapıyoruz.'),
   'certs': (['Ruhsatlı.', 'Sigortalı.', ('Denetimli.', 'red')], 'Belgeyi görüntüle'),
   'foot': ('Sayfalar', 'İletişim', 'Adresler', 'Hareketli sürüm', 'Klasik sürümü gör'),
@@ -286,6 +289,20 @@ def sub_hero(c, img, title_lines, sub, crumb):
   </div>
 </section>
 '''
+
+
+def process_section(c, sid=''):
+    z = c.t['p_zertifikate']
+    steps = ''.join(f'<div class="pstep"><i>0{i + 1}</i><div><b>{E(a)}</b><p>{E(b)}</p></div></div>' for i, (a, b) in enumerate(z['steps']))
+    return f'''<section class="process"{f' id="{sid}"' if sid else ''}>
+  <div class="wrap">
+    <div class="process-head">
+      <h2 class="mega" data-split>{lines(z['process_title'].split('<br>'), 'muted')}</h2>
+      <p>{E(c.v['process_p'])}</p>
+    </div>
+    <div class="process-grid" data-rise>{steps}</div>
+  </div>
+</section>'''
 
 
 # ───────────────────────── pages ─────────────────────────
@@ -450,6 +467,8 @@ def page_index(c):
   </div>
 </section>
 
+{process_section(c, 'ablauf')}
+
 <section class="reviews"><div class="wrap rev-grid" data-rise>{reviews}</div></section>
 
 <section class="cta" id="kontakt">
@@ -565,8 +584,6 @@ def page_zertifikate(c):
     <div class="v-doc">{DOC.replace('<svg ', '<svg width="34" height="34" ')}<strong>{E(cv['pending_title'])}</strong><span>{E(cv['pending'])}</span></div>
   </div>
 </div>''' for i, (a, b, d) in enumerate(z['badges']))
-    steps = ''.join(f'<div class="pstep"><i>0{i + 1}</i><div><b>{E(a)}</b><p>{E(b)}</p></div></div>' for i, (a, b) in enumerate(z['steps']))
-    proc_title = [x for x in z['process_title'].split('<br>')]
     return head(c, t['meta']['zertifikate'][0], t['meta']['zertifikate'][1]) + nav(c) + sub_hero(c, 'f14', title, z['sub'], v['nav'][4]) + f'''
 <main>
 <section class="certs">
@@ -576,12 +593,7 @@ def page_zertifikate(c):
     <p style="margin-top:20px;color:var(--mid);font-size:14px">{E(z['note'])}</p>
   </div>
 </section>
-<section class="process">
-  <div class="wrap">
-    <h2 class="mega" style="text-align:left" data-split>{lines(proc_title, 'muted')}</h2>
-    <div class="process-grid" data-rise>{steps}</div>
-  </div>
-</section>
+{process_section(c)}
 {modals}
 </main>
 ''' + footer(c) + '</body>\n</html>\n'
