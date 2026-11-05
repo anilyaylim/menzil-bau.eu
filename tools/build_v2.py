@@ -29,7 +29,7 @@ NEXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 V = {
  'de': {
   'title': 'Menzil-Bau · Bauen mit Verlass',
-  'nav': ['Leistungen', 'Bauablauf', '3D-Modelle', 'Projekte', 'Zertifikate', 'Kontakt'], 'classic': 'Klassisch', 'menu': 'Menü', 'langs': 'Sprache',
+  'nav': ['Leistungen', 'Bauablauf', '3D-Modelle', 'Projekte', 'Zertifikate', 'Kontakt'], 'classic': 'Klassisch', 'cta_short': 'Termin', 'menu': 'Menü', 'langs': 'Sprache',
   'hero': ['Bauen mit', 'Verlass.', ('Termingerecht.', 'red')], 'cta2': '3D-Modelle ansehen', 'next': 'Weiter',
   'badge': ('Seit 2010', '120+ Projekte in Niederösterreich, Burgenland &amp; Wien'),
   'marquee': 'Gebaut, geplant und saniert in',
@@ -70,7 +70,7 @@ V = {
  },
  'en': {
   'title': 'Menzil-Bau · Built to rely on',
-  'nav': ['Services', 'How we build', '3D models', 'Projects', 'Certificates', 'Contact'], 'classic': 'Classic', 'menu': 'Menu', 'langs': 'Language',
+  'nav': ['Services', 'How we build', '3D models', 'Projects', 'Certificates', 'Contact'], 'classic': 'Classic', 'cta_short': 'Book', 'menu': 'Menu', 'langs': 'Language',
   'hero': ['Built to', 'rely on.', ('On time.', 'red')], 'cta2': 'View 3D models', 'next': 'Next',
   'badge': ('Since 2010', '120+ projects in Lower Austria, Burgenland &amp; Vienna'),
   'marquee': 'Built, planned and renovated in',
@@ -111,7 +111,7 @@ V = {
  },
  'tr': {
   'title': 'Menzil-Bau · Güvenle inşa',
-  'nav': ['Hizmetler', 'İnşa süreci', '3D modeller', 'Projeler', 'Sertifikalar', 'İletişim'], 'classic': 'Klasik', 'menu': 'Menü', 'langs': 'Dil',
+  'nav': ['Hizmetler', 'İnşa süreci', '3D modeller', 'Projeler', 'Sertifikalar', 'İletişim'], 'classic': 'Klasik', 'cta_short': 'Randevu Al', 'menu': 'Menü', 'langs': 'Dil',
   'hero': ['Güvenle inşa.', ('Zamanında', 'red'), ('teslim.', 'red')], 'cta2': '3D modelleri gör', 'next': 'Devam',
   'badge': ('2010’dan beri', 'Aşağı Avusturya, Burgenland ve Viyana’da 120+ proje'),
   'marquee': 'İnşa ettiğimiz, planladığımız ve yenilediğimiz yerler',
@@ -219,11 +219,10 @@ def nav(c):
   <a class="nav-logo" href="{"#top" if c.page == "index" else "index.html"}" aria-label="Menzil-Bau">{logo_a(w=150)}</a>
   <ul class="nav-links">{li}
     <li class="nav-lang-m" aria-label="{E(v['langs'])}">{langs}</li>
-    <li class="nav-cta-m"><a class="pill pill-red" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(t['nav']['cta'])}</a></li>
   </ul>
   <div class="nav-right">
     <div class="nav-lang" role="group" aria-label="{E(v['langs'])}">{langs}</div>
-    <a class="pill pill-red nav-cta" href="{SITE['calendar']}" target="_blank" rel="noopener">{E(t['nav']['cta'])}</a>
+    <a class="pill pill-red nav-cta" href="{SITE['calendar']}" target="_blank" rel="noopener" aria-label="{E(t['nav']['cta'])}">{CAL}<span class="cta-long">{E(t['nav']['cta'])}</span><span class="cta-short">{E(v['cta_short'])}</span></a>
     <button class="nav-burger" type="button" aria-label="{E(v['menu'])}" aria-expanded="false"><span></span></button>
   </div>
 </header>

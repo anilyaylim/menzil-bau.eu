@@ -46,12 +46,21 @@ function Builder() {
     const s = new THREE.Shape(); s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(0, h); s.lineTo(-w / 2, 0);
     const g = new THREE.ExtrudeGeometry(s, { depth: d, bevelEnabled: false }); g.translate(0, 0, -d / 2); return g;
   }
-  function hip(w, h, d, ridge) { // hipped roof as a frustum-like shape
-    const g = new THREE.BufferGeometry();
+  function hip(w, h, d, ridge) { // hipped roof: every face wound outward, flat normals
     const x = w / 2, z = d / 2, r = ridge / 2;
-    const v = [-x,0,-z,  x,0,-z,  x,0,z,  -x,0,z,  -r,h,0,  r,h,0];
-    const idx = [0,1,5, 0,5,4,  2,3,4, 2,4,5,  1,2,5,  3,0,4,  0,3,2, 0,2,1];
-    g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.setIndex(idx); const flat = g.toNonIndexed(); flat.computeVertexNormals(); return flat;
+    const P = [[-x, 0, -z], [x, 0, -z], [x, 0, z], [-x, 0, z], [-r, h, 0], [r, h, 0]];
+    const tris = [[0, 1, 5], [0, 5, 4], [2, 3, 4], [2, 4, 5], [1, 2, 5], [3, 0, 4], [0, 2, 1], [0, 3, 2]];
+    const c = new THREE.Vector3(0, h * 0.35, 0), pos = [];
+    const A = new THREE.Vector3(), Bv = new THREE.Vector3(), Cv = new THREE.Vector3(), n = new THREE.Vector3(), m = new THREE.Vector3();
+    for (const t of tris) {
+      A.fromArray(P[t[0]]); Bv.fromArray(P[t[1]]); Cv.fromArray(P[t[2]]);
+      n.subVectors(Bv, A).cross(m.subVectors(Cv, A));
+      m.copy(A).add(Bv).add(Cv).divideScalar(3).sub(c);           // centroid direction from inside
+      const tri = n.dot(m) < 0 ? [A, Cv, Bv] : [A, Bv, Cv];        // flip if it points inward
+      for (const v of tri) pos.push(v.x, v.y, v.z);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); return g;
   }
   function setProgress(p) {
     const n = maxOrder + 1;
@@ -135,7 +144,7 @@ function mfh(B) {
     }
     windows(B, { xs: [-7, -4.6, -2.3, 0, 2.3, 4.6, 7], y: y0 + 0.9, z: zb, order: 6 });
   }
-  B.add(B.hip(W + 1, 3.4, D + 1, W - 7), mat(C.roofRed, { r: 0.75 }), [0, 0.4 + F * FH, 0], 4, 'drop');
+  B.add(B.hip(W + 1, 3.4, D + 1, W - 7), mat(C.roofRed, { r: 0.75 }), [0, 0.4 + F * FH + 0.03, 0], 4, 'drop');  // +3 cm: no z-fighting with the top slab
 }
 
 export function makeModel(type, { floating = false } = {}) {

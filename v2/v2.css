@@ -514,3 +514,16 @@ a.c-card:hover { transform: none; box-shadow: 0 16px 36px rgba(18,20,23,.1); }
 .form-card .v-form textarea.v-in { height: 100%; }
 @media (max-width: 1000px) { .c-info { grid-template-rows: none; } }
 .c-card.wide.dark { justify-content: flex-start; padding-left: 26px; }
+
+/* round 3: desktop without the locations marquee; mobile booking button in the bar */
+@media (min-width: 761px) { .marquee-sec { display: none; } .places { padding-top: 64px; } }
+.nav-cta .cta-short { display: none; }
+.nav-cta svg { display: none; }
+@media (max-width: 960px) {
+  .nav .pill-red.nav-cta { display: inline-flex; padding: 9px 14px; font-size: 13px; gap: 6px; }
+  .nav-cta svg { display: block; width: 15px; height: 15px; }
+  .nav-cta .cta-long { display: none; }
+  .nav-cta .cta-short { display: inline; }
+  .nav.open .nav-cta-m { display: none; }
+}
+@media (max-width: 400px) { .nav-logo svg { height: 34px; } .nav { padding-left: 14px; } .nav .pill-red.nav-cta { padding: 8px 12px; font-size: 12.5px; } }
