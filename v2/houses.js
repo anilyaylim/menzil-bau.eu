@@ -51,7 +51,7 @@ function Builder() {
     const x = w / 2, z = d / 2, r = ridge / 2;
     const v = [-x,0,-z,  x,0,-z,  x,0,z,  -x,0,z,  -r,h,0,  r,h,0];
     const idx = [0,1,5, 0,5,4,  2,3,4, 2,4,5,  1,2,5,  3,0,4,  0,3,2, 0,2,1];
-    g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
+    g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.setIndex(idx); const flat = g.toNonIndexed(); flat.computeVertexNormals(); return flat;
   }
   function setProgress(p) {
     const n = maxOrder + 1;
@@ -68,17 +68,20 @@ function Builder() {
   return { group, ghost, add, box, gable, hip, setProgress };
 }
 
-// windows along a facade: count n, at height y, facade at z (front) – returns nothing
-function windowsRow(B, { x0, x1, y, z, n, w = 1.1, h = 1.3, order, rotY = 0, frameColor = C.frame, d = 0.12 }) {
+// windows along a facade at explicit positions (xs); rotY = side facade
+function windows(B, { xs, y, z, w = 1.2, h = 1.4, order, rotY = 0, frameColor = C.frame, d = 0.12 }) {
   const glass = mat(C.glass, { r: 0.15, m: 0.3 });
   const frame = mat(frameColor, { r: 0.6 });
-  for (let i = 0; i < n; i++) {
-    const x = n === 1 ? (x0 + x1) / 2 : x0 + (x1 - x0) * (i / (n - 1));
+  for (const x of xs) {
     const pos = rotY ? [z, y, x] : [x, y, z];
     B.add(B.box(w + 0.16, h + 0.16, d * 0.6), frame, pos, order, 'pop', { edges: false, rot: rotY });
-    const gpos = rotY ? [z + (rotY > 0 ? 0.04 : -0.04), y + 0.08, x] : [x, y + 0.08, z + 0.04];
+    const gpos = rotY ? [z + (z > 0 ? 0.04 : -0.04), y + 0.08, x] : [x, y + 0.08, z + (z > 0 ? 0.04 : -0.04)];
     B.add(B.box(w, h, d), glass, gpos, order, 'pop', { edges: false, rot: rotY, shadow: false });
   }
+}
+function door(B, x, z, { w = 1.1, h = 2.2, y = 0.35, order = 5, color = 0x2A2F36 } = {}) {
+  B.add(B.box(w + 0.18, h + 0.12, 0.08), mat(C.frame), [x, y, z], order, 'pop', { edges: false });
+  B.add(B.box(w, h, 0.14), mat(color, { r: 0.5 }), [x, y, z + (z > 0 ? 0.03 : -0.03)], order, 'pop', { edges: false });
 }
 
 // ── Einfamilienhaus: 2 floors, gable roof, garage, terrace
@@ -100,31 +103,39 @@ function efh(B, ox = 0, opt = {}) {
   }
   // terrace + railing
   B.add(B.box(W - 1, 0.18, 2.6), mat(C.wood), [ox, 0.2, D / 2 + 1.3], 2);
-  // door
-  B.add(B.box(1.1, 2.2, 0.14), mat(0x2A2F36), [ox - 2.6 * mirror, 0.35, D / 2 + 0.03], 5, 'pop', { edges: false });
-  windowsRow(B, { x0: ox - 0.6 * mirror, x1: ox + 2.8 * mirror, y: 1.0, z: D / 2 + 0.01, n: 2, w: 1.6, h: 1.6, order: 6 });
-  windowsRow(B, { x0: ox - 2.8, x1: ox + 2.8, y: 4.2, z: D / 2 + 0.01, n: 3, w: 1.2, h: 1.3, order: 6 });
-  windowsRow(B, { x0: ox - 2.6, x1: ox + 2.6, y: 4.2, z: -D / 2 - 0.13, n: 3, w: 1.1, h: 1.2, order: 6 });
-  windowsRow(B, { x0: -1.8, x1: 1.8, y: 1.2, z: ox - W / 2 * mirror - 0.05 * mirror, n: 2, w: 1.0, h: 1.3, order: 6, rotY: Math.PI / 2 });
+  // facade: door on the outer side, two windows next to it; three windows upstairs – all windows 1.2 × 1.4
+  door(B, ox - 2.7 * mirror, D / 2 + 0.01);
+  windows(B, { xs: [ox - 0.2 * mirror, ox + 2.6 * mirror], y: 1.15, z: D / 2 + 0.01, order: 6 });
+  windows(B, { xs: [ox - 2.7, ox, ox + 2.7], y: 4.25, z: D / 2 + 0.01, order: 6 });
+  windows(B, { xs: [ox - 2.7, ox, ox + 2.7], y: 4.25, z: -D / 2 - 0.01, order: 6 });
+  windows(B, { xs: [ox - 2.7, ox + 2.7], y: 1.15, z: -D / 2 - 0.01, order: 6 });
 }
 
-// ── Mehrfamilienhaus: 3 floors, ochre, balconies, hipped roof
+// ── Mehrfamilienhaus: 3 floors, light plaster with anthracite base, balconies with balcony doors, hipped roof
 function mfh(B) {
-  const W = 17, D = 10, FH = 3, F = 3;
+  const W = 17, D = 10, FH = 3, F = 3, base = 0x5C6168, upper = 0xE8E2D8;
+  const zf = D / 2 + 0.01, zb = -D / 2 - 0.01;
   B.add(B.box(W + 0.8, 0.4, D + 0.8), mat(C.slab), [0, 0, 0], 0);
   for (let f = 0; f < F; f++) {
-    B.add(B.box(W, FH - 0.2, D), mat(f === 0 ? C.plaster : C.ochre), [0, 0.4 + f * FH, 0], 1 + f);
-    B.add(B.box(W + 0.2, 0.2, D + 0.2), mat(C.slab), [0, 0.4 + f * FH + FH - 0.2, 0], 1 + f);
-    windowsRow(B, { x0: -7, x1: 7, y: 1.2 + f * FH, z: D / 2 + 0.01, n: 6, w: 1.2, h: 1.4, order: 5 });
-    windowsRow(B, { x0: -7, x1: 7, y: 1.2 + f * FH, z: -D / 2 - 0.13, n: 6, w: 1.2, h: 1.4, order: 5 });
-    if (f > 0) for (const x of [-4.6, 0, 4.6]) {
-      B.add(B.box(3.2, 0.18, 1.4), mat(C.slab), [x, 0.4 + f * FH - 0.05, D / 2 + 0.7], 4, 'pop');
-      B.add(B.box(3.2, 0.95, 0.04), mat(0xBFD3DE, { r: 0.1, m: 0.1, extra: { transparent: true, opacity: 0.45 } }), [x, 0.4 + f * FH + 0.13, D / 2 + 1.38], 6, 'pop', { edges: false, shadow: false });
-      B.add(B.box(3.24, 0.06, 0.08), mat(C.rail, { r: 0.4, m: 0.5 }), [x, 0.4 + f * FH + 1.08, D / 2 + 1.38], 6, 'pop', { edges: false });
+    const y0 = 0.4 + f * FH;
+    B.add(B.box(W, FH - 0.2, D), mat(f === 0 ? base : upper), [0, y0, 0], 1 + f);
+    B.add(B.box(W + 0.2, 0.2, D + 0.2), mat(C.slab), [0, y0 + FH - 0.2, 0], 1 + f);
+    if (f === 0) {
+      door(B, 0, zf, { w: 1.8, h: 2.3, y: 0.4, order: 5, color: 0x1C1F24 });
+      B.add(B.box(3.2, 0.14, 1.4), mat(C.slab), [0, 0.4 + 2.55, D / 2 + 0.7], 5, 'pop');      // entrance canopy
+      windows(B, { xs: [-7, -4.6, -2.3, 2.3, 4.6, 7], y: y0 + 0.9, z: zf, order: 6 });
+    } else {
+      windows(B, { xs: [-7, -2.3, 2.3, 7], y: y0 + 0.9, z: zf, order: 6 });
+      for (const x of [-4.6, 0, 4.6]) {
+        windows(B, { xs: [x], y: y0 + 0.15, z: zf, w: 1.2, h: 2.2, order: 6 });            // balcony door
+        B.add(B.box(3.2, 0.18, 1.4), mat(C.slab), [x, y0 - 0.05, D / 2 + 0.7], 4, 'pop');
+        B.add(B.box(3.2, 0.95, 0.04), mat(0xBFD3DE, { r: 0.1, m: 0.1, extra: { transparent: true, opacity: 0.45 } }), [x, y0 + 0.13, D / 2 + 1.38], 6, 'pop', { edges: false, shadow: false });
+        B.add(B.box(3.24, 0.06, 0.08), mat(C.rail, { r: 0.4, m: 0.5 }), [x, y0 + 1.08, D / 2 + 1.38], 6, 'pop', { edges: false });
+      }
     }
+    windows(B, { xs: [-7, -4.6, -2.3, 0, 2.3, 4.6, 7], y: y0 + 0.9, z: zb, order: 6 });
   }
-  B.add(B.hip(W + 1, 3.4, D + 1, W - 7), mat(C.roofRed, { r: 0.7, extra: { side: THREE.DoubleSide } }), [0, 0.4 + F * FH, 0], 4, 'drop');
-  for (const x of [-5, 5]) B.add(B.box(1.6, 1.2, 0.12), mat(0x2A2F36), [x, 0.4, D / 2 + 0.03], 5, 'pop', { edges: false });
+  B.add(B.hip(W + 1, 3.4, D + 1, W - 7), mat(C.roofRed, { r: 0.75 }), [0, 0.4 + F * FH, 0], 4, 'drop');
 }
 
 export function makeModel(type, { floating = false } = {}) {
