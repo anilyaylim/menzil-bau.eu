@@ -498,3 +498,19 @@ html.modal-open { overflow: hidden; }
 .nav-links a.cur { color: #fff; background: rgba(255,255,255,.1); }
 .vcert-foot svg, .c-val svg, .c-addr svg { width: 16px; height: 16px; display: inline-block; vertical-align: -2px; }
 .vcert-foot svg { width: 18px; height: 18px; }
+
+/* contact v2 alignment: two equal-height columns, card rows of equal height */
+.contact-grid2 { align-items: stretch; }
+.c-info { grid-template-rows: repeat(4, minmax(0, 1fr)); align-content: stretch; }
+.c-card { justify-content: space-between; gap: 10px; padding: 22px 24px; transition: box-shadow .25s; }
+a.c-card:hover { transform: none; box-shadow: 0 16px 36px rgba(18,20,23,.1); }
+.c-card .c-ico { margin-bottom: auto; }
+.c-card.wide { justify-content: center; }
+.c-card.dark { flex-direction: row; align-items: center; gap: 18px; }
+.c-card.dark .c-ico { margin: 0; flex-shrink: 0; }
+.c-card.dark .c-label { display: block; margin-bottom: 4px; }
+.form-card { display: flex; flex-direction: column; }
+.form-card .v-form { flex: 1; grid-template-rows: auto auto auto auto 1fr auto auto; }
+.form-card .v-form textarea.v-in { height: 100%; }
+@media (max-width: 1000px) { .c-info { grid-template-rows: none; } }
+.c-card.wide.dark { justify-content: flex-start; padding-left: 26px; }
