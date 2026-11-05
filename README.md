@@ -46,4 +46,4 @@ An alternative single-page landing page with scroll animations and 3D models:
 
 - **Libraries:** GSAP + ScrollTrigger, Lenis smooth scroll, Three.js (all from CDNs, pinned versions)
 - **Files:** `v2/v2.css`, `v2/v2.js` (motion), `v2/houses.js` (procedural 3D house models: Einfamilienhaus, Doppelhaus, Wohnhausanlage)
-- **Build:** `python3 tools/build_v2.py` generates `v2/index.html` (German) from `tools/data.py`
+- **Build:** `python3 tools/build_v2.py` generates `v2/index.html` (DE), `v2/en/` and `v2/tr/` from `tools/data.py` (v2-only texts live in the `V` dict of `build_v2.py`)
