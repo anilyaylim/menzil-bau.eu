@@ -513,14 +513,14 @@ def page_kontakt(c):
     return head(c, f"{t['meta']['kontakt'][0]}", t['meta']['kontakt'][1]) + nav(c) + sub_hero(c, 'f02', title, k['sub'], v['nav'][5]) + f'''
 <main>
 <section class="contact">
-  <div class="wrap contact-grid2">
-    <div class="c-info" data-rise>
+  <div class="wrap contact-grid2" data-rise>
+    <div class="c-info">
       <a class="c-card" href="{SITE['phone_href']}"><span class="c-ico">{TEL}</span><span class="c-label">{E(k['phone'])}</span><span class="c-val">{SITE['phone_local']}<small>{SITE['phone']}</small></span></a>
       <a class="c-card" href="{SITE['whatsapp']}" target="_blank" rel="noopener"><span class="c-ico">{WA}</span><span class="c-label">{E(k['whatsapp'])}</span><span class="c-val">{E(k['whatsapp_cta'])}<small>{SITE['phone']}</small></span></a>
       <a class="c-card" href="mailto:{SITE['email']}"><span class="c-ico">{MAIL}</span><span class="c-label">{E(k['email'])}</span><span class="c-val" style="font-size:20px;text-transform:none">{SITE['email']}</span></a>
       <div class="c-card"><span class="c-ico">{CLOCK}</span><span class="c-label">{E(k['hours'])}</span><span class="c-val">{E(SITE['hours'])}</span></div>
       <div class="c-card wide"><div class="c-addr"><div><b>{E(ft['addr1'])}</b>{a1}</div><div><b>{E(ft['addr2'])}</b>{a2}<br><a href="{maps}" target="_blank" rel="noopener">{E(k['route'])} →</a></div></div></div>
-      <a class="c-card wide dark" href="{SITE['calendar']}" target="_blank" rel="noopener"><span class="c-ico">{CAL}</span><span class="c-label">{E(t['nav']['cta'])}</span><span class="c-val">{E(k['book'])} {ARROW}</span></a>
+      <a class="c-card wide dark" href="{SITE['calendar']}" target="_blank" rel="noopener"><span class="c-ico">{CAL}</span><span><span class="c-label">{E(t['nav']['cta'])}</span><span class="c-val">{E(k['book'])} {ARROW}</span></span></a>
     </div>
     <div class="form-card">
       <h2>{E(f['title'])}</h2>
