@@ -554,3 +554,12 @@ a.c-card:hover { transform: none; box-shadow: 0 16px 36px rgba(18,20,23,.1); }
   .model-tabs { display: flex; width: 100%; flex-wrap: nowrap; }
   .model-tab { flex: 1; padding: 10px 6px; font-size: 13px; white-space: nowrap; }
 }
+
+/* process steps (home + certificates): titles aligned across cards */
+.process { padding: 70px 0 70px; }
+.process-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; }
+.process-head .mega { text-align: left; font-size: clamp(44px, 6vw, 96px); }
+.process-head p { max-width: 420px; color: var(--mid); font-size: 15px; line-height: 1.65; }
+.pstep { justify-content: flex-start; gap: 34px; }
+.pstep b { min-height: 1.1em; }
+@media (max-width: 760px) { .process { padding: 50px 0 40px; } .pstep { min-height: 0; gap: 18px; } }
