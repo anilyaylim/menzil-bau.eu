@@ -16,7 +16,18 @@
     gsap.ticker.lagSmoothing(0);
   }
   window.__lenis = lenis;
-  const scrollToEl = (el, off = -20) => lenis ? lenis.scrollTo(el, { offset: off }) : (typeof el === 'number' ? window.scrollTo({ top: el, behavior: 'smooth' }) : el.scrollIntoView({ behavior: 'smooth' }));
+  /* programmatic scroll: duration grows with distance, eased in and out, input locked meanwhile */
+  let autoScrolling = false;
+  const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const NAV_OFFSET = -96;
+  function scrollToEl(el, off = NAV_OFFSET) {
+    const y = typeof el === 'number' ? el : el.getBoundingClientRect().top + window.scrollY + off;
+    if (!lenis) { window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' }); return; }
+    const dist = Math.abs(y - window.scrollY);
+    const duration = Math.min(2.4, Math.max(0.7, dist / 3200));
+    autoScrolling = window.__autoScrolling = true;
+    lenis.scrollTo(y, { duration, easing: easeInOut, lock: true, force: true, onComplete: () => { autoScrolling = window.__autoScrolling = false; } });
+  }
 
   /* ── nav ── */
   const nav = $('.nav'), navWrap = $('.nav-wrap'), burger = $('.nav-burger');
@@ -31,14 +42,26 @@
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
     if (navWrap) {
-      navWrap.classList.toggle('hide', y > 300 && y > lastY + 2 && !nav.classList.contains('open'));
-      if (y < lastY - 2 || y < 300) navWrap.classList.remove('hide');
+      if (autoScrolling) navWrap.classList.remove('hide');
+      else {
+        navWrap.classList.toggle('hide', y > 300 && y > lastY + 2 && !nav.classList.contains('open'));
+        if (y < lastY - 2 || y < 300) navWrap.classList.remove('hide');
+      }
     }
     if (topBtn) topBtn.classList.toggle('on', y > window.innerHeight * 0.8);
     lastY = y;
   }, { passive: true });
   if (burger) burger.addEventListener('click', () => { const o = nav.classList.toggle('open'); burger.setAttribute('aria-expanded', o); });
-  if (topBtn) topBtn.addEventListener('click', () => scrollToEl(0, 0));
+  if (topBtn) topBtn.addEventListener('click', () => scrollToEl(0));
+  /* arriving with a hash (e.g. index.html#leistungen from another page) */
+  if (location.hash.length > 1) {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target) window.addEventListener('load', () => setTimeout(() => {
+      const y = target.getBoundingClientRect().top + window.scrollY + NAV_OFFSET;
+      lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : window.scrollTo(0, y);
+      window.ScrollTrigger && window.ScrollTrigger.refresh();
+    }, 60));
+  }
 
   /* ── cookie notice (no tracking cookies are set; the choice is remembered) ── */
   const cookie = $('.cookie');

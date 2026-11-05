@@ -171,8 +171,8 @@ export function makeModel(type, { floating = false } = {}) {
 // ── Viewer: renderer + lights + camera, renders only while visible
 export function createViewer(container, { interactive = false, autoRotate = 0.6, camPos = [22, 15, 26], target = [0, 3.5, 0], fov = 32 } = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   container.appendChild(renderer.domElement);
@@ -181,7 +181,7 @@ export function createViewer(container, { interactive = false, autoRotate = 0.6,
   camera.position.set(...camPos);
   scene.add(new THREE.HemisphereLight(0xffffff, 0xB9AE9C, 1.15));
   const sun = new THREE.DirectionalLight(0xFFF1DC, 2.1);
-  sun.position.set(18, 30, 14); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  sun.position.set(18, 30, 14); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
   Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -30, near: 1, far: 90 }); sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
   scene.add(sun);
   const fill = new THREE.DirectionalLight(0xDDE6F0, 0.5); fill.position.set(-20, 10, -10); scene.add(fill);
@@ -197,7 +197,9 @@ export function createViewer(container, { interactive = false, autoRotate = 0.6,
   function setModel(m) { if (model) pivot.remove(model.group); model = m; pivot.add(m.group); }
   function resize() { const w = container.clientWidth, h = container.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / Math.max(h, 1); camera.updateProjectionMatrix(); }
   const ro = new ResizeObserver(resize); ro.observe(container); resize();
-  function loop() { raf = requestAnimationFrame(loop); if (spin) pivot.rotation.y += spin * 0.004; if (controls) controls.update(); renderer.render(scene, camera); }
+  function loop() { raf = requestAnimationFrame(loop); if (window.__autoScrolling) return; /* paused during smooth jumps */ if (spin) pivot.rotation.y += spin * 0.004; if (controls) controls.update(); renderer.render(scene, camera); }
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) loop(); if (!visible && raf) { cancelAnimationFrame(raf); raf = 0; } }).observe(container);
-  return { scene, camera, controls, pivot, setModel, render: () => renderer.render(scene, camera), setSpin: s => { spin = s; } };
+  // compile shaders / upload geometry ahead of time so the first on-screen frame doesn't stall
+  function warm() { try { renderer.compile(scene, camera); renderer.render(scene, camera); } catch (e) { /* ignore */ } }
+  return { scene, camera, controls, pivot, setModel, warm, render: () => renderer.render(scene, camera), setSpin: s => { spin = s; } };
 }
