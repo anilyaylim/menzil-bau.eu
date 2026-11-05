@@ -10,7 +10,8 @@ from datetime import date
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 from data import SITE, T, PLACES, LANGS, LANG_NAMES
-from build import logo_a, ARROW, CAL, TEL, PIN
+from build import logo_a, ARROW, CAL, TEL, PIN, MAIL, WA, CLOCK, seal, COUNTRIES
+from data import LOREM
 
 E = html.escape
 YEAR = date.today().year
@@ -28,8 +29,8 @@ NEXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 V = {
  'de': {
   'title': 'Menzil-Bau · Bauen mit Verlass',
-  'nav': ['Leistungen', 'Bauablauf', '3D-Modelle', 'Projekte', 'Kontakt'], 'classic': 'Klassisch', 'menu': 'Menü', 'langs': 'Sprache',
-  'hero': ['Bauen mit', 'Verlass.', 'Termingerecht.'], 'cta2': '3D-Modelle ansehen', 'next': 'Weiter',
+  'nav': ['Leistungen', 'Bauablauf', '3D-Modelle', 'Projekte', 'Zertifikate', 'Kontakt'], 'classic': 'Klassisch', 'menu': 'Menü', 'langs': 'Sprache',
+  'hero': ['Bauen mit', 'Verlass.', ('Termingerecht.', 'red')], 'cta2': '3D-Modelle ansehen', 'next': 'Weiter',
   'badge': ('Seit 2010', '120+ Projekte in Niederösterreich, Burgenland &amp; Wien'),
   'marquee': 'Gebaut, geplant und saniert in',
   'statement': ['Bauprojekte', 'scheitern nicht', 'am Können.'],
@@ -56,16 +57,21 @@ V = {
      [('Einheiten', '2'), ('Geschosse', '2 je Hälfte'), ('Dach', 'Satteldach'), ('Bauweise', 'Massivbau')]),
     ('mfh', 'Wohnhausanlage', 'Dreigeschossiger Wohnbau mit Balkonen und Walmdach – für Bauträger, Investoren und Gemeinden.',
      [('Geschosse', '3'), ('Dach', 'Walmdach'), ('Balkone', 'je Obergeschoss'), ('Bauweise', 'Massivbau')])],
-  'services': ['Sechs', 'Leistungen.'], 'prev': 'Zurück',
+  'services': ['Sechs Kern-', 'leistungen.'], 'prev': 'Zurück',
   'scatter': ['Ein', 'Partner.', 'Alle', 'Gewerke.'],
   'why': (['Warum', 'Menzil.'], 'Vom Maurer zum Baumeisterbetrieb: vier Gründe, warum Bauherren uns weiterempfehlen.'),
   'cta': ['Fangen wir', 'an zu bauen.'], 'form': 'Kontaktformular',
+  'places': ('Standorte', 'Bundesländer', 'Von Wien bis ins Burgenland: Hier haben wir bereits geplant, gebaut, zugebaut oder saniert.'),
+  'cookie': ('Cookies &amp; Datenschutz', 'Diese Website verwendet nur technisch notwendige Speicherung (z.&nbsp;B. diese Auswahl) und lädt Schriften und 3D-Bibliotheken von externen Servern. Tracking-Cookies werden nicht gesetzt.', 'Akzeptieren', 'Ablehnen'),
+  'top': 'Nach oben',
+  'contact': (['Lassen Sie', ('uns reden.', 'red')], 'Wir melden uns innerhalb von 24 Stunden.'),
+  'certs': (['Berechtigt.', 'Versichert.', ('Geprüft.', 'red')], 'Nachweis ansehen'),
   'foot': ('Seiten', 'Kontakt', 'Adressen', 'Motion-Version', 'Klassische Version ansehen'),
  },
  'en': {
   'title': 'Menzil-Bau · Built to rely on',
-  'nav': ['Services', 'How we build', '3D models', 'Projects', 'Contact'], 'classic': 'Classic', 'menu': 'Menu', 'langs': 'Language',
-  'hero': ['Built to', 'rely on.', 'On time.'], 'cta2': 'View 3D models', 'next': 'Next',
+  'nav': ['Services', 'How we build', '3D models', 'Projects', 'Certificates', 'Contact'], 'classic': 'Classic', 'menu': 'Menu', 'langs': 'Language',
+  'hero': ['Built to', 'rely on.', ('On time.', 'red')], 'cta2': 'View 3D models', 'next': 'Next',
   'badge': ('Since 2010', '120+ projects in Lower Austria, Burgenland &amp; Vienna'),
   'marquee': 'Built, planned and renovated in',
   'statement': ['Projects', 'don’t fail', 'on skill.'],
@@ -92,16 +98,21 @@ V = {
      [('Units', '2'), ('Storeys', '2 per half'), ('Roof', 'Gable roof'), ('Construction', 'Solid masonry')]),
     ('mfh', 'Residential complex', 'Three-storey residential building with balconies and a hipped roof – for developers, investors and municipalities.',
      [('Storeys', '3'), ('Roof', 'Hipped roof'), ('Balconies', 'every upper floor'), ('Construction', 'Solid masonry')])],
-  'services': ['Six', 'services.'], 'prev': 'Previous',
+  'services': ['Six main', 'services.'], 'prev': 'Previous',
   'scatter': ['One', 'partner.', 'Every', 'trade.'],
   'why': (['Why', 'Menzil.'], 'From bricklayer to master builder: four reasons why clients recommend us.'),
   'cta': ['Let’s start', 'building.'], 'form': 'Contact form',
+  'places': ('locations', 'federal states', 'From Vienna to Burgenland: where we have already planned, built, extended or renovated.'),
+  'cookie': ('Cookies &amp; privacy', 'This website only uses technically necessary storage (e.g. this choice) and loads fonts and 3D libraries from external servers. No tracking cookies are set.', 'Accept', 'Decline'),
+  'top': 'Back to top',
+  'contact': (['Let’s', ('talk.', 'red')], 'We reply within 24 hours.'),
+  'certs': (['Licensed.', 'Insured.', ('Proven.', 'red')], 'View certificate'),
   'foot': ('Pages', 'Contact', 'Addresses', 'Motion version', 'View classic version'),
  },
  'tr': {
   'title': 'Menzil-Bau · Güvenle inşa',
-  'nav': ['Hizmetler', 'İnşa süreci', '3D modeller', 'Projeler', 'İletişim'], 'classic': 'Klasik', 'menu': 'Menü', 'langs': 'Dil',
-  'hero': ['Güvenle', 'inşa.', 'Zamanında.'], 'cta2': '3D modelleri gör', 'next': 'Devam',
+  'nav': ['Hizmetler', 'İnşa süreci', '3D modeller', 'Projeler', 'Sertifikalar', 'İletişim'], 'classic': 'Klasik', 'menu': 'Menü', 'langs': 'Dil',
+  'hero': ['Güvenle inşa.', ('Zamanında', 'red'), ('teslim.', 'red')], 'cta2': '3D modelleri gör', 'next': 'Devam',
   'badge': ('2010’dan beri', 'Aşağı Avusturya, Burgenland ve Viyana’da 120+ proje'),
   'marquee': 'İnşa ettiğimiz, planladığımız ve yenilediğimiz yerler',
   'statement': ['Projeler', 'ustalıktan', 'aksamaz.'],
@@ -128,36 +139,159 @@ V = {
      [('Birim', '2'), ('Kat', 'Her biri 2'), ('Çatı', 'Beşik çatı'), ('Yapı', 'Yığma')]),
     ('mfh', 'Konut projesi', 'Balkonlu ve kırma çatılı üç katlı konut binası; yatırımcılar, geliştiriciler ve belediyeler için.',
      [('Kat', '3'), ('Çatı', 'Kırma çatı'), ('Balkon', 'Her üst katta'), ('Yapı', 'Yığma')])],
-  'services': ['Altı', 'hizmet.'], 'prev': 'Önceki',
+  'services': ['Altı temel', 'hizmet.'], 'prev': 'Önceki',
   'scatter': ['Tek', 'muhatap.', 'Tüm', 'işler.'],
   'why': (['Neden', 'Menzil.'], 'Duvar ustalığından müteahhitliğe: müşterilerimizin bizi tavsiye etmesinin dört nedeni.'),
   'cta': ['Hadi', 'başlayalım.'], 'form': 'İletişim formu',
+  'places': ('lokasyon', 'eyalet', 'Viyana’dan Burgenland’a: planladığımız, inşa ettiğimiz, ek bina yaptığımız ya da yenilediğimiz yerler.'),
+  'cookie': ('Çerezler ve gizlilik', 'Bu site yalnızca teknik olarak gerekli depolamayı (ör. bu tercih) kullanır; yazı tipleri ve 3D kütüphaneleri harici sunuculardan yüklenir. İzleme çerezi kullanılmaz.', 'Kabul et', 'Reddet'),
+  'top': 'Yukarı çık',
+  'contact': (['Hadi', ('konuşalım.', 'red')], '24 saat içinde dönüş yapıyoruz.'),
+  'certs': (['Ruhsatlı.', 'Sigortalı.', ('Denetimli.', 'red')], 'Belgeyi görüntüle'),
   'foot': ('Sayfalar', 'İletişim', 'Adresler', 'Hareketli sürüm', 'Klasik sürümü gör'),
  },
 }
 
 
 def lines(parts, last_cls=''):
-    """Big headline split into masked lines for the reveal animation; last line can be accented."""
+    """Big headline split into masked lines. An item may be 'text' or ('text', 'class')."""
     out = []
     for i, x in enumerate(parts):
-        c = last_cls if (last_cls and i == len(parts) - 1) else ''
-        out.append(f'<span class="line"><span{(" class=%s" % c) if c else ""}>{x}</span></span>')
+        txt, c = (x if isinstance(x, tuple) else (x, ''))
+        if not c and last_cls and i == len(parts) - 1: c = last_cls
+        out.append(f'<span class="line"><span{(" class=%s" % c) if c else ""}>{txt}</span></span>')
     return ''.join(out)
 
+CLOSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>'
+DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 11h6M9 14h6M9 17h4"/></svg>'
+CHK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" width="12" height="12"><path d="M3 8.5l3 3 7-7"/></svg>'
+PIN_S = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
+PAGE_FILES = {'index': 'index.html', 'kontakt': 'kontakt.html', 'zertifikate': 'zertifikate.html'}
 
-def build(lang):
-    t, v = T[lang], V[lang]
-    sub = lang != 'de'
-    R = '../../' if sub else '../'            # → repo root
-    VD = '../' if sub else ''                 # → v2 dir
-    A = R + 'assets/img/'
-    CL = R + ('' if lang == 'de' else lang + '/')   # classic pages in the same language
-    def v2_href(target):
-        if lang == 'de': return 'index.html' if target == 'de' else f'{target}/index.html'
-        return '../index.html' if target == 'de' else ('index.html' if target == lang else f'../{target}/index.html')
-    langs = ''.join(f'<a href="{v2_href(l)}" hreflang="{l}" lang="{l}"{" class=on aria-current=true" if l == lang else ""}>{LANG_NAMES[l]}</a>' for l in LANGS)
 
+class Ctx:
+    def __init__(self, lang, page):
+        self.lang, self.page, self.t, self.v = lang, page, T[lang], V[lang]
+        sub = lang != 'de'
+        self.R = '../../' if sub else '../'           # → repo root
+        self.VD = '../' if sub else ''                # → v2 dir
+        self.A = self.R + 'assets/img/'
+        self.CL = self.R + ('' if lang == 'de' else lang + '/')   # classic pages, same language
+    def href(self, target_lang, page=None):
+        f = PAGE_FILES[page or self.page]
+        if self.lang == 'de': return f if target_lang == 'de' else f'{target_lang}/{f}'
+        if target_lang == 'de': return f'../{f}'
+        return f if target_lang == self.lang else f'../{target_lang}/{f}'
+    def anchor(self, a):
+        return f'#{a}' if self.page == 'index' else f'index.html#{a}'
+
+
+def head(c, title, desc):
+    return f'''<!DOCTYPE html>
+<html lang="{c.lang}" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{E(title)}</title>
+<meta name="description" content="{E(desc)}">
+<meta name="google" content="notranslate">
+<meta name="theme-color" content="#121417">
+{''.join(f'<link rel="alternate" hreflang="{l}" href="{c.href(l)}">' for l in LANGS)}
+<link rel="icon" href="{c.R}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{c.VD}v2.css">
+</head>
+<body>
+'''
+
+
+def nav(c):
+    v, t, n = c.v, c.t, c.v['nav']
+    langs = ''.join(f'<a href="{c.href(l)}" hreflang="{l}" lang="{l}"{" class=on aria-current=true" if l == c.lang else ""}>{LANG_NAMES[l]}</a>' for l in LANGS)
+    items = [(c.anchor('leistungen'), n[0]), (c.anchor('bauablauf'), n[1]), (c.anchor('modelle'), n[2]), (c.anchor('projekte'), n[3]),
+             ('zertifikate.html', n[4]), ('kontakt.html', n[5])]
+    cur = {'zertifikate': 4, 'kontakt': 5}.get(c.page, -1)
+    li = ''.join(f'<li><a href="{h}"{" aria-current=page class=cur" if i == cur else ""}>{E(x)}</a></li>' for i, (h, x) in enumerate(items))
+    return f'''<div class="nav-wrap">
+<header class="nav" aria-label="Navigation">
+  <a class="nav-logo" href="{"#top" if c.page == "index" else "index.html"}" aria-label="Menzil-Bau">{logo_a(w=150)}</a>
+  <ul class="nav-links">{li}
+    <li class="nav-lang-m" aria-label="{E(v['langs'])}">{langs}</li>
+    <li class="nav-cta-m"><a class="pill pill-red" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(t['nav']['cta'])}</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-lang" role="group" aria-label="{E(v['langs'])}">{langs}</div>
+    <a class="pill pill-red nav-cta" href="{SITE['calendar']}" target="_blank" rel="noopener">{E(t['nav']['cta'])}</a>
+    <button class="nav-burger" type="button" aria-label="{E(v['menu'])}" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+</div>
+'''
+
+
+def legal_modal(c):
+    L = c.t['legal']
+    return f'''<div class="v-modal" id="legalModal" role="dialog" aria-modal="true" aria-labelledby="legalTitle" hidden>
+  <div class="v-modal-box">
+    <button class="v-modal-close" type="button" aria-label="{E(c.t['lb']['close'])}">{CLOSE}</button>
+    <div class="eyebrow">{E(L['eyebrow'])}</div>
+    <h2 id="legalTitle">{E(L['title'])}</h2>
+    <dl class="v-facts">
+      <div><dt>{E(L['company'])}</dt><dd>{E(SITE['company'])}</dd></div>
+      <div><dt>{E(L['address'])}</dt><dd>{E(SITE['addr2_plain'])}</dd></div>
+      <div><dt>{E(L['contact'])}</dt><dd><a href="mailto:{SITE['email']}">{SITE['email']}</a> · {SITE['phone']}</dd></div>
+    </dl>
+    <div class="v-modal-body"><p>{E(c.t['p_kontakt']['impressum'])}</p>{''.join(f'<p>{E(x)}</p>' for x in LOREM)}</div>
+  </div>
+</div>'''
+
+
+def footer(c):
+    t, v, f = c.t, c.v, c.v['foot']
+    ck = v['cookie']
+    return f'''<footer class="foot">
+  <div class="wrap">
+    <div class="foot-word" aria-label="Menzil-Bau">{''.join(f'<span{" class=r" if i in (0, 7) else ""}>{ch}</span>' for i, ch in enumerate('MENZIL-BAU'))}</div>
+    <div class="foot-cols">
+      <div>{logo_a(w=200)}<p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:320px">{E(t['motto'])}.</p></div>
+      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="{c.CL}projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="{c.CL}referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="kontakt.html">{E(v['nav'][5])}</a></li></ul></div>
+      <div><h4>{E(f[1])}</h4><ul><li><a href="{SITE['phone_href']}">{SITE['phone_local']}</a></li><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><a href="{SITE['whatsapp']}" target="_blank" rel="noopener">WhatsApp</a></li><li>{E(SITE['hours'])}</li></ul></div>
+      <div><h4>{E(f[2])}</h4><ul>{''.join(f'<li>{E(x)}</li>' for x in SITE['addr1'])}<li style="margin-top:10px">{'</li><li>'.join(E(x) for x in SITE['addr2'])}</li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>&copy; {SITE['founded']}–{YEAR} Menzil-Bau · {E(t['footer']['rights'])}</span><span><button type="button" data-modal="legalModal">{E(t['footer']['impressum'])}</button> · <a href="{SITE['facebook']}" target="_blank" rel="noopener">Facebook</a></span></div>
+  </div>
+</footer>
+<button class="to-top" type="button" aria-label="{E(v['top'])}">{UP}</button>
+<div class="cookie" role="dialog" aria-label="{ck[0]}">
+  <b>{ck[0]}</b>
+  <p>{ck[1]} <a data-modal="legalModal">{E(t['footer']['impressum'])}</a></p>
+  <div class="cookie-btns"><button class="pill pill-dark pill-sm" type="button" data-cookie="accepted">{E(ck[2])}</button><button class="pill pill-sm" type="button" data-cookie="declined" style="background:var(--paper-2)">{E(ck[3])}</button></div>
+</div>
+{legal_modal(c)}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="{c.VD}v2.js" defer></script>
+'''
+
+
+def sub_hero(c, img, title_lines, sub, crumb):
+    return f'''<section class="sub-hero">
+  <div class="sub-hero-card">
+    <img src="{c.A}photos/{img}.jpg" alt="">
+    <div class="crumbs"><a href="index.html">Menzil-Bau</a> &nbsp;/&nbsp; {E(crumb)}</div>
+    <h1>{lines(title_lines)}</h1>
+    <p class="sub-hero-p">{E(sub)}</p>
+  </div>
+</section>
+'''
+
+
+# ───────────────────────── pages ─────────────────────────
+def page_index(c):
+    t, v, A, CL = c.t, c.v, c.A, c.CL
     svc_imgs = [A + 'plans/mattersburg-1-t.jpg', A + 'photos/f14-t.jpg', A + 'photos/f10-t.jpg', A + 'photos/f04-t.jpg', A + 'photos/f64-t.jpg', A + 'photos/f05-t.jpg']
     services = ''.join(f'''<article class="svc">
         <div class="svc-img"><img src="{svc_imgs[i]}" alt="{E(n)} – Menzil-Bau" loading="lazy" draggable="false"></div>
@@ -169,6 +303,13 @@ def build(lang):
         <figcaption><b>{E(n)}</b>{E(tag)} · {E(l)}</figcaption></figure>''' for tag, q, n, l in t['reviews']['items'])
     marquee_items = ''.join(f'<span>{PIN.replace("ref-pin", "")}{E(p)}</span>' for p in PLACES)
     feat = {pid: nm for pid, _, nm in t['featured']['cards']}
+    # grouped locations
+    from data import REGION_OF
+    groups = {'noe': [], 'bgld': [], 'wien': []}
+    for p in PLACES: groups[REGION_OF.get(p, 'noe')].append(p)
+    regions = ''.join(f'''<div class="region-col"><h4>{E(t['regions'][k])}<span>{len(g)}</span></h4><ul>{''.join(f'<li>{PIN_S}{E(x)}</li>' for x in g)}</ul></div>''' for k, g in groups.items() if g)
+    nreg = sum(1 for g in groups.values() if g)
+    pl = v['places']
 
     mt, mp, mtag, mhint, mplay, mspin, mgroup = v['models']
     model_tabs = ''.join(f'<button class="model-tab{" on" if i == 0 else ""}" type="button" data-model="{k}" aria-pressed="{"true" if i == 0 else "false"}">{E(n)}</button>' for i, (k, n, _, _) in enumerate(v['model_list']))
@@ -179,46 +320,10 @@ def build(lang):
         for i, ((tag, d), (n, u)) in enumerate(zip(v['stats'], [('30', '+'), ('120', '+'), ('1', '')])))
     steps = ''.join(f'<li class="step"><b><i>0{i + 1}</i>{a}</b><p>{E(b)}</p></li>' for i, (a, b) in enumerate(v['steps']))
     pillars = ''.join(f'<div class="pillar"><div class="pillar-ico">{ic}</div><h3>{E(a)}</h3><p>{E(b)}</p></div>' for ic, (a, b) in zip([ICON_PLAN, ICON_BUILD, ICON_KEY], v['pillars']))
-    n = v['nav']; f = v['foot']; bt = v['build']
+    bt = v['build']
+    sw = v['scatter']
 
-    return f'''<!DOCTYPE html>
-<html lang="{lang}" translate="no">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{E(v['title'])}</title>
-<meta name="description" content="{E(t['meta']['index'][1])}">
-<meta name="google" content="notranslate">
-<meta name="theme-color" content="#121417">
-{''.join(f'<link rel="alternate" hreflang="{l}" href="{v2_href(l)}">' for l in LANGS)}
-<link rel="icon" href="{R}assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{VD}v2.css">
-</head>
-<body>
-
-<div class="nav-wrap">
-<header class="nav" aria-label="Navigation">
-  <a class="nav-logo" href="#top" aria-label="Menzil-Bau">{logo_a(w=150)}</a>
-  <ul class="nav-links">
-    <li><a href="#leistungen">{E(n[0])}</a></li>
-    <li><a href="#bauablauf">{E(n[1])}</a></li>
-    <li><a href="#modelle">{E(n[2])}</a></li>
-    <li><a href="#projekte">{E(n[3])}</a></li>
-    <li><a href="{CL}kontakt.html">{E(n[4])}</a></li>
-    <li class="nav-lang-m" aria-label="{E(v['langs'])}">{langs}</li>
-    <li class="nav-cta-m"><a class="pill pill-red" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(t['nav']['cta'])}</a></li>
-  </ul>
-  <div class="nav-right">
-    <div class="nav-lang" role="group" aria-label="{E(v['langs'])}">{langs}</div>
-    <a class="pill pill-ghost pill-sm nav-classic" href="{CL}index.html">{E(v['classic'])}</a>
-    <a class="pill pill-red nav-cta" href="{SITE['calendar']}" target="_blank" rel="noopener">{E(t['nav']['cta'])}</a>
-    <button class="nav-burger" type="button" aria-label="{E(v['menu'])}" aria-expanded="false"><span></span></button>
-  </div>
-</header>
-</div>
-
+    return head(c, v['title'], t['meta']['index'][1]) + nav(c) + f'''
 <main id="top">
 <section class="hero">
   <div class="hero-card">
@@ -226,7 +331,7 @@ def build(lang):
       <img src="{A}photos/f01.jpg" alt=""><img src="{A}photos/f13.jpg" alt=""><img src="{A}photos/f15.jpg" alt=""><img src="{A}photos/f10.jpg" alt="">
     </div>
     <div class="hero-eyebrow">{E(t['hero']['eyebrow'])}</div>
-    <h1 class="hero-title">{lines(v['hero'], 'red')}</h1>
+    <h1 class="hero-title">{lines(v['hero'])}</h1>
     <p class="hero-sub">{E(t['hero']['sub'])}</p>
     <div class="hero-ctas">
       <a class="pill pill-white" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(t['nav']['cta'])}</a>
@@ -241,6 +346,22 @@ def build(lang):
 <section class="marquee-sec" id="start">
   <div class="marquee-label">{E(v['marquee'])}</div>
   <div class="marquee"><div class="marquee-track">{marquee_items}{marquee_items}</div></div>
+</section>
+
+<section class="places">
+  <div class="wrap">
+    <div class="places-card">
+      <div class="places-hero">
+        <div class="places-eyebrow">{E(t['featured']['places_title'])}</div>
+        <div class="places-nums">
+          <div><span data-count="{len(PLACES)}">{len(PLACES)}</span><small>{E(pl[0])}</small></div>
+          <div><span data-count="{nreg}">{nreg}</span><small>{E(pl[1])}</small></div>
+        </div>
+        <p>{E(pl[2])}</p>
+      </div>
+      <div class="regions">{regions}</div>
+    </div>
+  </div>
 </section>
 
 <section class="statement">
@@ -306,15 +427,14 @@ def build(lang):
 
 <section class="scatter" id="projekte">
   <div class="scatter-sticky">
-    <div class="sw" data-from="l" style="left:6%;top:12%">{E(v['scatter'][0])}</div>
-    <div class="sw red" data-from="r" style="right:8%;top:30%">{E(v['scatter'][1])}</div>
-    <div class="sw" data-from="l" style="left:10%;top:56%">{E(v['scatter'][2])}</div>
-    <div class="sw" data-from="r" style="right:6%;top:72%">{E(v['scatter'][3])}</div>
-    <a class="sp" href="{CL}projekte.html" style="left:36%;top:6%;width:220px;height:280px"><img src="{A}photos/f13-t.jpg" alt="{E(feat.get('f13', ''))} – Menzil-Bau"></a>
-    <a class="sp" href="{CL}projekte.html" style="left:4%;top:34%;width:260px;height:190px"><img src="{A}photos/f52-t.jpg" alt="{E(feat.get('f52', ''))} – Menzil-Bau"></a>
-    <a class="sp" href="{CL}projekte.html" style="right:30%;top:60%;width:280px;height:200px"><img src="{A}photos/f15-t.jpg" alt="{E(feat.get('f15', ''))} – Menzil-Bau"></a>
-    <a class="sp" href="{CL}projekte.html" style="right:5%;top:4%;width:200px;height:250px"><img src="{A}photos/f64-t.jpg" alt="{E(feat.get('f64', ''))} – Menzil-Bau"></a>
-    <div class="float3d" id="float3d2" aria-hidden="true"></div>
+    <div class="sw" style="left:5%;top:9%">{E(sw[0])}</div>
+    <div class="sw red" style="left:5%;top:29%">{E(sw[1])}</div>
+    <div class="sw" style="left:5%;top:52%">{E(sw[2])}</div>
+    <div class="sw red" style="left:5%;top:72%">{E(sw[3])}</div>
+    <a class="sp" href="{CL}projekte.html" style="right:5%;top:7%;width:230px;height:290px"><img src="{A}photos/f13-t.jpg" alt="{E(feat.get('f13', ''))} – Menzil-Bau"></a>
+    <a class="sp" href="{CL}projekte.html" style="right:24%;top:20%;width:250px;height:180px"><img src="{A}photos/f52-t.jpg" alt="{E(feat.get('f52', ''))} – Menzil-Bau"></a>
+    <a class="sp" href="{CL}projekte.html" style="right:4%;top:53%;width:270px;height:190px"><img src="{A}photos/f15-t.jpg" alt="{E(feat.get('f15', ''))} – Menzil-Bau"></a>
+    <a class="sp" href="{CL}projekte.html" style="right:25%;top:57%;width:200px;height:250px"><img src="{A}photos/f64-t.jpg" alt="{E(feat.get('f64', ''))} – Menzil-Bau"></a>
   </div>
 </section>
 
@@ -338,40 +458,21 @@ def build(lang):
     <div class="cta-box">
       <a class="pill pill-red" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(t['cta']['btn1'])}</a>
       <a class="pill pill-dark" href="{SITE['phone_href']}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">{TEL[TEL.index('<path'):TEL.index('</svg>')]}</svg> {SITE['phone_local']}</a>
-      <a class="pill pill-white" href="{CL}kontakt.html">{E(v['form'])} {ARROW}</a>
+      <a class="pill pill-white" href="kontakt.html">{E(v['form'])} {ARROW}</a>
     </div>
   </div>
 </section>
 </main>
-
-<footer class="foot">
-  <div class="wrap">
-    <div class="foot-word" aria-label="Menzil-Bau">{''.join(f'<span{" class=r" if i in (0, 7) else ""}>{ch}</span>' for i, ch in enumerate('MENZIL-BAU'))}</div>
-    <div class="foot-cols">
-      <div>{logo_a(w=200)}<p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:320px">{E(t['motto'])}.</p></div>
-      <div><h4>{E(f[0])}</h4><ul><li><a href="{CL}projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="{CL}referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="{CL}zertifikate.html">{E(t['nav']['zertifikate'])}</a></li><li><a href="{CL}kontakt.html">{E(t['nav']['kontakt'])}</a></li></ul></div>
-      <div><h4>{E(f[1])}</h4><ul><li><a href="{SITE['phone_href']}">{SITE['phone_local']}</a></li><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><a href="{SITE['whatsapp']}" target="_blank" rel="noopener">WhatsApp</a></li><li>{E(SITE['hours'])}</li></ul></div>
-      <div><h4>{E(f[2])}</h4><ul>{''.join(f'<li>{E(x)}</li>' for x in SITE['addr1'])}<li style="margin-top:10px">{'</li><li>'.join(E(x) for x in SITE['addr2'])}</li></ul></div>
-    </div>
-    <div class="foot-bottom"><span>&copy; {SITE['founded']}–{YEAR} Menzil-Bau · {E(t['footer']['rights'])}</span><span>{E(f[3])} · <a href="{CL}index.html">{E(f[4])}</a> · <a href="{CL}kontakt.html#impressum">{E(t['footer']['impressum'])}</a></span></div>
-  </div>
-</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="{VD}v2.js" defer></script>
-<script type="importmap">{{"imports": {{"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}}}</script>
+''' + footer(c) + f'''<script type="importmap">{{"imports": {{"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}}}</script>
 <script type="module">
-  import {{ makeModel, createViewer }} from '{VD or "./"}houses.js';
+  import {{ makeModel, createViewer }} from '{c.VD or "./"}houses.js';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  for (const [id, type] of [['float3d', 'efh'], ['float3d2', 'dh']]) {{
-    const el = document.getElementById(id); if (!el || getComputedStyle(el).display === 'none') continue;
-    const v = createViewer(el, {{ autoRotate: reduce ? 0 : 1.2, camPos: [26, 20, 30], target: [0, 3, 0], fov: 30 }});
-    const m = makeModel(type, {{ floating: true }}); m.setProgress(1); v.setModel(m);
+  const fl = document.getElementById('float3d');
+  if (fl && getComputedStyle(fl).display !== 'none') {{
+    const v = createViewer(fl, {{ autoRotate: reduce ? 0 : 1.2, camPos: [26, 20, 30], target: [0, 3, 0], fov: 30 }});
+    const m = makeModel('efh', {{ floating: true }}); m.setProgress(1); v.setModel(m);
   }}
-  const stage = document.getElementById('buildStage');
-  const bv = createViewer(stage, {{ autoRotate: reduce ? 0 : 0.35, camPos: [24, 17, 28], target: [0, 3.2, 0], fov: 30 }});
+  const bv = createViewer(document.getElementById('buildStage'), {{ autoRotate: reduce ? 0 : 0.35, camPos: [24, 17, 28], target: [0, 3.2, 0], fov: 30 }});
   const bm = makeModel('efh'); bm.setProgress(reduce ? 1 : 0); bv.setModel(bm);
   window.__buildProgress = p => bm.setProgress(Math.min(1, p * 1.08));
   const view = document.getElementById('modelView'), info = document.getElementById('modelInfo');
@@ -401,13 +502,100 @@ def build(lang):
 '''
 
 
+def page_kontakt(c):
+    t, v = c.t, c.v
+    k, f, ft = t['p_kontakt'], t['form'], t['footer']
+    opts = ''.join(f'<option value="{code}"{" selected" if code == "+43" else ""}>{fl} {code}</option>' for code, fl in COUNTRIES)
+    types = ''.join(f'<option>{E(x)}</option>' for x in f['types'])
+    maps = 'https://www.google.com/maps/search/?api=1&query=' + '+'.join(SITE['addr2_plain'].replace(',', '').split())
+    a1 = '<br>'.join(E(x) for x in SITE['addr1']); a2 = '<br>'.join(E(x) for x in SITE['addr2'])
+    title, reply = v['contact']
+    return head(c, f"{t['meta']['kontakt'][0]}", t['meta']['kontakt'][1]) + nav(c) + sub_hero(c, 'f02', title, k['sub'], v['nav'][5]) + f'''
+<main>
+<section class="contact">
+  <div class="wrap contact-grid2">
+    <div class="c-info" data-rise>
+      <a class="c-card" href="{SITE['phone_href']}"><span class="c-ico">{TEL}</span><span class="c-label">{E(k['phone'])}</span><span class="c-val">{SITE['phone_local']}<small>{SITE['phone']}</small></span></a>
+      <a class="c-card" href="{SITE['whatsapp']}" target="_blank" rel="noopener"><span class="c-ico">{WA}</span><span class="c-label">{E(k['whatsapp'])}</span><span class="c-val">{E(k['whatsapp_cta'])}<small>{SITE['phone']}</small></span></a>
+      <a class="c-card" href="mailto:{SITE['email']}"><span class="c-ico">{MAIL}</span><span class="c-label">{E(k['email'])}</span><span class="c-val" style="font-size:20px;text-transform:none">{SITE['email']}</span></a>
+      <div class="c-card"><span class="c-ico">{CLOCK}</span><span class="c-label">{E(k['hours'])}</span><span class="c-val">{E(SITE['hours'])}</span></div>
+      <div class="c-card wide"><div class="c-addr"><div><b>{E(ft['addr1'])}</b>{a1}</div><div><b>{E(ft['addr2'])}</b>{a2}<br><a href="{maps}" target="_blank" rel="noopener">{E(k['route'])} →</a></div></div></div>
+      <a class="c-card wide dark" href="{SITE['calendar']}" target="_blank" rel="noopener"><span class="c-ico">{CAL}</span><span class="c-label">{E(t['nav']['cta'])}</span><span class="c-val">{E(k['book'])} {ARROW}</span></a>
+    </div>
+    <div class="form-card">
+      <h2>{E(f['title'])}</h2>
+      <p>{E(reply)}</p>
+      <form class="v-form" novalidate data-endpoint="{SITE['form_endpoint']}" data-subject="{E(f['subject'])}" data-sending="{E(f['sending'])}" data-err="{E(f['err'])}" data-net-err="{E(f['net_err'])}">
+        <input class="v-in" name="first_name" placeholder="{E(f['first'])}" aria-label="{E(f['first'])}" autocomplete="given-name" data-letters required>
+        <input class="v-in" name="last_name" placeholder="{E(f['last'])}" aria-label="{E(f['last'])}" autocomplete="family-name" data-letters required>
+        <div class="v-phone full"><select class="v-in" name="country" aria-label="+43">{opts}</select><input class="v-in" name="phone" type="tel" inputmode="numeric" placeholder="{E(f['phone'])}" aria-label="{E(f['phone'])}" autocomplete="tel-national" required></div>
+        <input class="v-in full" name="email" type="email" placeholder="{E(f['email'])}" aria-label="{E(f['email'])}" autocomplete="email" required>
+        <span class="v-form-err full" hidden>{E(f['email_err'])}</span>
+        <select class="v-in" name="project_type" aria-label="{E(f['type'])}"><option value="" selected disabled>{E(f['type'])}</option>{types}</select>
+        <input class="v-in" name="location" placeholder="{E(f['location'])}" aria-label="{E(f['location'])}">
+        <textarea class="v-in full" name="message" placeholder="{E(f['message'])}" aria-label="{E(f['message'])}"></textarea>
+        <button class="pill pill-red full" type="submit">{E(f['submit'])} {ARROW}</button>
+        <p class="v-note full">{E(f['privacy'])}</p>
+      </form>
+      <div class="v-form-ok" hidden><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><b>✓</b><p>{E(f['success'])}</p><button class="pill pill-ghost" type="button">{E(f['again'])}</button></div>
+    </div>
+  </div>
+</section>
+</main>
+''' + footer(c) + '</body>\n</html>\n'
+
+
+def page_zertifikate(c):
+    t, v = c.t, c.v
+    z = t['p_zertifikate']; cv = t['cert']
+    title, view = v['certs']
+    cards = ''.join(f'''<button class="vcert" type="button" data-modal="cert{i}">
+        <span class="vcert-no">0{i + 1}</span>{seal(a, i, 'c')}
+        <h3>{E(a)}</h3><p>{E(d)}</p>
+        <span class="chip">{CHK} {E(b)}</span>
+        <span class="vcert-foot">{E(view)} {ARROW}</span>
+      </button>''' for i, (a, b, d) in enumerate(z['badges']))
+    modals = ''.join(f'''<div class="v-modal" id="cert{i}" role="dialog" aria-modal="true" aria-labelledby="certT{i}" hidden>
+  <div class="v-modal-box">
+    <button class="v-modal-close" type="button" aria-label="{E(t['lb']['close'])}">{CLOSE}</button>
+    <div class="v-cert-head">{seal(a, i, 'm')}<div><div class="eyebrow">{E(cv['label'])} 0{i + 1}</div><h2 id="certT{i}">{E(a)}</h2><span class="chip">{CHK} {E(b)}</span></div></div>
+    <p style="color:var(--mid);line-height:1.65">{E(d)}</p>
+    <div class="v-doc">{DOC.replace('<svg ', '<svg width="34" height="34" ')}<strong>{E(cv['pending_title'])}</strong><span>{E(cv['pending'])}</span></div>
+  </div>
+</div>''' for i, (a, b, d) in enumerate(z['badges']))
+    steps = ''.join(f'<div class="pstep"><i>0{i + 1}</i><div><b>{E(a)}</b><p>{E(b)}</p></div></div>' for i, (a, b) in enumerate(z['steps']))
+    proc_title = [x for x in z['process_title'].split('<br>')]
+    return head(c, t['meta']['zertifikate'][0], t['meta']['zertifikate'][1]) + nav(c) + sub_hero(c, 'f14', title, z['sub'], v['nav'][4]) + f'''
+<main>
+<section class="certs">
+  <div class="wrap">
+    <!-- PLATZHALTER: Nachweise werden nach Erhalt der Originaldokumente ersetzt -->
+    <div class="cert-grid2" data-rise>{cards}</div>
+    <p style="margin-top:20px;color:var(--mid);font-size:14px">{E(z['note'])}</p>
+  </div>
+</section>
+<section class="process">
+  <div class="wrap">
+    <h2 class="mega" style="text-align:left" data-split>{lines(proc_title, 'muted')}</h2>
+    <div class="process-grid" data-rise>{steps}</div>
+  </div>
+</section>
+{modals}
+</main>
+''' + footer(c) + '</body>\n</html>\n'
+
+
+PAGES_V2 = {'index': page_index, 'kontakt': page_kontakt, 'zertifikate': page_zertifikate}
+
+
 def main():
     for lang in LANGS:
         out = os.path.join(ROOT, 'v2') if lang == 'de' else os.path.join(ROOT, 'v2', lang)
         os.makedirs(out, exist_ok=True)
-        with open(os.path.join(out, 'index.html'), 'w', encoding='utf-8') as fh:
-            fh.write(build(lang))
-    print('built v2: ' + ', '.join(LANGS))
+        for page, fn in PAGES_V2.items():
+            with open(os.path.join(out, PAGE_FILES[page]), 'w', encoding='utf-8') as fh:
+                fh.write(fn(Ctx(lang, page)))
+    print('built v2: ' + ', '.join(LANGS) + ' × ' + ', '.join(PAGES_V2))
 
 
 if __name__ == '__main__':
