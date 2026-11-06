@@ -99,6 +99,7 @@ const M = {
   linen: std(0xffffff, { map: fabricTex('#ece8e0'), r: 0.95 }), throw: std(0xffffff, { map: fabricTex('#b39575'), r: 0.95 }),
   rug: std(0xffffff, { map: fabricTex('#d9d2c6'), r: 1 }), rugDark: std(0xffffff, { map: fabricTex('#5d5a55'), r: 1 }),
   glass: new THREE.MeshStandardMaterial({ color: 0xe4eef3, transparent: true, opacity: 0.14, roughness: 0.04, metalness: 0.1, depthWrite: false }),
+  showerGlass: new THREE.MeshStandardMaterial({ color: 0xcfe1e8, transparent: true, opacity: 0.32, roughness: 0.05, metalness: 0.2, depthWrite: false, side: THREE.DoubleSide }),
   frosted: new THREE.MeshStandardMaterial({ color: 0xf5f7f8, transparent: true, opacity: 0.82, roughness: 0.4 }),
   glassDoor: new THREE.MeshStandardMaterial({ color: 0xc9d6dc, transparent: true, opacity: 0.55, roughness: 0.3, metalness: 0.1 }),
   mirror: std(0xc9d4da, { r: 0.12, m: 0.35 }), leaf: std(0x4f7a3e, { r: 0.85 }), pot: std(0xd9d3c9, { r: 0.7 }),
@@ -368,8 +369,13 @@ const C = room({ ox: 80, w: 3.4, d: 3.0, floor: M.tileFloor, wall: M.tileWall, l
   windows: [{ s: 'e', c: 0.4, w: 0.9, h: 0.8, y: 1.45, frosted: true }], doors: [{ s: 's', c: 0.9 }] });
 {
   const g = C.g;
-  box(g, 0.012, 2.0, 1.0, M.glass, -0.55, 0.0, -1.0, { cast: false });
-  box(g, 0.02, 0.02, 1.0, M.chrome, -0.55, 2.0, -1.0);
+  // walk-in shower: framed glass panel + short return panel, black profiles, stabiliser bar to the wall
+  const pf = (w, h, d, x, y, z) => box(g, w, h, d, M.black, x, y, z, { cast: false });
+  box(g, 0.01, 1.98, 0.98, M.showerGlass, -0.55, 0.01, -1.0, { cast: false });
+  pf(0.03, 0.03, 1.0, -0.55, 1.99, -1.0); pf(0.03, 0.025, 1.0, -0.55, 0, -1.0); pf(0.03, 2.02, 0.03, -0.55, 0, -0.5); pf(0.03, 2.02, 0.03, -0.55, 0, -1.485);
+  box(g, 0.4, 1.98, 0.01, M.showerGlass, -0.75, 0.01, -0.5, { cast: false });
+  pf(0.4, 0.03, 0.03, -0.75, 1.99, -0.5); pf(0.4, 0.025, 0.03, -0.75, 0, -0.5); pf(0.03, 2.02, 0.03, -0.95, 0, -0.5);
+  pf(0.75, 0.02, 0.02, -1.325, 1.97, -0.5);
   box(g, 0.05, 0.02, 0.4, M.chrome, -1.55, 2.2, -1.1); cyl(g, 0.16, 0.16, 0.015, M.chrome, -1.32, 2.18, -1.1, 32);
   box(g, 0.7, 0.006, 0.05, M.chrome, -1.1, 0.003, -0.6, { cast: false });
   C.part('n', -1.3, 1.2, 0.04, 0.6, 0.3, 0.08, M.tileWall);
