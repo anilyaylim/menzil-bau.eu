@@ -43,3 +43,15 @@ Poly Haven and gives the main surfaces real PBR textures:
 
 Download them into `assets/` (models: glTF 1k, textures: diffuse, nor_gl,
 rough jpg) from polyhaven.com; textures get metric cube-projected UVs.
+
+## Compress for the web
+
+Blender's export is 8–16 MB per room. Compress with gltf-transform (keep the
+lightmap UVs!):
+
+    npx @gltf-transform/cli optimize out/<room>.glb v2/tour/<room>.glb \
+      --texture-compress webp --texture-size 1024 --compress meshopt \
+      --simplify false --join false --flatten false --instance false \
+      --prune-attributes false
+
+`tour.js` loads them with `MeshoptDecoder`.

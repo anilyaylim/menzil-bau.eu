@@ -8,6 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { makeModel } from './houses.js';
 
 const I = window.TOUR_I18N;
@@ -415,7 +416,7 @@ const bakedScenes = {};
 function loadBaked(id) {
   if (!BAKED.has(id)) return Promise.resolve(null);
   if (!bakedScenes[id]) bakedScenes[id] = Promise.all([
-    new GLTFLoader().loadAsync(new URL(id + '.glb', BAKE_DIR).href),
+    new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(new URL(id + '.glb', BAKE_DIR).href),
     new THREE.TextureLoader().loadAsync(new URL(id + '-lm.jpg', BAKE_DIR).href),
   ]).then(([gl, lm]) => {
     lm.flipY = false; lm.channel = 1; lm.colorSpace = THREE.SRGBColorSpace; lm.anisotropy = 4;
