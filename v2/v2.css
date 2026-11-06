@@ -844,3 +844,5 @@ html { scroll-padding-top: 96px; }
 .tour-back:hover { background: var(--red); border-color: var(--red); }
 .tour-back[hidden] { display: none; }
 @media (max-width: 760px) { .tour-back { top: 8px; left: 8px; height: 40px; font-size: 12.5px; padding: 0 14px 0 10px; } .tour-stage.inside .tour-hint { top: 58px; } }
+.svc-grid .svc-img { border-bottom: 1px solid var(--paper-2); background: var(--paper-2); }
+.svc-grid .svc:first-child .svc-img { background: #e4e7ea; } .svc-grid .svc:first-child .svc-img img { mix-blend-mode: multiply; }
