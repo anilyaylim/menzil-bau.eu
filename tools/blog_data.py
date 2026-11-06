@@ -1,0 +1,253 @@
+# -*- coding: utf-8 -*-
+"""Blog posts (DE/EN/TR) and the site assistant's knowledge base for the v2 pages.
+
+Posts are general guidance texts written for the website (no client data, no news claims).
+Add a post: append a dict to POSTS with the same keys; run python3 tools/build_v2.py.
+"""
+
+BLOG_DATE = '2026-11-06'
+
+POSTS = [
+ {
+  'slug': 'hausbau-ablauf', 'img': 'photos/f15', 'cat': {'de': 'Neubau', 'en': 'New build', 'tr': 'Yeni yapı'}, 'read': 4,
+  'de': {
+   'title': 'Hausbau in fünf Schritten: So läuft Ihr Projekt ab',
+   'lead': 'Vom ersten Gespräch bis zur Schlüsselübergabe – ein Überblick, was in welcher Phase passiert und was Sie vorbereiten können.',
+   'body': [
+    ('1. Erstberatung', 'Am Anfang stehen Ihre Wünsche: Wie viele Zimmer, welche Bauweise, welches Budget, welcher Zeitrahmen? Hilfreich sind Unterlagen zum Grundstück (Grundbuchauszug, Lageplan, Bebauungsbestimmungen der Gemeinde) und ein grober Finanzierungsrahmen.'),
+    ('2. Planung und Einreichung', 'Aus den Wünschen entsteht ein Entwurf und daraus der Einreichplan. Er wird mit den erforderlichen Unterlagen bei der Baubehörde der Gemeinde eingereicht. Erst mit der Bewilligung darf gebaut werden.'),
+    ('3. Angebot und Zeitplan', 'Auf Basis der Pläne erhalten Sie ein Angebot mit nachvollziehbaren Positionen und einen Bauzeitplan mit Etappen. So wissen Sie vorab, was wann passiert und was es kostet.'),
+    ('4. Ausführung', 'Fundament, Rohbau, Dach, Fassade und Ausbau folgen dem Zeitplan. Wichtig ist eine Stelle, die alle Gewerke koordiniert und für Sie erreichbar ist, wenn Entscheidungen anstehen.'),
+    ('5. Abnahme und Übergabe', 'Zum Schluss wird gemeinsam abgenommen, offene Punkte werden protokolliert und erledigt. Danach erfolgt die Übergabe – und die Fertigstellung wird der Behörde gemeldet.'),
+   ],
+  },
+  'en': {
+   'title': 'Building a house in five steps: how your project runs',
+   'lead': 'From the first conversation to the handover of the keys – an overview of what happens in each phase and what you can prepare.',
+   'body': [
+    ('1. Initial consultation', 'It starts with your wishes: how many rooms, which construction method, what budget, what timeline? Documents about the plot (land register extract, site plan, the municipality’s building rules) and a rough financing frame help a lot.'),
+    ('2. Planning and permit', 'Your wishes become a design and then the permit plan. It is submitted with the required documents to the municipal building authority. Construction may only start once the permit is granted.'),
+    ('3. Quote and schedule', 'Based on the plans you receive a quote with clear line items and a construction schedule with milestones – so you know in advance what happens when and what it costs.'),
+    ('4. Construction', 'Foundation, shell, roof, facade and fit-out follow the schedule. What matters is one party that coordinates every trade and is reachable when decisions are due.'),
+    ('5. Inspection and handover', 'Finally there is a joint inspection; open items are recorded and resolved. Then comes the handover – and completion is reported to the authority.'),
+   ],
+  },
+  'tr': {
+   'title': 'Beş adımda ev inşaatı: Projeniz nasıl ilerler?',
+   'lead': 'İlk görüşmeden anahtar teslimine kadar her aşamada neler olduğuna ve neler hazırlayabileceğinize genel bir bakış.',
+   'body': [
+    ('1. Ön görüşme', 'Her şey isteklerinizle başlar: Kaç oda, hangi yapı tipi, ne kadar bütçe, hangi zaman planı? Arsa belgeleri (tapu kaydı, vaziyet planı, belediyenin yapılaşma kuralları) ve kabaca bir finansman çerçevesi çok yardımcı olur.'),
+    ('2. Planlama ve ruhsat', 'İsteklerinizden bir tasarım, oradan da ruhsat projesi çıkar. Proje gerekli belgelerle birlikte belediyenin yapı dairesine sunulur. İnşaata ancak izin çıktıktan sonra başlanabilir.'),
+    ('3. Teklif ve takvim', 'Çizimlere dayanarak kalemleri anlaşılır bir teklif ve aşamalı bir iş takvimi alırsınız. Böylece neyin ne zaman yapılacağını ve maliyetini önceden bilirsiniz.'),
+    ('4. Uygulama', 'Temel, kaba inşaat, çatı, cephe ve iç işler takvime göre ilerler. Önemli olan tüm taşeronları koordine eden ve karar gerektiğinde ulaşılabilen tek bir muhatabın olmasıdır.'),
+    ('5. Kabul ve teslim', 'Son olarak birlikte kabul yapılır, eksikler kayda geçirilip giderilir. Ardından teslim gerçekleşir ve yapının tamamlandığı resmi makama bildirilir.'),
+   ],
+  },
+ },
+ {
+  'slug': 'sanierung-oder-neubau', 'img': 'photos/f64', 'cat': {'de': 'Sanierung', 'en': 'Renovation', 'tr': 'Renovasyon'}, 'read': 3,
+  'de': {
+   'title': 'Sanierung oder Neubau? Worauf es bei der Entscheidung ankommt',
+   'lead': 'Ein älteres Haus kann ein Schatz sein – oder eine Baustelle ohne Ende. Diese Fragen helfen bei der Entscheidung.',
+   'body': [
+    ('Zustand der Substanz', 'Entscheidend sind Fundament, tragende Wände, Dachstuhl und Feuchtigkeit. Eine fachkundige Begehung vor dem Kauf oder vor der Planung zeigt, ob die Substanz eine Sanierung trägt.'),
+    ('Ziele und Nutzung', 'Soll nur modernisiert werden (Bad, Küche, Fenster, Dämmung) oder ändert sich die Raumaufteilung grundlegend? Je größer die Eingriffe, desto eher rückt ein Umbau mit Zubau oder ein Neubau in den Blick.'),
+    ('Kosten und Zeit', 'Sanierungen bergen mehr Unbekannte als Neubauten. Ein Puffer im Budget und eine schrittweise Planung schaffen Sicherheit. Beim Neubau ist der Ablauf planbarer, dafür kommen Abbruch und Bewilligung hinzu.'),
+    ('Unsere Empfehlung', 'Lassen Sie beide Varianten grob durchrechnen. Im kostenlosen Erstgespräch besprechen wir Ihr Objekt und die sinnvollste Lösung – Sanierung, Umbau oder Neubau.'),
+   ],
+  },
+  'en': {
+   'title': 'Renovate or rebuild? What the decision depends on',
+   'lead': 'An older house can be a treasure – or an endless building site. These questions help you decide.',
+   'body': [
+    ('Condition of the structure', 'Foundation, load-bearing walls, roof structure and moisture are decisive. An expert inspection before buying or planning shows whether the structure can carry a renovation.'),
+    ('Goals and use', 'Is it only about modernising (bathroom, kitchen, windows, insulation) or will the layout change fundamentally? The bigger the intervention, the more a conversion with extension or a new build comes into view.'),
+    ('Cost and time', 'Renovations carry more unknowns than new builds. A budget buffer and step-by-step planning add certainty. A new build is more predictable, but demolition and a permit are added.'),
+    ('Our advice', 'Have both options roughly calculated. In a free initial consultation we discuss your property and the most sensible solution – renovation, conversion or new build.'),
+   ],
+  },
+  'tr': {
+   'title': 'Renovasyon mu, yeni yapı mı? Karar neye bağlı?',
+   'lead': 'Eski bir ev bir hazine olabilir ya da bitmeyen bir şantiye. Bu sorular karar vermenize yardımcı olur.',
+   'body': [
+    ('Yapının durumu', 'Belirleyici olan temel, taşıyıcı duvarlar, çatı konstrüksiyonu ve nemdir. Satın almadan veya planlamadan önce yapılacak uzman incelemesi, yapının bir renovasyonu kaldırıp kaldıramayacağını gösterir.'),
+    ('Hedefler ve kullanım', 'Sadece modernizasyon mu (banyo, mutfak, pencere, yalıtım), yoksa oda düzeni kökten mi değişecek? Müdahale büyüdükçe ek binalı bir tadilat ya da yeni yapı daha mantıklı hale gelir.'),
+    ('Maliyet ve süre', 'Renovasyonlar yeni yapılara göre daha fazla bilinmeyen içerir. Bütçede bir pay ve adım adım planlama güven sağlar. Yeni yapıda süreç daha öngörülebilirdir, ancak yıkım ve ruhsat eklenir.'),
+    ('Önerimiz', 'İki seçeneği de kabaca hesaplatın. Ücretsiz ön görüşmede yapınızı ve en mantıklı çözümü (renovasyon, tadilat veya yeni yapı) birlikte değerlendiririz.'),
+   ],
+  },
+ },
+ {
+  'slug': 'einreichplan', 'img': 'plans/mattersburg-1', 'cat': {'de': 'Planung', 'en': 'Planning', 'tr': 'Planlama'}, 'read': 3,
+  'de': {
+   'title': 'Der Einreichplan: was er ist und warum er so wichtig ist',
+   'lead': 'Ohne Einreichplan keine Baubewilligung. Was ein Einreichplan enthält und wie Sie Verzögerungen vermeiden.',
+   'body': [
+    ('Was ist ein Einreichplan?', 'Der Einreichplan ist die Plandarstellung Ihres Bauvorhabens für die Baubehörde: Grundrisse, Schnitte, Ansichten und ein Lageplan mit den Abständen zum Nachbargrund. Dazu kommt eine Baubeschreibung.'),
+    ('Wer reicht ein?', 'Eingereicht wird bei der Baubehörde der Gemeinde, in der gebaut wird. Die Pläne müssen von einer befugten Person verfasst und unterschrieben sein. Welche Unterlagen genau nötig sind, regelt die jeweilige Landesbauordnung.'),
+    ('Häufige Verzögerungen', 'Fehlende Unterlagen, Abweichungen vom Bebauungsplan oder ungeklärte Nachbarfragen verlängern das Verfahren. Eine frühe Abstimmung mit der Gemeinde und vollständige Unterlagen sparen Wochen.'),
+    ('Planung aus einer Hand', 'Wenn Planung und Ausführung aus einem Haus kommen, passen Plan und Baustelle zusammen. Unsere Projektseite zeigt eine Auswahl an Einreichplanungen, die wir erstellt haben.'),
+   ],
+  },
+  'en': {
+   'title': 'The permit plan: what it is and why it matters',
+   'lead': 'No permit plan, no building permit. What a permit plan contains and how to avoid delays.',
+   'body': [
+    ('What is a permit plan?', 'The permit plan (Einreichplan) presents your project to the building authority: floor plans, sections, elevations and a site plan with distances to neighbouring plots, plus a building description.'),
+    ('Who submits it?', 'It is submitted to the building authority of the municipality where you build. The plans must be drawn up and signed by an authorised person. Which documents are required is set by the building code of the federal state.'),
+    ('Common delays', 'Missing documents, deviations from the zoning plan or unresolved neighbour issues prolong the procedure. Early coordination with the municipality and complete documents save weeks.'),
+    ('Planning from a single source', 'When planning and construction come from one company, plan and site fit together. Our projects page shows a selection of permit plans we have prepared.'),
+   ],
+  },
+  'tr': {
+   'title': 'Ruhsat projesi: Nedir ve neden bu kadar önemli?',
+   'lead': 'Ruhsat projesi olmadan yapı izni olmaz. Bir ruhsat projesinde neler bulunur ve gecikmeler nasıl önlenir?',
+   'body': [
+    ('Ruhsat projesi nedir?', 'Ruhsat projesi (Einreichplan), yapınızın yapı dairesine sunulan çizimleridir: kat planları, kesitler, görünüşler ve komşu parsellere mesafeleri gösteren vaziyet planı. Buna bir yapı tarifnamesi eşlik eder.'),
+    ('Kim sunar?', 'Proje, inşaatın yapılacağı belediyenin yapı dairesine sunulur. Çizimler yetkili bir kişi tarafından hazırlanıp imzalanmalıdır. Hangi belgelerin gerektiğini ilgili eyaletin yapı yönetmeliği belirler.'),
+    ('Sık görülen gecikmeler', 'Eksik belgeler, imar planından sapmalar veya çözülmemiş komşu konuları süreci uzatır. Belediyeyle erken görüşmek ve belgeleri eksiksiz hazırlamak haftalar kazandırır.'),
+    ('Tek elden planlama', 'Planlama ve uygulama aynı firmadan geldiğinde çizim ile şantiye birbirine uyar. Projeler sayfamızda hazırladığımız ruhsat projelerinden bir seçki bulabilirsiniz.'),
+   ],
+  },
+ },
+]
+
+BLOG_UI = {
+ 'de': {'nav': 'Blog', 'title': ['Wissen rund', ('ums Bauen.', 'red')], 'sub': 'Ratgeber zu Planung, Neubau und Sanierung – verständlich erklärt vom Menzil-Bau-Team.',
+        'read': 'Min. Lesezeit', 'more': 'Weiterlesen', 'back': 'Alle Beiträge', 'cta_title': 'Fragen zu Ihrem Bauvorhaben?', 'cta_p': 'Im kostenlosen Erstgespräch klären wir, was für Ihr Projekt sinnvoll ist.',
+        'meta': 'Blog | Menzil-Bau', 'meta_d': 'Ratgeber zu Planung, Einreichung, Neubau und Sanierung in Niederösterreich und Wien.', 'related': 'Weitere Beiträge'},
+ 'en': {'nav': 'Blog', 'title': ['Knowledge about', ('building.', 'red')], 'sub': 'Guides on planning, new builds and renovation – clearly explained by the Menzil-Bau team.',
+        'read': 'min read', 'more': 'Read more', 'back': 'All posts', 'cta_title': 'Questions about your project?', 'cta_p': 'In a free initial consultation we clarify what makes sense for your project.',
+        'meta': 'Blog | Menzil-Bau', 'meta_d': 'Guides on planning, permits, new builds and renovation in Lower Austria and Vienna.', 'related': 'More posts'},
+ 'tr': {'nav': 'Blog', 'title': ['İnşaat üzerine', ('bilgiler.', 'red')], 'sub': 'Planlama, yeni yapı ve renovasyon üzerine rehberler; Menzil-Bau ekibinden anlaşılır bir dille.',
+        'read': 'dk okuma', 'more': 'Devamını oku', 'back': 'Tüm yazılar', 'cta_title': 'Projenizle ilgili sorularınız mı var?', 'cta_p': 'Ücretsiz ön görüşmede projeniz için neyin mantıklı olduğunu birlikte netleştiririz.',
+        'meta': 'Blog | Menzil-Bau', 'meta_d': 'Aşağı Avusturya ve Viyana’da planlama, ruhsat, yeni yapı ve renovasyon üzerine rehberler.', 'related': 'Diğer yazılar'},
+}
+
+# ───────────── site assistant (rule-based, answers only from site content) ─────────────
+CHAT_UI = {
+ 'de': {'name': 'Menzil-Assistent', 'sub': 'Automatische Antworten aus unseren Website-Infos', 'open': 'Fragen? Chat öffnen', 'close': 'Chat schließen',
+        'placeholder': 'Ihre Frage …', 'send': 'Senden', 'hello': 'Hallo! Ich beantworte einfache Fragen zu Menzil-Bau – zum Beispiel zu Leistungen, Ablauf, Einsatzgebiet oder Kontakt. Wobei kann ich helfen?',
+        'fallback': 'Dazu habe ich leider keine passende Antwort. Am besten fragen Sie unser Team direkt – telefonisch, per WhatsApp oder über das Kontaktformular.',
+        'note': 'Kein Live-Chat · keine Speicherung Ihrer Eingaben',
+        'chips': ['Leistungen', 'Einsatzgebiet', 'Ablauf', 'Was kostet ein Haus?', 'Termin buchen', 'Kontakt']},
+ 'en': {'name': 'Menzil assistant', 'sub': 'Automatic answers from our website content', 'open': 'Questions? Open chat', 'close': 'Close chat',
+        'placeholder': 'Your question …', 'send': 'Send', 'hello': 'Hi! I answer simple questions about Menzil-Bau – for example about services, process, area or contact. How can I help?',
+        'fallback': 'Sorry, I don’t have a matching answer for that. It’s best to ask our team directly – by phone, WhatsApp or the contact form.',
+        'note': 'Not a live chat · your input is not stored',
+        'chips': ['Services', 'Area', 'Process', 'What does a house cost?', 'Book a consultation', 'Contact']},
+ 'tr': {'name': 'Menzil asistanı', 'sub': 'Site içeriğimizden otomatik cevaplar', 'open': 'Sorunuz mu var? Sohbeti aç', 'close': 'Sohbeti kapat',
+        'placeholder': 'Sorunuz …', 'send': 'Gönder', 'hello': 'Merhaba! Menzil-Bau hakkında basit sorularınızı yanıtlıyorum: hizmetler, süreç, çalışma bölgesi veya iletişim gibi. Nasıl yardımcı olabilirim?',
+        'fallback': 'Bu konuda uygun bir cevabım yok. En iyisi ekibimize doğrudan sormanız: telefon, WhatsApp ya da iletişim formu ile.',
+        'note': 'Canlı sohbet değildir · yazdıklarınız kaydedilmez',
+        'chips': ['Hizmetler', 'Çalışma bölgesi', 'Süreç', 'Bir ev ne kadara mal olur?', 'Randevu al', 'İletişim']},
+}
+
+# keywords are matched without accents and in lower case, in all three languages.
+# answers: {lang: text}; links: [(label{lang}, href-key)] where href-key is resolved in build_v2.py
+INTENTS = [
+ ('greet', ['hallo', 'hi', 'hey', 'servus', 'gruss', 'guten tag', 'hello', 'merhaba', 'selam', 'gunaydin', 'iyi gunler'],
+  {'de': 'Hallo! Fragen Sie mich gern zu Leistungen, Ablauf, Einsatzgebiet, Terminen oder Kontakt.',
+   'en': 'Hello! Feel free to ask about services, process, area, appointments or contact.',
+   'tr': 'Merhaba! Hizmetler, süreç, çalışma bölgesi, randevu veya iletişim hakkında sorabilirsiniz.'}, []),
+ ('services', ['leistung', 'service', 'angebot an', 'was macht', 'was bietet', 'what do you', 'offer', 'hizmet', 'ne yapiyor', 'neler yap', 'is yap'],
+  {'de': 'Menzil-Bau bietet sechs Leistungen aus einer Hand: Planung, Rohbau, Fassade, Umbau & Zubau, Sanierung und Abbruch.',
+   'en': 'Menzil-Bau offers six services from a single source: planning, shell construction, facades, conversions & extensions, renovation and demolition.',
+   'tr': 'Menzil-Bau altı hizmeti tek elden sunar: planlama, kaba inşaat, cephe, tadilat ve ek bina, renovasyon ve yıkım.'}, [('services', 'home#leistungen')]),
+ ('planning', ['planung', 'plan', 'einreich', 'bewillig', 'genehmig', 'permit', 'architect', 'architekt', 'ruhsat', 'izin', 'proje ciz', 'cizim'],
+  {'de': 'Wir planen im eigenen Haus: Entwurf, Einreichplan und Begleitung durch das Bewilligungsverfahren. So passt der Plan später zur Baustelle.',
+   'en': 'We plan in-house: design, permit plan and support through the approval process – so the plan fits the site later on.',
+   'tr': 'Planlamayı kendi bünyemizde yapıyoruz: tasarım, ruhsat projesi ve onay sürecinde destek. Böylece çizim sonradan şantiyeyle birebir uyuşur.'}, [('blog_plan', 'blog-einreichplan'), ('projects', 'projekte')]),
+ ('shell', ['rohbau', 'massiv', 'mauer', 'shell', 'masonry', 'kaba insaat', 'karkas', 'duvar'],
+  {'de': 'Im Rohbau errichten wir die äußere Kontur Ihres Gebäudes inklusive Dachkonstruktion – Fenster, Fassade und Innenausbau übernehmen wir auf Wunsch ebenfalls.',
+   'en': 'In shell construction we build the outer structure of your building including the roof; windows, facade and fit-out can be added on request.',
+   'tr': 'Kaba inşaatta binanızın çatı dahil dış iskeletini kuruyoruz; isterseniz pencere, cephe ve iç işleri de üstleniyoruz.'}, [('services', 'home#leistungen')]),
+ ('renovation', ['sanier', 'renov', 'umbau', 'zubau', 'modernis', 'altbau', 'bad', 'kuche', 'extension', 'conversion', 'tadilat', 'ek bina', 'yenile', 'banyo', 'mutfak'],
+  {'de': 'Ja, wir sanieren, bauen um und bauen zu – von Bad und Küche bis zur neuen Raumaufteilung oder einem Zubau, sauber geplant und ohne unnötigen Flurschaden.',
+   'en': 'Yes, we renovate, convert and extend – from bathroom and kitchen to new layouts or an extension, carefully planned and without unnecessary damage.',
+   'tr': 'Evet, renovasyon, tadilat ve ek bina yapıyoruz: banyo ve mutfaktan yeni oda düzenine ya da ek binaya kadar, özenle planlanmış ve gereksiz hasar vermeden.'}, [('blog_reno', 'blog-sanierung-oder-neubau')]),
+ ('facade', ['fassade', 'wdvs', 'warmeschutz', 'daemm', 'dammung', 'putz', 'facade', 'insulation', 'render', 'cephe', 'mantolama', 'yalitim', 'siva'],
+  {'de': 'Wir gestalten Fassaden nach Ihren Wünschen – inklusive Vollwärmeschutz und Putz, optisch ansprechend und technisch sauber.',
+   'en': 'We design facades to your wishes – including thermal insulation and render, attractive and technically sound.',
+   'tr': 'Cepheyi isteğinize göre tasarlıyoruz: mantolama ve sıva dahil, estetik ve teknik açıdan kusursuz.'}, [('services', 'home#leistungen')]),
+ ('demolition', ['abbruch', 'abriss', 'ruckbau', 'demoli', 'tear down', 'yikim', 'yik'],
+  {'de': 'Wir übernehmen den fachgerechten Abbruch bzw. Abriss inklusive Entsorgung – auch als Vorbereitung für einen Neubau.',
+   'en': 'We carry out professional demolition including disposal – also as preparation for a new build.',
+   'tr': 'Atık bertarafı dahil profesyonel yıkım yapıyoruz; yeni bir yapıya hazırlık olarak da.'}, []),
+ ('area', ['wo ', 'gebiet', 'region', 'einsatz', 'umgebung', 'wien', 'niederosterreich', 'burgenland', 'where', 'area', 'location', 'vienna', 'nerede', 'bolge', 'hangi sehir', 'viyana', 'avusturya'],
+  {'de': 'Wir bauen vor allem in Niederösterreich, im Burgenland und in Wien – unter anderem in Wiener Neustadt, Mattersburg, Ternitz, Traiskirchen und Sollenau.',
+   'en': 'We mainly build in Lower Austria, Burgenland and Vienna – including Wiener Neustadt, Mattersburg, Ternitz, Traiskirchen and Sollenau.',
+   'tr': 'Ağırlıklı olarak Aşağı Avusturya, Burgenland ve Viyana’da çalışıyoruz; aralarında Wiener Neustadt, Mattersburg, Ternitz, Traiskirchen ve Sollenau var.'}, [('projects', 'projekte')]),
+ ('price', ['preis', 'kosten', 'kostet', 'teuer', 'budget', 'price', 'cost', 'how much', 'expensive', 'fiyat', 'maliyet', 'ucret', 'ne kadar', 'kac para', 'butce', 'pahali'],
+  {'de': 'Die Kosten hängen stark von Größe, Bauweise, Ausstattung und Grundstück ab, deshalb nennen wir keine Pauschalpreise. Sie erhalten nach dem kostenlosen Erstgespräch ein transparentes Angebot mit nachvollziehbaren Positionen.',
+   'en': 'Costs depend heavily on size, construction method, finishes and plot, so we don’t quote flat prices. After a free initial consultation you receive a transparent quote with clear line items.',
+   'tr': 'Maliyet büyüklüğe, yapı tipine, malzemeye ve arsaya göre çok değişir; bu yüzden sabit fiyat vermiyoruz. Ücretsiz ön görüşmenin ardından kalemleri net, şeffaf bir teklif alırsınız.'}, [('book', 'calendar'), ('contact', 'kontakt')]),
+ ('duration', ['dauer', 'wie lange', 'zeitplan', 'termingerecht', 'how long', 'duration', 'schedule', 'sure', 'ne zaman biter', 'kac ay', 'takvim'],
+  {'de': 'Die Bauzeit hängt vom Projekt ab. Sie erhalten mit dem Angebot einen verbindlichen Bauzeitplan mit klaren Etappen – von der Einreichung bis zur Übergabe.',
+   'en': 'Construction time depends on the project. Together with the quote you receive a binding schedule with clear milestones – from permit to handover.',
+   'tr': 'İnşaat süresi projeye göre değişir. Teklifle birlikte ruhsattan teslimata kadar net aşamaları olan bağlayıcı bir iş takvimi alırsınız.'}, [('process', 'home#ablauf')]),
+ ('process', ['ablauf', 'schritt', 'vorgehen', 'wie lauft', 'process', 'steps', 'how does it work', 'surec', 'adim', 'nasil ilerl', 'nasil calis'],
+  {'de': 'Unser Ablauf in fünf Schritten: Erstberatung → Planung & Einreichung → Angebot mit Zeitplan → Ausführung → Abnahme und Übergabe.',
+   'en': 'Our process in five steps: consultation → planning & permit → quote with schedule → construction → inspection and handover.',
+   'tr': 'Beş adımda sürecimiz: ön görüşme → planlama ve ruhsat → takvimli teklif → uygulama → kabul ve teslim.'}, [('process', 'home#ablauf'), ('blog_steps', 'blog-hausbau-ablauf')]),
+ ('appointment', ['termin', 'beratung', 'erstgesprach', 'treffen', 'appointment', 'consult', 'book', 'meeting', 'randevu', 'gorusme', 'danisma', 'bulus'],
+  {'de': 'Gern! Sie können einen kostenlosen Beratungstermin direkt online buchen oder uns anrufen.',
+   'en': 'Gladly! You can book a free consultation online or give us a call.',
+   'tr': 'Memnuniyetle! Ücretsiz danışmanlık randevusunu online alabilir ya da bizi arayabilirsiniz.'}, [('book', 'calendar'), ('call', 'phone')]),
+ ('contact', ['kontakt', 'telefon', 'anruf', 'nummer', 'email', 'e-mail', 'mail', 'whatsapp', 'erreich', 'adresse', 'contact', 'phone', 'call', 'reach', 'address', 'iletisim', 'telefon', 'numara', 'ara', 'adres', 'ulas'],
+  {'de': 'Sie erreichen uns unter 0664 / 64 76 640 (auch per WhatsApp) oder per E-Mail an office@menzil-bau.eu – Mo bis Fr von 07:30 bis 17:00.',
+   'en': 'You can reach us at +43 664 64 76 640 (also via WhatsApp) or by email at office@menzil-bau.eu – Mon to Fri, 07:30 to 17:00.',
+   'tr': 'Bize +43 664 64 76 640 numarasından (WhatsApp dahil) ya da office@menzil-bau.eu adresinden ulaşabilirsiniz; Pazartesi–Cuma 07:30–17:00.'}, [('call', 'phone'), ('whatsapp', 'whatsapp'), ('contact', 'kontakt')]),
+ ('hours', ['offnungs', 'burozeit', 'uhrzeit', 'geoffnet', 'erreichbar', 'hours', 'open', 'opening', 'saat', 'calisma saat', 'acik'],
+  {'de': 'Unsere Bürozeiten: Montag bis Freitag, 07:30 – 17:00 Uhr.',
+   'en': 'Our office hours: Monday to Friday, 07:30 – 17:00.',
+   'tr': 'Çalışma saatlerimiz: Pazartesi–Cuma, 07:30–17:00.'}, [('contact', 'kontakt')]),
+ ('about', ['erfahrung', 'seit wann', 'grunder', 'gegrundet', 'wer seid', 'uber euch', 'firma', 'experience', 'since', 'founded', 'about', 'who are', 'tecrube', 'kac yil', 'kuruldu', 'hakkinda', 'kimsiniz', 'firma'],
+  {'de': 'Der Gründer ist seit 1996 auf dem Bau tätig: Ausbildung als Maurer, Polierschule in Tirol, seit 2010 mit eigenem Unternehmen Menzil-Bau.',
+   'en': 'The founder has worked in construction since 1996: trained as a bricklayer, foreman school in Tyrol, and running Menzil-Bau since 2010.',
+   'tr': 'Kurucumuz 1996’dan beri inşaatta: duvarcı olarak meslek eğitimi, Tirol’de şantiye şefliği okulu ve 2010’dan beri kendi firması Menzil-Bau.'}, []),
+ ('certificates', ['zertifikat', 'nachweis', 'versicher', 'gewerbe', 'befugnis', 'certificate', 'licen', 'insur', 'sertifika', 'sigorta', 'belge', 'lisans'],
+  {'de': 'Auf unserer Zertifikate-Seite finden Sie unsere Nachweise und Standards. Kopien stellen wir Ihnen auf Anfrage gern zur Verfügung.',
+   'en': 'Our certificates page lists our credentials and standards. Copies are available on request.',
+   'tr': 'Belgelerimizi ve standartlarımızı sertifikalar sayfamızda bulabilirsiniz. Kopyalarını talep üzerine iletiyoruz.'}, [('certs', 'zertifikate')]),
+ ('models3d', ['3d', 'modell', 'model', 'visualis', 'rendering', 'gorsel'],
+  {'de': 'Jedes Bauvorhaben entsteht bei uns zuerst als Modell. Auf der Startseite können Sie Beispielmodelle drehen und zusehen, wie sie entstehen.',
+   'en': 'Every project starts as a model with us. On the home page you can rotate example models and watch them being built.',
+   'tr': 'Her proje bizde önce bir model olarak doğar. Ana sayfada örnek modelleri çevirip nasıl inşa edildiklerini izleyebilirsiniz.'}, [('models', 'home#modelle')]),
+ ('projects', ['projekt', 'referenz', 'beispiel', 'foto', 'bilder', 'project', 'reference', 'example', 'photo', 'proje', 'referans', 'ornek', 'resim'],
+  {'de': 'Eine Auswahl unserer Projekte mit Fotos und Einreichplänen finden Sie auf der Projektseite, Kundenstimmen auf der Referenzseite.',
+   'en': 'A selection of our projects with photos and permit plans is on the projects page; client testimonials are on the references page.',
+   'tr': 'Fotoğraf ve ruhsat projeleriyle seçili işlerimiz projeler sayfasında, müşteri yorumları referanslar sayfasında.'}, [('projects', 'projekte'), ('refs', 'referenzen')]),
+ ('blog', ['blog', 'ratgeber', 'artikel', 'tipps', 'guide', 'article', 'tips', 'yazi', 'rehber', 'ipucu'],
+  {'de': 'In unserem Blog erklären wir Themen wie den Ablauf beim Hausbau, Sanierung oder Neubau und den Einreichplan.',
+   'en': 'Our blog explains topics such as the house-building process, renovate vs. rebuild and the permit plan.',
+   'tr': 'Blogumuzda ev inşaatı süreci, renovasyon mu yeni yapı mı ve ruhsat projesi gibi konuları anlatıyoruz.'}, [('blog', 'blog')]),
+ ('language', ['deutsch', 'englisch', 'turkisch', 'sprache', 'english', 'turkish', 'language', 'speak', 'turkce', 'ingilizce', 'almanca', 'dil', 'konus'],
+  {'de': 'Die Website gibt es auf Deutsch, Englisch und Türkisch – umschalten können Sie oben im Menü (DE · EN · TR).',
+   'en': 'The website is available in German, English and Turkish – switch at the top of the menu (DE · EN · TR).',
+   'tr': 'Site Almanca, İngilizce ve Türkçe; dili menünün üstünden değiştirebilirsiniz (DE · EN · TR).'}, []),
+ ('thanks', ['danke', 'vielen dank', 'thank', 'thx', 'tesekkur', 'sagol', 'sag ol'],
+  {'de': 'Gern geschehen! Wenn Sie möchten, buchen Sie gleich einen kostenlosen Beratungstermin.',
+   'en': 'You’re welcome! If you like, book a free consultation right away.',
+   'tr': 'Rica ederim! İsterseniz hemen ücretsiz bir danışmanlık randevusu alabilirsiniz.'}, [('book', 'calendar')]),
+]
+
+CHAT_LINKS = {
+ 'services': {'de': 'Leistungen', 'en': 'Services', 'tr': 'Hizmetler'},
+ 'projects': {'de': 'Projekte', 'en': 'Projects', 'tr': 'Projeler'},
+ 'refs': {'de': 'Referenzen', 'en': 'References', 'tr': 'Referanslar'},
+ 'certs': {'de': 'Zertifikate', 'en': 'Certificates', 'tr': 'Sertifikalar'},
+ 'process': {'de': 'Ablauf ansehen', 'en': 'See the process', 'tr': 'Süreci gör'},
+ 'models': {'de': '3D-Modelle', 'en': '3D models', 'tr': '3D modeller'},
+ 'book': {'de': 'Termin buchen', 'en': 'Book a consultation', 'tr': 'Randevu al'},
+ 'call': {'de': 'Anrufen', 'en': 'Call', 'tr': 'Ara'},
+ 'whatsapp': {'de': 'WhatsApp', 'en': 'WhatsApp', 'tr': 'WhatsApp'},
+ 'contact': {'de': 'Kontaktformular', 'en': 'Contact form', 'tr': 'İletişim formu'},
+ 'blog': {'de': 'Zum Blog', 'en': 'Go to blog', 'tr': 'Bloga git'},
+ 'blog_plan': {'de': 'Blog: Einreichplan', 'en': 'Blog: permit plan', 'tr': 'Blog: ruhsat projesi'},
+ 'blog_reno': {'de': 'Blog: Sanierung oder Neubau', 'en': 'Blog: renovate or rebuild', 'tr': 'Blog: renovasyon mu yeni yapı mı'},
+ 'blog_steps': {'de': 'Blog: Hausbau in 5 Schritten', 'en': 'Blog: 5 steps', 'tr': 'Blog: 5 adımda ev'},
+}
+
+# chip text → intent id (per language order of CHAT_UI chips)
+CHIP_INTENTS = ['services', 'area', 'process', 'price', 'appointment', 'contact']
