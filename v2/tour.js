@@ -8,6 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { makeModel } from './houses.js';
 
 const I = window.TOUR_I18N;
@@ -133,7 +134,7 @@ function addLight(g, color, intensity, x, y, z) {
 }
 function room({ ox, w, d, h = 2.8, floor, wall = M.wall, windows = [], doors = [], wallMat = {}, landscape = 1 }) {
   const g = new THREE.Group(); g.position.x = ox; curRoom = g;
-  const fl = floor.clone(); if (fl.map) { fl.map = fl.map.clone(); fl.map.needsUpdate = true; fl.map.repeat.set(w / 2.2, d / 2.2); }
+  const fl = floor.clone(); fl.name = 'floor_' + floor.name; if (fl.map) { fl.map = fl.map.clone(); fl.map.needsUpdate = true; fl.map.repeat.set(w / 2.2, d / 2.2); }
   const f = mesh(new THREE.PlaneGeometry(w, d), fl, 0, 0, 0, { cast: false }); f.rotation.x = -Math.PI / 2; g.add(f);
   const c = mesh(new THREE.PlaneGeometry(w, d), M.ceil, 0, h, 0); c.rotation.x = Math.PI / 2; g.add(c);
   const F = {
@@ -192,11 +193,13 @@ function downlight(g, x, z, h = 2.8, light = false, I0 = 1.6) {
   if (light) addLight(g, 0xfff0dc, I0, x, h - 0.25, z);
 }
 function plant(g, x, z, s = 1) {
-  cyl(g, 0.2 * s, 0.16 * s, 0.42 * s, M.pot, x, 0, z);
+  // grouped and named so the bake pipeline can swap it for a scanned plant model
+  const p = new THREE.Group(); p.name = 'plant_' + s.toFixed(2); p.position.set(x, 0, z); g.add(p);
+  cyl(p, 0.2 * s, 0.16 * s, 0.42 * s, M.pot, 0, 0, 0);
   const r = rng(Math.round(x * 100 + z * 10));
   for (let k = 0; k < 14; k++) {
-    const leaf = mesh(new THREE.SphereGeometry(0.12 * s, 8, 6), M.leaf, x + (r() - 0.5) * 0.4 * s, 0.55 * s + r() * 0.75 * s, z + (r() - 0.5) * 0.4 * s);
-    leaf.scale.set(1.6, 0.35, 0.8); leaf.rotation.set(r() * 1.2, r() * 6, r() * 1.2); g.add(leaf);
+    const leaf = mesh(new THREE.SphereGeometry(0.12 * s, 8, 6), M.leaf, (r() - 0.5) * 0.4 * s, 0.55 * s + r() * 0.75 * s, (r() - 0.5) * 0.4 * s);
+    leaf.scale.set(1.6, 0.35, 0.8); leaf.rotation.set(r() * 1.2, r() * 6, r() * 1.2); p.add(leaf);
   }
 }
 function art(R, s, c, y, w, hh) { R.part(s, c, y, 0.02, w, hh, 0.03, M.anth); R.part(s, c, y + 0.04, 0.04, w - 0.08, hh - 0.08, 0.01, M.art, false); }
@@ -267,9 +270,11 @@ const L = room({ ox: 0, w: 5.4, d: 6.5, floor: M.oak, landscape: 2,
   pendant(g, -2.55, 0.35, 2.8, 0.25, 0.32, true);
   // reading corner + sideboard (east part)
   const a = L.g;
-  rbox(a, 0.8, 0.42, 0.8, 0.08, M.sofaDark, 1.85, 0.05, -1.75, { ry: -0.5 }); rbox(a, 0.8, 0.5, 0.18, 0.06, M.sofaDark, 2.02, 0.42, -2.05, { ry: -0.5 });
-  for (const [dx, dz] of [[-0.3, -0.3], [0.3, -0.3], [-0.3, 0.3], [0.3, 0.3]]) cyl(a, 0.02, 0.015, 0.06, M.anth, 1.85 + dx * 0.9, 0, -1.75 + dz * 0.9, 8);
-  cyl(a, 0.22, 0.22, 0.03, M.oak, 1.0, 0.5, -2.35, 32); cyl(a, 0.02, 0.02, 0.5, M.anth, 1.0, 0, -2.35, 8);
+  // armchair in line with the sofa (same front/back line, facing the TV wall)
+  const ac = new THREE.Group(); ac.name = 'armchair'; ac.position.set(0.75, 0, -1.85); a.add(ac);
+  rbox(ac, 0.8, 0.42, 0.8, 0.08, M.sofaDark, 0, 0.05, 0); rbox(ac, 0.18, 0.5, 0.8, 0.06, M.sofaDark, 0.36, 0.42, 0);
+  for (const [dx, dz] of [[-0.3, -0.3], [0.3, -0.3], [-0.3, 0.3], [0.3, 0.3]]) cyl(ac, 0.02, 0.015, 0.06, M.anth, dx * 0.9, 0, dz * 0.9, 8);
+  cyl(a, 0.22, 0.22, 0.03, M.oak, 0.75, 0.5, -2.62, 32); cyl(a, 0.02, 0.02, 0.5, M.anth, 0.75, 0, -2.62, 8);
   art(L, 'e', 0.6, 1.1, 0.9, 1.1);
 }
 
@@ -411,7 +416,7 @@ const bakedScenes = {};
 function loadBaked(id) {
   if (!BAKED.has(id)) return Promise.resolve(null);
   if (!bakedScenes[id]) bakedScenes[id] = Promise.all([
-    new GLTFLoader().loadAsync(new URL(id + '.glb', BAKE_DIR).href),
+    new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(new URL(id + '.glb', BAKE_DIR).href),
     new THREE.TextureLoader().loadAsync(new URL(id + '-lm.jpg', BAKE_DIR).href),
   ]).then(([gl, lm]) => {
     lm.flipY = false; lm.channel = 1; lm.colorSpace = THREE.SRGBColorSpace; lm.anisotropy = 4;
