@@ -176,7 +176,7 @@ UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2
 DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 11h6M9 14h6M9 17h4"/></svg>'
 CHK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" width="12" height="12"><path d="M3 8.5l3 3 7-7"/></svg>'
 PIN_S = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
-PAGE_FILES = {'index': 'index.html', 'projekte': 'projekte.html', 'rundgang': 'rundgang.html', 'kontakt': 'kontakt.html', 'zertifikate': 'zertifikate.html', 'blog': 'blog.html'}
+PAGE_FILES = {'index': 'index.html', 'projekte': 'projekte.html', 'rundgang': 'rundgang.html', 'referenzen': 'referenzen.html', 'kontakt': 'kontakt.html', 'zertifikate': 'zertifikate.html', 'blog': 'blog.html'}
 PAGE_FILES.update({f"blog-{p['slug']}": f"blog-{p['slug']}.html" for p in POSTS})
 
 
@@ -265,7 +265,7 @@ def footer(c):
     <div class="foot-word" aria-label="Menzil-Bau">{''.join(f'<span{" class=r" if i in (0, 7) else ""}>{ch}</span>' for i, ch in enumerate('MENZIL-BAU'))}</div>
     <div class="foot-cols">
       <div>{logo_a(w=200)}<p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:320px">{E(t['motto'])}.</p></div>
-      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="rundgang.html">{E(TOUR[c.lang]['nav'])}</a></li><li><a href="{c.CL}referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="blog.html">{E(v['nav'][5])}</a></li><li><a href="kontakt.html">{E(v['nav'][6])}</a></li></ul></div>
+      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="rundgang.html">{E(TOUR[c.lang]['nav'])}</a></li><li><a href="referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="blog.html">{E(v['nav'][5])}</a></li><li><a href="kontakt.html">{E(v['nav'][6])}</a></li></ul></div>
       <div><h4>{E(f[1])}</h4><ul><li><a href="{SITE['phone_href']}">{SITE['phone_local']}</a></li><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><a href="{SITE['whatsapp']}" target="_blank" rel="noopener">WhatsApp</a></li><li>{E(SITE['hours'])}</li></ul></div>
       <div><h4>{E(f[2])}</h4><ul>{''.join(f'<li>{E(x)}</li>' for x in SITE['addr1'])}<li style="margin-top:10px">{'</li><li>'.join(E(x) for x in SITE['addr2'])}</li></ul></div>
     </div>
@@ -292,7 +292,6 @@ def chat_href(c, key):
     if key == 'phone': return SITE['phone_href']
     if key == 'whatsapp': return SITE['whatsapp']
     if key.startswith('home#'): return c.anchor(key[5:])
-    if key == 'referenzen': return f'{c.CL}{key}.html'
     return f'{key}.html'
 
 
@@ -501,7 +500,7 @@ def page_index(c):
     <div class="stack-left">
       <h2 class="mega" data-split>{lines(v['why'][0], 'muted')}</h2>
       <p>{E(v['why'][1])}</p>
-      <p style="margin-top:22px"><a class="pill pill-dark" href="{CL}referenzen.html">{E(t['reviews']['more'])} {ARROW}</a></p>
+      <p style="margin-top:22px"><a class="pill pill-dark" href="referenzen.html">{E(t['reviews']['more'])} {ARROW}</a></p>
     </div>
     <div class="stack-list">{stack}</div>
   </div>
@@ -802,7 +801,42 @@ def page_tour(c):
 """
 
 
-PAGES_V2 = {'index': page_index, 'projekte': page_projekte, 'rundgang': page_tour, 'kontakt': page_kontakt, 'zertifikate': page_zertifikate, 'blog': page_blog}
+def page_referenzen(c):
+    t, v = c.t, c.v; r = t['p_referenzen']
+    from data import REGION_OF
+    reviews = ''.join(f"""<figure class="rev"><div class="stars">★★★★★</div><blockquote>{E(q)}</blockquote>
+        <figcaption><b>{E(n)}</b>{E(tag)} · {E(l)}</figcaption></figure>""" for tag, q, n, l in t['reviews']['items'])
+    groups = {'noe': [], 'bgld': [], 'wien': []}
+    for p in PLACES: groups[REGION_OF.get(p, 'noe')].append(p)
+    regions = ''.join(f"""<div class="region-col"><h4>{E(t['regions'][k])}<span>{len(g)}</span></h4><ul>{''.join(f'<li>{PIN_S}{E(x)}</li>' for x in g)}</ul></div>""" for k, g in groups.items() if g)
+    stats = ''.join(f'<div><span>{n}{u}</span><small>{E(d)}</small></div>' for n, u, d in r['stats'])
+    tl = r['title'].split('<br>')
+    return head(c, t['meta']['referenzen'][0], t['meta']['referenzen'][1]) + nav(c) + sub_hero(c, 'f13', [tl[0], (tl[-1], 'red')], r['sub'], t['nav']['referenzen']) + f"""
+<main>
+<section class="refs-intro">
+  <div class="wrap">
+    <div class="refs-head"><h2 class="mega" data-split>{lines([x for x in t['reviews']['title'].split('<br>')], 'muted')}</h2></div>
+  </div>
+</section>
+<section class="reviews"><div class="wrap rev-grid" data-rise>{reviews}</div></section>
+<section class="places">
+  <div class="wrap">
+    <div class="places-card">
+      <div class="places-hero">
+        <div class="places-eyebrow">{E(r['list_eyebrow'])}</div>
+        <div class="places-nums refs-nums">{stats}</div>
+        <p>{E(r['list_intro'])}</p>
+      </div>
+      <div class="regions">{regions}</div>
+    </div>
+    <div class="refs-cta"><a class="pill pill-dark" href="projekte.html">{E(t['featured']['more'])} {ARROW}</a><a class="pill pill-ghost-d" href="rundgang.html">{E(TOUR[c.lang]['nav'])} {ARROW}</a></div>
+  </div>
+</section>
+</main>
+""" + footer(c) + '</body>\n</html>\n'
+
+
+PAGES_V2 = {'referenzen': page_referenzen, 'index': page_index, 'projekte': page_projekte, 'rundgang': page_tour, 'kontakt': page_kontakt, 'zertifikate': page_zertifikate, 'blog': page_blog}
 PAGES_V2.update({f"blog-{p['slug']}": make_post_page(p) for p in POSTS})
 
 
