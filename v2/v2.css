@@ -832,3 +832,9 @@ html { scroll-padding-top: 96px; }
 .refs-nums div { font-size: 60px; }
 .refs-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin: 30px 0 90px; }
 @media (max-width: 760px) { .refs-intro { padding: 44px 0 14px; } .refs-nums div { font-size: 46px; } .refs-cta { margin-bottom: 60px; } }
+/* six core services: static 3 × 2 grid (no sideways scrolling) */
+.svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding-bottom: 24px; }
+.svc-grid .svc { flex: none; }
+.svc-grid .svc-img { aspect-ratio: 16 / 10; }
+@media (max-width: 1000px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .svc-grid { grid-template-columns: 1fr; gap: 12px; } .svc-grid .svc-img { aspect-ratio: 16 / 9; } .svc-grid .svc-body { padding: 18px 18px 20px; } .svc-grid .svc h3 { font-size: 24px; } }
