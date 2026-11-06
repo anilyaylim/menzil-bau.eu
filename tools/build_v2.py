@@ -221,8 +221,8 @@ def nav(c):
     v, t, n = c.v, c.t, c.v['nav']
     langs = ''.join(f'<a href="{c.href(l)}" hreflang="{l}" lang="{l}"{" class=on aria-current=true" if l == c.lang else ""}>{LANG_NAMES[l]}</a>' for l in LANGS)
     items = [(c.anchor('leistungen'), n[0]), (c.anchor('bauablauf'), n[1]), ('projekte.html', n[3]), (c.anchor('modelle'), n[2]), ('rundgang.html', TOUR[c.lang]['nav']),
-             ('zertifikate.html', n[4]), ('blog.html', n[5]), ('kontakt.html', n[6])]
-    cur = {'projekte': 2, 'rundgang': 4, 'zertifikate': 5, 'blog': 6, 'kontakt': 7}.get(c.page, 6 if c.page.startswith('blog-') else -1)
+             ('referenzen.html', c.t['nav']['referenzen']), ('blog.html', n[5]), ('kontakt.html', n[6])]
+    cur = {'projekte': 2, 'rundgang': 4, 'referenzen': 5, 'blog': 6, 'kontakt': 7}.get(c.page, 6 if c.page.startswith('blog-') else -1)
     li = ''.join(f'<li><a href="{h}"{" aria-current=page class=cur" if i == cur else ""}>{E(x)}</a></li>' for i, (h, x) in enumerate(items))
     return f'''<div class="nav-wrap">
 <header class="nav" aria-label="Navigation">
