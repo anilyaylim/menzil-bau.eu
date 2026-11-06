@@ -838,3 +838,9 @@ html { scroll-padding-top: 96px; }
 .svc-grid .svc-img { aspect-ratio: 16 / 10; }
 @media (max-width: 1000px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) { .svc-grid { grid-template-columns: 1fr; gap: 12px; } .svc-grid .svc-img { aspect-ratio: 16 / 9; } .svc-grid .svc-body { padding: 18px 18px 20px; } .svc-grid .svc h3 { font-size: 24px; } }
+/* tour: back button (leave the room without turning around) */
+.tour-back { position: absolute; top: 16px; left: 16px; z-index: 4; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px 0 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); background: rgba(18,20,23,.72); backdrop-filter: blur(8px); color: #fff; cursor: pointer; font: 600 13.5px var(--body); transition: background .2s, border-color .2s; }
+.tour-back svg { width: 18px; height: 18px; }
+.tour-back:hover { background: var(--red); border-color: var(--red); }
+.tour-back[hidden] { display: none; }
+@media (max-width: 760px) { .tour-back { top: 8px; left: 8px; height: 40px; font-size: 12.5px; padding: 0 14px 0 10px; } .tour-stage.inside .tour-hint { top: 58px; } }

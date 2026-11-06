@@ -229,11 +229,11 @@ const H = room({ ox: 100, w: 3.0, d: 4.4, floor: M.hallTile, landscape: 13,
 /* ───────── hallway / corridor ───────── */
 const FL = room({ ox: 140, w: 1.9, d: 8, floor: M.oak, landscape: 17,
   windows: [{ s: 'n', c: 0, w: 0.9, h: 1.7, y: 0.5 }],
-  doors: [{ s: 's', c: 0, glass: true }, { s: 'w', c: -2.6 }, { s: 'w', c: 0.6, hand: -1 }, { s: 'e', c: -2.2 }, { s: 'e', c: 1.4, hand: -1 }] });
+  doors: [{ s: 's', c: 0, glass: true }, { s: 'w', c: -2.9 }, { s: 'w', c: -0.6, hand: -1 }, { s: 'e', c: -2.5 }, { s: 'e', c: -0.2, hand: -1 }] });
 {
   const g = FL.g;
   box(g, 0.9, 0.012, 6.2, M.rug, 0, 0, -0.2, { cast: false });
-  art(FL, 'e', -0.4, 1.15, 0.6, 0.8); art(FL, 'w', -1.0, 1.25, 0.5, 0.5);
+  art(FL, 'e', -1.35, 1.15, 0.6, 0.8); art(FL, 'w', -1.75, 1.3, 0.5, 0.5);
   plant(g, 0.55, -3.55, 0.95);
   for (const z of [-3.0, -1.4, 0.2, 1.8, 3.2]) downlight(g, 0, z, 2.8, z === -1.4 || z === 1.8, 1.7);
 }
@@ -429,7 +429,7 @@ controls.enablePan = false; controls.enableDamping = true; controls.dampingFacto
 const STOPS = {
   ext:     { room: ext, pos: [-120 + 23, 12, 27], look: [-120, 3.3, 0], orbit: true, sun: [-120 + 18, 26, 16] },
   hall:    { room: H.g, pos: [100 + 0.75, 1.6, 1.95], look: [100 - 0.15, 1.15, -1.9], sun: [100 + 3, 9, 14] },
-  corridor: { room: FL.g, pos: [140, 1.6, 3.3], look: [140, 1.2, -3.8], sun: [140 + 2, 9, -14] },
+  corridor: { room: FL.g, pos: [140, 1.6, 2.4], look: [140, 1.25, -3.8], sun: [140 + 2, 9, -14], sunI: 0 },
   living:  { room: L.g, pos: [2.25, 1.6, 1.35], look: [-2.3, 1.0, -0.1], sun: [-6, 9, 14] },
   kitchen: { room: K.g, pos: [20 + 1.9, 1.6, 2.15], look: [20 - 0.6, 1.0, -1.7], sun: [20 - 12, 9, -6] },
   kids:    { room: KR.g, pos: [60 + 1.05, 1.5, 1.25], look: [60 - 1.3, 0.8, -0.7], sun: [60 + 4, 9, -14] },
@@ -437,12 +437,14 @@ const STOPS = {
   bath:    { room: C.g, pos: [80 + 1.05, 1.6, 1.05], look: [80 - 0.8, 1.15, -1.0], sun: [80 + 12, 9, 3] },
 };
 const ORDER = ['ext', 'hall', 'corridor', 'living', 'kitchen', 'kids', 'bedroom', 'bath'];
+// where the back button leads from each room
+const PARENT = { hall: 'ext', corridor: 'hall', living: 'corridor', kitchen: 'corridor', kids: 'corridor', bedroom: 'corridor', bath: 'bedroom' };
 // info hotspots (world positions) + door hotspots that move to another room
 const SPOTS = {
   hall: [['info', 'frontdoor', [100 - 0.35, 1.5, 2.1]], ['info', 'cloak', [100 - 1.0, 1.7, -1.35]], ['info', 'hallfloor', [100 + 0.3, 0.03, 0.2]],
     ['go', 'corridor', H.door('n', 0.25)], ['go', 'ext', H.door('s', -0.35, 1.1)]],
-  corridor: [['info', 'doors', [140 - 0.85, 1.85, 0.6]], ['info', 'spots', [140, 2.74, -1.4]],
-    ['go', 'living', FL.door('w', -2.6, 1.65)], ['go', 'kitchen', FL.door('w', 0.6, 1.2)], ['go', 'kids', FL.door('e', -2.2, 1.0)], ['go', 'bedroom', FL.door('e', 1.4, 1.2)], ['go', 'hall', FL.door('s', 0)]],
+  corridor: [['info', 'doors', [140 - 0.85, 1.9, -0.6]], ['info', 'spots', [140, 2.74, -1.4]],
+    ['go', 'living', FL.door('w', -2.9, 1.75)], ['go', 'kitchen', FL.door('w', -0.6, 1.0)], ['go', 'kids', FL.door('e', -2.5, 1.75)], ['go', 'bedroom', FL.door('e', -0.2, 1.0)], ['go', 'hall', FL.door('s', 0)]],
   living: [['info', 'floor', [-0.2, 0.03, 1.9]], ['info', 'glazing', [-0.6, 1.5, 3.2]], ['info', 'slats', [-2.6, 2.1, -0.9]], ['go', 'corridor', L.door('n', 1.8)]],
   kitchen: [['info', 'island', [20 + 0.35, 1.05, 0.5]], ['info', 'worktop', [20 + 2.0, 0.95, -2.35]], ['info', 'heating', [20 + 0.9, 0.03, 1.95]], ['go', 'corridor', K.door('s', 1.8)]],
   kids: [['info', 'paint', [60 - 1.85, 2.0, -0.7]], ['info', 'desk', [60 + 0.5, 0.85, -1.5]], ['go', 'corridor', KR.door('s', 1.2)]],
@@ -453,6 +455,7 @@ const SPOTS = {
 /* ───────────── UI ───────────── */
 const ui = {
   title: document.getElementById('tourRoom'), text: document.getElementById('tourText'), step: document.getElementById('tourStep'),
+  back: stage.querySelector('.tour-back'), backLabel: stage.querySelector('.tour-back span'),
   fade: stage.querySelector('.tour-fade'), start: stage.querySelector('.tour-start'), spots: stage.querySelector('.tour-spots'),
   card: stage.querySelector('.tour-card'), bar: [...document.querySelectorAll('.tour-bar button')], hint: stage.querySelector('.tour-hint'),
 };
@@ -477,7 +480,7 @@ stage.addEventListener('pointerdown', e => { if (!e.target.closest('.tour-card, 
 
 function applyStop(id) {
   const st = STOPS[id]; current = id;
-  sun.position.set(...st.sun); sun.target.position.set(st.room.position.x, 0, 0);
+  sun.position.set(...st.sun); sun.intensity = st.sunI ?? 3.2; sun.target.position.set(st.room.position.x, 0, 0);
   ext.visible = st.room === ext; ROOMS.forEach(r => { r.visible = r === st.room; }); useLights(st.room);
   if (st.orbit) {
     const k = Math.min(1.8, Math.max(1, 1.1 / camera.aspect));
@@ -495,6 +498,7 @@ function applyStop(id) {
   camera.updateProjectionMatrix(); controls.update();
   const r = I.rooms[id]; ui.title.textContent = r.name; ui.text.textContent = r.text; ui.step.textContent = `${ORDER.indexOf(id) + 1} / ${ORDER.length}`;
   ui.bar.forEach(b => b.classList.toggle('on', b.dataset.stop === id));
+  const par = PARENT[id]; ui.back.hidden = !par; if (par) ui.backLabel.textContent = I.rooms[par].name;
   ui.start.hidden = id !== 'ext'; stage.classList.toggle('inside', id !== 'ext');
   ui.card.hidden = true; buildSpots(id);
 }
@@ -507,6 +511,7 @@ function go(id) {
 }
 ui.bar.forEach(b => b.addEventListener('click', () => go(b.dataset.stop)));
 ui.start.addEventListener('click', () => go('hall'));
+ui.back.addEventListener('click', () => PARENT[current] && go(PARENT[current]));
 stage.querySelector('.tour-full').addEventListener('click', () => {
   const el = stage.closest('.tour'); if (!document.fullscreenElement) el.requestFullscreen?.(); else document.exitFullscreen?.();
 });
@@ -515,6 +520,7 @@ document.addEventListener('keydown', e => {
   const i = ORDER.indexOf(current);
   if (e.key === 'ArrowRight' && document.activeElement.closest?.('.tour')) go(ORDER[Math.min(i + 1, ORDER.length - 1)]);
   if (e.key === 'ArrowLeft' && document.activeElement.closest?.('.tour')) go(ORDER[Math.max(i - 1, 0)]);
+  if ((e.key === 'Escape' || e.key === 'Backspace') && PARENT[current] && document.activeElement.closest?.('.tour') && !document.fullscreenElement) go(PARENT[current]);
 });
 controls.addEventListener('start', () => { ui.hint.classList.add('gone'); });
 
