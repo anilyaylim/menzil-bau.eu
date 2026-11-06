@@ -14,6 +14,7 @@ from build import logo_a, ARROW, CAL, TEL, PIN, MAIL, WA, CLOCK, seal, COUNTRIES
 from data import LOREM, PHOTOS, PROJECTS
 from build import is_portrait
 import json
+from tour_data import TOUR
 from blog_data import POSTS, BLOG_UI, BLOG_DATE, CHAT_UI, INTENTS, CHAT_LINKS, CHIP_INTENTS
 
 E = html.escape
@@ -25,6 +26,8 @@ ICON_KEY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 ROT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>'
 PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>'
 DRAG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M5 9l-3 3 3 3M19 9l3 3-3 3"/></svg>'
+TOUR_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>'
+FULL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'
 PREV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>'
 NEXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>'
 
@@ -173,7 +176,7 @@ UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2
 DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 11h6M9 14h6M9 17h4"/></svg>'
 CHK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" width="12" height="12"><path d="M3 8.5l3 3 7-7"/></svg>'
 PIN_S = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
-PAGE_FILES = {'index': 'index.html', 'projekte': 'projekte.html', 'kontakt': 'kontakt.html', 'zertifikate': 'zertifikate.html', 'blog': 'blog.html'}
+PAGE_FILES = {'index': 'index.html', 'projekte': 'projekte.html', 'rundgang': 'rundgang.html', 'kontakt': 'kontakt.html', 'zertifikate': 'zertifikate.html', 'blog': 'blog.html'}
 PAGE_FILES.update({f"blog-{p['slug']}": f"blog-{p['slug']}.html" for p in POSTS})
 
 
@@ -217,9 +220,9 @@ def head(c, title, desc):
 def nav(c):
     v, t, n = c.v, c.t, c.v['nav']
     langs = ''.join(f'<a href="{c.href(l)}" hreflang="{l}" lang="{l}"{" class=on aria-current=true" if l == c.lang else ""}>{LANG_NAMES[l]}</a>' for l in LANGS)
-    items = [(c.anchor('leistungen'), n[0]), (c.anchor('bauablauf'), n[1]), (c.anchor('modelle'), n[2]), ('projekte.html', n[3]),
+    items = [(c.anchor('leistungen'), n[0]), (c.anchor('bauablauf'), n[1]), (c.anchor('modelle'), n[2]), ('projekte.html', n[3]), ('rundgang.html', TOUR[c.lang]['nav']),
              ('zertifikate.html', n[4]), ('blog.html', n[5]), ('kontakt.html', n[6])]
-    cur = {'projekte': 3, 'zertifikate': 4, 'blog': 5, 'kontakt': 6}.get(c.page, 5 if c.page.startswith('blog-') else -1)
+    cur = {'projekte': 3, 'rundgang': 4, 'zertifikate': 5, 'blog': 6, 'kontakt': 7}.get(c.page, 6 if c.page.startswith('blog-') else -1)
     li = ''.join(f'<li><a href="{h}"{" aria-current=page class=cur" if i == cur else ""}>{E(x)}</a></li>' for i, (h, x) in enumerate(items))
     return f'''<div class="nav-wrap">
 <header class="nav" aria-label="Navigation">
@@ -262,7 +265,7 @@ def footer(c):
     <div class="foot-word" aria-label="Menzil-Bau">{''.join(f'<span{" class=r" if i in (0, 7) else ""}>{ch}</span>' for i, ch in enumerate('MENZIL-BAU'))}</div>
     <div class="foot-cols">
       <div>{logo_a(w=200)}<p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:320px">{E(t['motto'])}.</p></div>
-      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="{c.CL}referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="blog.html">{E(v['nav'][5])}</a></li><li><a href="kontakt.html">{E(v['nav'][6])}</a></li></ul></div>
+      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="rundgang.html">{E(TOUR[c.lang]['nav'])}</a></li><li><a href="{c.CL}referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="blog.html">{E(v['nav'][5])}</a></li><li><a href="kontakt.html">{E(v['nav'][6])}</a></li></ul></div>
       <div><h4>{E(f[1])}</h4><ul><li><a href="{SITE['phone_href']}">{SITE['phone_local']}</a></li><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><a href="{SITE['whatsapp']}" target="_blank" rel="noopener">WhatsApp</a></li><li>{E(SITE['hours'])}</li></ul></div>
       <div><h4>{E(f[2])}</h4><ul>{''.join(f'<li>{E(x)}</li>' for x in SITE['addr1'])}<li style="margin-top:10px">{'</li><li>'.join(E(x) for x in SITE['addr2'])}</li></ul></div>
     </div>
@@ -467,6 +470,7 @@ def page_index(c):
       </div>
       <div class="model-info" id="modelInfo"></div>
     </div>
+    <a class="tour-teaser" href="rundgang.html"><span class="tour-teaser-ico">{TOUR_ICO}</span><span><b>{E(TOUR[c.lang]['title'][0])} {E(TOUR[c.lang]['title'][1][0])}</b><small>{E(TOUR[c.lang]['sub'])}</small></span><span class="pill pill-red">{E(TOUR[c.lang]['start'])} {ARROW}</span></a>
     {model_data}
   </div>
 </section>
@@ -748,7 +752,57 @@ def page_projekte(c):
 ''' + footer(c) + '</body>\n</html>\n'
 
 
-PAGES_V2 = {'index': page_index, 'projekte': page_projekte, 'kontakt': page_kontakt, 'zertifikate': page_zertifikate, 'blog': page_blog}
+def page_tour(c):
+    T2 = TOUR[c.lang]; R = T2['rooms']
+    i18n = {'rooms': R, 'info': T2['info'], 'go': T2['go']}
+    js = json.dumps(i18n, ensure_ascii=False).replace('</', '<\\/')
+    order = ['ext', 'living', 'kitchen', 'bedroom', 'bath']
+    bar = ''.join(f'<button type="button" data-stop="{k}"{" class=on" if k == "ext" else ""}><em>{i + 1:02d}</em>{E(R[k]["name"])}</button>' for i, k in enumerate(order))
+    how_t, how_p = T2['how']
+    return head(c, T2['meta'][0], T2['meta'][1]) + nav(c) + f"""
+<main>
+<section class="tour-page">
+  <div class="wrap">
+    <div class="tour-head">
+      <div>
+        <div class="crumbs"><a href="index.html">Menzil-Bau</a> &nbsp;/&nbsp; {E(T2['crumb'])}</div>
+        <h1 class="mega">{lines(T2['title'])}</h1>
+      </div>
+      <div class="tour-head-r"><p>{E(T2['sub'])}</p><span class="tour-demo">{E(T2['demo'])}</span></div>
+    </div>
+  </div>
+  <div class="tour" id="tour">
+    <div class="tour-stage" id="tourStage">
+      <div class="tour-load">{E(T2['loading'])}</div>
+      <div class="tour-spots"></div>
+      <div class="tour-card" hidden></div>
+      <div class="tour-info"><span id="tourStep">1 / 5</span><b id="tourRoom">{E(R['ext']['name'])}</b><p id="tourText">{E(R['ext']['text'])}</p></div>
+      <button class="pill pill-red tour-start" type="button">{E(T2['start'])} {ARROW}</button>
+      <div class="tour-hint">{DRAG} {E(T2['hint'])}</div>
+      <button class="tour-full" type="button" aria-label="{E(T2['full'])}" title="{E(T2['full'])}">{FULL}</button>
+      <span class="tour-badge">{E(T2['demo'])}</span>
+      <div class="tour-fade"></div>
+    </div>
+    <div class="tour-bar" role="group" aria-label="{E(T2['bar'])}">{bar}</div>
+  </div>
+</section>
+<section class="tour-how">
+  <div class="wrap tour-how-in">
+    <div><h2>{E(how_t)}</h2><p>{E(how_p)}</p></div>
+    <ul>{''.join(f'<li>{CHK} {E(x)}</li>' for x in T2['how_list'])}</ul>
+    <div class="tour-how-cta"><a class="pill pill-red" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(T2['cta'])}</a><a class="pill pill-ghost-d" href="{c.anchor('modelle')}">{E(T2['cta2'])} {ARROW}</a></div>
+  </div>
+</section>
+</main>
+""" + footer(c) + f"""<script>window.TOUR_I18N = {js};</script>
+<script type="importmap">{{"imports": {{"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}}}</script>
+<script type="module" src="{c.VD}tour.js"></script>
+</body>
+</html>
+"""
+
+
+PAGES_V2 = {'index': page_index, 'projekte': page_projekte, 'rundgang': page_tour, 'kontakt': page_kontakt, 'zertifikate': page_zertifikate, 'blog': page_blog}
 PAGES_V2.update({f"blog-{p['slug']}": make_post_page(p) for p in POSTS})
 
 

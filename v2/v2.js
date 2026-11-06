@@ -11,7 +11,7 @@
   let lenis = null;
   if (!reduce && window.Lenis && gsap) {
     lenis = new window.Lenis({ lerp: 0.09, smoothWheel: true });
-    lenis.on('scroll', ST.update);
+    if (ST) lenis.on('scroll', ST.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
   }
