@@ -29,3 +29,17 @@ rooms without these files fall back to real-time lights.
    baked rooms in `window.TOUR_BAKED`).
 
 Re-run 1–3 whenever room geometry, furniture or materials change in `tour.js`.
+
+## Furniture and textures (dress.py)
+
+Before baking, `dress.py` replaces placeholders with scanned CC0 models from
+Poly Haven and gives the main surfaces real PBR textures:
+
+- `plant_<scale>` groups → `potted_plant_01` / `potted_plant_02`
+- `armchair` group → `modern_arm_chair_01`
+- floors → `wood_floor`, furniture oak → `kitchen_wood`, walls/ceilings →
+  `painted_plaster_wall` (tinted to the wall colour), bath floor →
+  `granite_tile`, entrance floor → `floor_tiles_08`
+
+Download them into `assets/` (models: glTF 1k, textures: diffuse, nor_gl,
+rough jpg) from polyhaven.com; textures get metric cube-projected UVs.

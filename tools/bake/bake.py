@@ -1,4 +1,5 @@
 import bpy, json, math, sys, os, numpy as np, time
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mathutils import Vector
 from PIL import Image
 room, size, samples = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
@@ -17,6 +18,8 @@ meta = json.load(open(f'{BASE}/glb/lights.json'))
 ids = ['hall', 'corridor', 'living', 'kitchen', 'kids', 'bedroom', 'bath']
 ox = meta['ox'][ids.index(room)]
 
+import dress
+new_models = dress.swap_models()
 meshes = [o for o in bpy.data.objects if o.type == 'MESH']
 hidden_names = []
 def mats(o): return {s.material.name.split('.')[0] for s in o.material_slots if s.material}
@@ -38,6 +41,7 @@ bpy.context.view_layer.objects.active = bake_objs[0]
 bpy.ops.object.make_single_user(object=True, obdata=True)
 bpy.ops.object.join()
 J = bpy.context.view_layer.objects.active; J.name = f'{room}_baked'
+dress.retexture(J)
 orig_uv = J.data.uv_layers[0].name if J.data.uv_layers else None
 if not J.data.uv_layers: J.data.uv_layers.new(name='UVMap')
 lm = J.data.uv_layers.new(name='lightmap'); J.data.uv_layers.active = lm
