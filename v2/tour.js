@@ -420,6 +420,7 @@ function loadBaked(id) {
       for (const m of [].concat(o.material)) {
         if (o.geometry.attributes.uv1) { m.lightMap = lm; m.lightMapIntensity = LM_INTENSITY; m.envMapIntensity = 0.35; }
         if (m.name.startsWith('backdrop')) { m.toneMapped = false; }
+        if (m.name.startsWith('mirror')) { m.emissive = new THREE.Color(0x5d6468); m.envMapIntensity = 1.5; }
         if (m.map) m.map.anisotropy = 8;
       }
     });
