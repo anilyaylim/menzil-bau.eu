@@ -767,7 +767,7 @@ def page_tour(c):
         <div class="crumbs"><a href="index.html">Menzil-Bau</a> &nbsp;/&nbsp; {E(T2['crumb'])}</div>
         <h1 class="mega">{lines(T2['title'])}</h1>
       </div>
-      <div class="tour-head-r"><p>{E(T2['sub'])}</p><span class="tour-demo">{E(T2['demo'])}</span></div>
+      <div class="tour-head-r"><p>{E(T2['sub'])}</p></div>
     </div>
   </div>
   <div class="tour" id="tour">
@@ -779,7 +779,6 @@ def page_tour(c):
       <button class="pill pill-red tour-start" type="button">{E(T2['start'])} {ARROW}</button>
       <div class="tour-hint">{DRAG} {E(T2['hint'])}</div>
       <button class="tour-full" type="button" aria-label="{E(T2['full'])}" title="{E(T2['full'])}">{FULL}</button>
-      <span class="tour-badge">{E(T2['demo'])}</span>
       <div class="tour-fade"></div>
     </div>
     <div class="tour-bar" role="group" aria-label="{E(T2['bar'])}">{bar}</div>

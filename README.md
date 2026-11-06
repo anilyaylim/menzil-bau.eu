@@ -51,7 +51,6 @@ An alternative single-page landing page with scroll animations and 3D models:
 ### v2 3D virtual tour (demo)
 - **Page:** `v2/rundgang.html` (+ `en/`, `tr/`), texts in `tools/tour_data.py`.
 - **Engine:** `v2/tour.js` (Three.js) builds a sample house entirely in code: exterior (`makeModel('efh')` from `houses.js`), then entrance hall, hallway, living room, separate kitchen, children's room, master bedroom and en-suite bathroom. Textures (parquet, tiles, marble, fabric, views) are drawn on canvases – no image files. Drag to look around, `+` hotspots show material notes, door hotspots and the room bar switch rooms.
-- Marked on the page as a sample visualisation, not a real property.
 
 ### v2 blog and site assistant
 - **Blog:** posts live in `tools/blog_data.py` (`POSTS`, DE/EN/TR). Each post becomes `v2/blog-<slug>.html`; the overview is `v2/blog.html`.
