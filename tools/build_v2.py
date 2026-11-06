@@ -756,7 +756,7 @@ def page_tour(c):
     T2 = TOUR[c.lang]; R = T2['rooms']
     i18n = {'rooms': R, 'info': T2['info'], 'go': T2['go']}
     js = json.dumps(i18n, ensure_ascii=False).replace('</', '<\\/')
-    order = ['ext', 'living', 'kitchen', 'bedroom', 'bath']
+    order = ['ext', 'hall', 'corridor', 'living', 'kitchen', 'kids', 'bedroom', 'bath']
     bar = ''.join(f'<button type="button" data-stop="{k}"{" class=on" if k == "ext" else ""}><em>{i + 1:02d}</em>{E(R[k]["name"])}</button>' for i, k in enumerate(order))
     how_t, how_p = T2['how']
     return head(c, T2['meta'][0], T2['meta'][1]) + nav(c) + f"""
@@ -776,7 +776,7 @@ def page_tour(c):
       <div class="tour-load">{E(T2['loading'])}</div>
       <div class="tour-spots"></div>
       <div class="tour-card" hidden></div>
-      <div class="tour-info"><span id="tourStep">1 / 5</span><b id="tourRoom">{E(R['ext']['name'])}</b><p id="tourText">{E(R['ext']['text'])}</p></div>
+      <div class="tour-info"><span id="tourStep">1 / {len(order)}</span><b id="tourRoom">{E(R['ext']['name'])}</b><p id="tourText">{E(R['ext']['text'])}</p></div>
       <button class="pill pill-red tour-start" type="button">{E(T2['start'])} {ARROW}</button>
       <div class="tour-hint">{DRAG} {E(T2['hint'])}</div>
       <button class="tour-full" type="button" aria-label="{E(T2['full'])}" title="{E(T2['full'])}">{FULL}</button>

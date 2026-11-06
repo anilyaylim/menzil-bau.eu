@@ -778,8 +778,8 @@ html { scroll-padding-top: 96px; }
 .tour-full:hover { background: var(--red); border-color: var(--red); }
 .tour-full svg { width: 18px; height: 18px; }
 .tour-badge { position: absolute; top: 22px; left: 22px; z-index: 4; font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.75); background: rgba(18,20,23,.55); padding: 6px 11px; border-radius: 999px; pointer-events: none; }
-.tour-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 8px; }
-.tour-bar button { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 10px; border: none; border-radius: 14px; background: rgba(255,255,255,.05); color: rgba(255,255,255,.72); cursor: pointer; font: 600 14px var(--body); transition: background .25s, color .25s; }
+.tour-bar { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; padding: 8px; }
+.tour-bar button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 8px; text-align: center; line-height: 1.2; border: none; border-radius: 14px; background: rgba(255,255,255,.05); color: rgba(255,255,255,.72); cursor: pointer; font: 600 14px var(--body); transition: background .25s, color .25s; }
 .tour-bar button em { font-style: normal; font-size: 11px; color: rgba(255,255,255,.4); font-weight: 700; letter-spacing: 1px; }
 .tour-bar button:hover { background: rgba(255,255,255,.1); color: #fff; }
 .tour-bar button.on { background: var(--red); color: #fff; } .tour-bar button.on em { color: rgba(255,255,255,.7); }
@@ -813,7 +813,7 @@ html { scroll-padding-top: 96px; }
   .tour-hint { top: 52px; }
   .tour-full { top: 8px; right: 8px; }
   .tour-card { width: calc(100% - 24px); left: 12px !important; }
-  .tour-bar { grid-template-columns: repeat(5, minmax(96px, 1fr)); overflow-x: auto; scrollbar-width: none; }
+  .tour-bar { grid-template-columns: repeat(8, minmax(100px, 1fr)); overflow-x: auto; scrollbar-width: none; }
   .tour-bar button { flex-direction: column; gap: 2px; padding: 10px 6px; font-size: 12px; }
   .tour-how { padding: 50px 0 70px; }
   .tour-how-in { grid-template-columns: 1fr; }
@@ -824,3 +824,4 @@ html { scroll-padding-top: 96px; }
 @media (min-width: 961px) and (max-width: 1400px) { .nav-cta .cta-long { display: none; } .nav-cta .cta-short { display: inline; } .nav { gap: 10px; } }
 @media (min-width: 961px) and (max-width: 1180px) { .nav-links { gap: 0; } .nav-links a { padding: 8px 7px; font-size: 12px; } .nav-logo svg { height: 36px; } .nav-lang a { padding: 6px 7px; } }
 @media (min-width: 1401px) { .nav-links a { padding: 9px 11px; } }
+@media (max-width: 760px) { .tspot.go span { font-size: 11.5px; padding: 6px 11px 6px 8px; gap: 6px; } .tspot.go span::before { width: 15px; height: 15px; background-size: 9px; } }
