@@ -52,6 +52,8 @@ An alternative single-page landing page with scroll animations and 3D models:
 - **Page:** `v2/rundgang.html` (+ `en/`, `tr/`), texts in `tools/tour_data.py`.
 - **Engine:** `v2/tour.js` (Three.js) builds a sample house entirely in code: exterior (`makeModel('efh')` from `houses.js`), then entrance hall, hallway, living room, separate kitchen, children's room, master bedroom and en-suite bathroom. Textures (parquet, tiles, marble, fabric, views) are drawn on canvases – no image files. Drag to look around, `+` hotspots show material notes, door hotspots and the room bar switch rooms.
 
+- **Baked lighting:** every room also exists as `v2/tour/<room>.glb` + `<room>-lm.jpg` with lighting computed in Blender/Cycles (sun, sky, lamps, bounced light). How to re-bake after changes: `tools/bake/README.md`.
+
 ### v2 blog and site assistant
 - **Blog:** posts live in `tools/blog_data.py` (`POSTS`, DE/EN/TR). Each post becomes `v2/blog-<slug>.html`; the overview is `v2/blog.html`.
 - **Assistant (chat bubble):** rule-based and fully static (`v2/chat.js`). It matches keywords in DE/EN/TR against `INTENTS` in `tools/blog_data.py` and answers only with website content. Unknown questions are answered with phone, WhatsApp and contact-form links. No AI service, no server, nothing is stored.

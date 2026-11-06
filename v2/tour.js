@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { makeModel } from './houses.js';
 
 const I = window.TOUR_I18N;
@@ -111,6 +112,7 @@ const M = {
   anthDoor: std(0x33373d, { r: 0.5, m: 0.3 }), red: std(0xb3000a, { r: 0.6 }), kidsWall: std(0xa9bfcb, { r: 0.95 }),
   kidsDuvet: std(0xffffff, { map: fabricTex('#e2ad4b'), r: 0.95 }), rugKids: std(0xffffff, { map: fabricTex('#d6cfc3'), r: 1 }),
 };
+for (const [k, m] of Object.entries(M)) m.name = k;   // names survive glTF export (used by the bake pipeline)
 [M.wall, M.ceil, M.accent, M.kidsWall].forEach(m => { m.shadowSide = THREE.DoubleSide; });
 
 /* ───────────── geometry helpers ───────────── */
@@ -165,7 +167,7 @@ function room({ ox, w, d, h = 2.8, floor, wall = M.wall, windows = [], doors = [
     if (win.y > 0.2) part(s, win.c, win.y - 0.03, 0.08, win.w + 0.12, 0.03, 0.2, M.stone);
     if (!win.frosted && !backdrops[s]) {
       backdrops[s] = true;
-      const bd = new THREE.Mesh(new THREE.PlaneGeometry(F[s].L + 24, 14), new THREE.MeshBasicMaterial({ map: landscapeTex(landscape + s.charCodeAt(0)), toneMapped: false }));
+      const bd = new THREE.Mesh(new THREE.PlaneGeometry(F[s].L + 24, 14), new THREE.MeshBasicMaterial({ name: 'backdrop', map: landscapeTex(landscape + s.charCodeAt(0)), toneMapped: false }));
       place(bd, s, 0, 3.4, -7.5);
     }
   }
@@ -396,6 +398,37 @@ const C = room({ ox: 80, w: 3.4, d: 3.0, floor: M.tileFloor, wall: M.tileWall, l
   addLight(g, 0xfff0dc, 1.8, 0, 2.45, 0);
 }
 const ROOMS = [H.g, FL.g, L.g, K.g, KR.g, B.g, C.g];
+const ROOM_IDS = ['hall', 'corridor', 'living', 'kitchen', 'kids', 'bedroom', 'bath'];
+
+/* ───────── baked rooms (Blender/Cycles lightmaps, see tools/bake/) ─────────
+   A baked room replaces its procedural twin: same geometry, plus a lightmap with
+   real sunlight, lamp light and bounced light. Rooms without bake data fall back
+   to the procedural version with real-time lights. */
+const BAKED = new Set(window.TOUR_BAKED || []);
+const BAKE_DIR = new URL('./tour/', import.meta.url);
+const LM_INTENSITY = Math.PI / 0.5;       // matches SCALE in tools/bake/bake.py
+const bakedScenes = {};
+function loadBaked(id) {
+  if (!BAKED.has(id)) return Promise.resolve(null);
+  if (!bakedScenes[id]) bakedScenes[id] = Promise.all([
+    new GLTFLoader().loadAsync(new URL(id + '.glb', BAKE_DIR).href),
+    new THREE.TextureLoader().loadAsync(new URL(id + '-lm.jpg', BAKE_DIR).href),
+  ]).then(([gl, lm]) => {
+    lm.flipY = false; lm.channel = 1; lm.colorSpace = THREE.SRGBColorSpace; lm.anisotropy = 4;
+    gl.scene.traverse(o => {
+      if (!o.isMesh) return;
+      for (const m of [].concat(o.material)) {
+        if (o.geometry.attributes.uv1) { m.lightMap = lm; m.lightMapIntensity = LM_INTENSITY; m.envMapIntensity = 0.35; }
+        if (m.name.startsWith('backdrop')) { m.toneMapped = false; }
+        if (m.name.startsWith('mirror')) { m.emissive = new THREE.Color(0x5d6468); m.envMapIntensity = 1.5; }
+        if (m.map) m.map.anisotropy = 8;
+      }
+    });
+    gl.scene.visible = false; scene.add(gl.scene); return gl.scene;
+  }).catch(err => { console.warn('baked room failed', id, err); BAKED.delete(id); return null; });
+  return bakedScenes[id];
+}
+const bakedNow = {};   // resolved scenes
 
 /* ───────────── renderer / scene ───────────── */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -487,7 +520,11 @@ stage.addEventListener('pointerdown', e => { if (!e.target.closest('.tour-card, 
 function applyStop(id) {
   const st = STOPS[id]; current = id;
   sun.position.set(...st.sun); sun.intensity = st.sunI ?? 3.2; sun.target.position.set(st.room.position.x, 0, 0);
-  ext.visible = st.room === ext; ROOMS.forEach(r => { r.visible = r === st.room; }); useLights(st.room);
+  const bk = bakedNow[id] || null;
+  ext.visible = st.room === ext; ROOMS.forEach(r => { r.visible = r === st.room && !bk; });
+  Object.entries(bakedNow).forEach(([k, o]) => { if (o) o.visible = k === id; });
+  if (bk) { pool.forEach(p => { p.intensity = 0; }); hemi.intensity = 0; sun.intensity = 0; scene.environmentIntensity = 1; }
+  else { useLights(st.room); hemi.intensity = 0.6; scene.environmentIntensity = 0.55; }
   if (st.orbit) {
     const k = Math.min(1.8, Math.max(1, 1.1 / camera.aspect));
     camera.fov = 34; controls.target.set(...st.look);
@@ -509,12 +546,20 @@ function applyStop(id) {
   ui.card.hidden = true; buildSpots(id);
 }
 let busy = false;
-function go(id) {
+async function go(id) {
   if (busy || id === current) return;
-  if (reduce) { applyStop(id); return; }
   busy = true; ui.fade.classList.add('on');
-  setTimeout(() => { applyStop(id); setTimeout(() => { ui.fade.classList.remove('on'); busy = false; }, 80); }, 380);
+  const wait = new Promise(r => setTimeout(r, reduce ? 0 : 380));
+  const slow = setTimeout(() => { ui.fade.dataset.msg = I.loading || '…'; }, 500);
+  const scn = await loadBaked(id); if (scn) bakedNow[id] = scn;
+  clearTimeout(slow); delete ui.fade.dataset.msg;
+  await wait;
+  applyStop(id);
+  setTimeout(() => { ui.fade.classList.remove('on'); busy = false; }, 80);
+  // warm up the rooms reachable from here
+  for (const n of NEXT[id] || []) loadBaked(n).then(x => { if (x) bakedNow[n] = x; });
 }
+const NEXT = { ext: ['hall'], hall: ['corridor'], corridor: ['living'], living: ['kitchen'], bedroom: ['bath'] };
 ui.bar.forEach(b => b.addEventListener('click', () => go(b.dataset.stop)));
 ui.start.addEventListener('click', () => go('hall'));
 ui.back.addEventListener('click', () => PARENT[current] && go(PARENT[current]));
@@ -556,4 +601,4 @@ function loop() {
 applyStop('ext');
 stage.classList.add('ready');
 loop();
-window.__tour = { go, stops: ORDER };
+window.__tour = { go, stops: ORDER, rooms: ROOMS, roomIds: ROOM_IDS, lights, THREE };

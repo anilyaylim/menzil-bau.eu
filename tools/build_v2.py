@@ -752,7 +752,7 @@ def page_projekte(c):
 
 def page_tour(c):
     T2 = TOUR[c.lang]; R = T2['rooms']
-    i18n = {'rooms': R, 'info': T2['info'], 'go': T2['go'], 'back': T2['back']}
+    i18n = {'rooms': R, 'info': T2['info'], 'go': T2['go'], 'back': T2['back'], 'loading': T2['loading']}
     js = json.dumps(i18n, ensure_ascii=False).replace('</', '<\\/')
     order = ['ext', 'hall', 'corridor', 'living', 'kitchen', 'kids', 'bedroom', 'bath']
     bar = ''.join(f'<button type="button" data-stop="{k}"{" class=on" if k == "ext" else ""}><em>{i + 1:02d}</em>{E(R[k]["name"])}</button>' for i, k in enumerate(order))
@@ -792,7 +792,7 @@ def page_tour(c):
   </div>
 </section>
 </main>
-""" + footer(c) + f"""<script>window.TOUR_I18N = {js};</script>
+""" + footer(c) + f"""<script>window.TOUR_I18N = {js}; window.TOUR_BAKED = {json.dumps(sorted(f[:-4] for f in os.listdir(os.path.join(ROOT, "v2", "tour")) if f.endswith(".glb")) if os.path.isdir(os.path.join(ROOT, "v2", "tour")) else [])};</script>
 <script type="importmap">{{"imports": {{"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}}}</script>
 <script type="module" src="{c.VD}tour.js"></script>
 </body>

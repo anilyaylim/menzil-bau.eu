@@ -846,3 +846,4 @@ html { scroll-padding-top: 96px; }
 @media (max-width: 760px) { .tour-back { top: 8px; left: 8px; height: 40px; font-size: 12.5px; padding: 0 14px 0 10px; } .tour-stage.inside .tour-hint { top: 58px; } }
 .svc-grid .svc-img { border-bottom: 1px solid var(--paper-2); background: var(--paper-2); }
 .svc-grid .svc:first-child .svc-img { background: #e4e7ea; } .svc-grid .svc:first-child .svc-img img { mix-blend-mode: multiply; }
+.tour-fade[data-msg]::after { content: attr(data-msg); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.7); font-size: 14px; letter-spacing: 1px; }
