@@ -7,6 +7,8 @@ Items marked  # PLATZHALTER  are placeholders to be replaced with real data.
 
 SITE = {
     'domain': 'https://www.menzil-bau.eu',
+    # public address of the site (used for absolute og:image URLs) – change to https://www.menzil-bau.eu/ after the domain switch
+    'public_base': 'https://anilyaylim.github.io/menzil-bau.eu/',
     'phone': '+43 664 64 76 640',
     'phone_local': '0664 / 64 76 640',
     'phone_href': 'tel:+436646476640',
