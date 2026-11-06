@@ -220,9 +220,9 @@ def head(c, title, desc):
 def nav(c):
     v, t, n = c.v, c.t, c.v['nav']
     langs = ''.join(f'<a href="{c.href(l)}" hreflang="{l}" lang="{l}"{" class=on aria-current=true" if l == c.lang else ""}>{LANG_NAMES[l]}</a>' for l in LANGS)
-    items = [(c.anchor('leistungen'), n[0]), (c.anchor('bauablauf'), n[1]), (c.anchor('modelle'), n[2]), ('projekte.html', n[3]), ('rundgang.html', TOUR[c.lang]['nav']),
+    items = [(c.anchor('leistungen'), n[0]), (c.anchor('bauablauf'), n[1]), ('projekte.html', n[3]), (c.anchor('modelle'), n[2]), ('rundgang.html', TOUR[c.lang]['nav']),
              ('zertifikate.html', n[4]), ('blog.html', n[5]), ('kontakt.html', n[6])]
-    cur = {'projekte': 3, 'rundgang': 4, 'zertifikate': 5, 'blog': 6, 'kontakt': 7}.get(c.page, 6 if c.page.startswith('blog-') else -1)
+    cur = {'projekte': 2, 'rundgang': 4, 'zertifikate': 5, 'blog': 6, 'kontakt': 7}.get(c.page, 6 if c.page.startswith('blog-') else -1)
     li = ''.join(f'<li><a href="{h}"{" aria-current=page class=cur" if i == cur else ""}>{E(x)}</a></li>' for i, (h, x) in enumerate(items))
     return f'''<div class="nav-wrap">
 <header class="nav" aria-label="Navigation">
@@ -265,7 +265,7 @@ def footer(c):
     <div class="foot-word" aria-label="Menzil-Bau">{''.join(f'<span{" class=r" if i in (0, 7) else ""}>{ch}</span>' for i, ch in enumerate('MENZIL-BAU'))}</div>
     <div class="foot-cols">
       <div>{logo_a(w=200)}<p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:320px">{E(t['motto'])}.</p></div>
-      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="rundgang.html">{E(TOUR[c.lang]['nav'])}</a></li><li><a href="referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="blog.html">{E(v['nav'][5])}</a></li><li><a href="kontakt.html">{E(v['nav'][6])}</a></li></ul></div>
+      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="rundgang.html">{E(TOUR[c.lang]['nav'])}</a></li><li><a href="referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="blog.html">{E(v['nav'][5])}</a></li><li><a href="kontakt.html">{E(v['nav'][6])}</a></li></ul></div>
       <div><h4>{E(f[1])}</h4><ul><li><a href="{SITE['phone_href']}">{SITE['phone_local']}</a></li><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><a href="{SITE['whatsapp']}" target="_blank" rel="noopener">WhatsApp</a></li><li>{E(SITE['hours'])}</li></ul></div>
       <div><h4>{E(f[2])}</h4><ul>{''.join(f'<li>{E(x)}</li>' for x in SITE['addr1'])}<li style="margin-top:10px">{'</li><li>'.join(E(x) for x in SITE['addr2'])}</li></ul></div>
     </div>
