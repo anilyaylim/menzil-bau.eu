@@ -147,6 +147,52 @@
     car.addEventListener('pointermove', e => { if (down) car.scrollLeft = sl - (e.clientX - sx); });
   }
 
+  /* ── projects page: tabs ── */
+  const vtabs = $$('.vtab');
+  vtabs.forEach((tb, i) => {
+    const sel = (t, focus) => {
+      vtabs.forEach(x => { const on = x === t; x.classList.toggle('on', on); x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+      if (focus) t.focus();
+      window.ScrollTrigger && window.ScrollTrigger.refresh();
+    };
+    tb.addEventListener('click', () => sel(tb));
+    tb.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); sel(vtabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + vtabs.length) % vtabs.length], true); } });
+  });
+  if (location.hash === '#plaene' && vtabs[1]) vtabs[1].click();
+  /* ── filters ── */
+  $$('[data-filter-group]').forEach(bar => {
+    const target = document.getElementById(bar.dataset.filterGroup);
+    $$('.vfilter', bar).forEach(b => b.addEventListener('click', () => {
+      $$('.vfilter', bar).forEach(x => { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
+      $$('[data-cat]', target).forEach(it => { it.hidden = !(b.dataset.cat === 'all' || it.dataset.cat === b.dataset.cat); });
+    }));
+  });
+  /* ── lightbox ── */
+  const lb = $('#vlb');
+  if (lb) {
+    const img = $('img', lb), cap = $('figcaption', lb), cnt = $('.vlb-count', lb);
+    let list = [], idx = 0, back = null;
+    const show = i => { idx = (i + list.length) % list.length; img.src = list[idx].src; cap.textContent = list[idx].cap; cnt.textContent = (idx + 1) + ' / ' + list.length; };
+    const close = () => { lb.classList.remove('open'); document.documentElement.classList.remove('modal-open'); lenis && lenis.start(); setTimeout(() => { lb.hidden = true; img.src = ''; }, 200); back && back.focus(); };
+    document.addEventListener('click', e => {
+      const t = e.target.closest('[data-lb]'); if (!t) return;
+      const nodes = $$('[data-lb][data-lb-group="' + t.dataset.lbGroup + '"]').filter(n => !n.hidden);
+      list = []; let start = 0;
+      nodes.forEach(n => { if (n === t) start = list.length; n.dataset.lb.split('|').forEach(src => list.push({ src, cap: n.dataset.lbCap })); });
+      back = t; lb.hidden = false; document.documentElement.classList.add('modal-open'); lenis && lenis.stop();
+      requestAnimationFrame(() => lb.classList.add('open')); show(start); $('.vlb-x', lb).focus();
+    });
+    $('.vlb-x', lb).addEventListener('click', close);
+    $('.vlb-prev', lb).addEventListener('click', () => show(idx - 1));
+    $('.vlb-next', lb).addEventListener('click', () => show(idx + 1));
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    document.addEventListener('keydown', e => { if (lb.hidden) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(idx - 1); if (e.key === 'ArrowRight') show(idx + 1); });
+    let sx = null;
+    lb.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(idx + (dx < 0 ? 1 : -1)); sx = null; });
+  }
+
   /* ── sticky 3D build: progress → model + steps ── */
   const build = $('.build');
   function setBuild(p) {
@@ -186,7 +232,7 @@
 
   /* scattered words (left) + photos (right), desktop only */
   if ($('.scatter')) gsap.matchMedia().add('(min-width: 761px)', () => {
-    const tl = gsap.timeline({ scrollTrigger: { trigger: '.scatter', start: 'top top', end: 'bottom bottom', scrub: 1 } });
+    const tl = gsap.timeline({ scrollTrigger: { trigger: '.scatter', start: 'top 95%', end: 'top 15%', scrub: 0.6 } });
     tl.from('.sw', { xPercent: -40, opacity: 0, ease: 'none', stagger: 0.08 }, 0)
       .from('.sp', { x: i => [260, 320, 280, 340][i % 4], y: i => [160, -120, 140, -160][i % 4], rotate: i => [-10, 8, -6, 12][i % 4], scale: 0.75, opacity: 0, ease: 'none', stagger: 0.05 }, 0);
   });
