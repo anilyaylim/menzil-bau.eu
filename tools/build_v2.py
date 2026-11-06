@@ -346,7 +346,7 @@ def process_section(c, sid=''):
 # ───────────────────────── pages ─────────────────────────
 def page_index(c):
     t, v, A, CL = c.t, c.v, c.A, c.CL
-    svc_imgs = [A + 'plans/mattersburg-1-t.jpg', A + 'photos/f14-t.jpg', A + 'photos/f10-t.jpg', A + 'photos/f04-t.jpg', A + 'photos/f64-t.jpg', A + 'photos/f05-t.jpg']
+    svc_imgs = [A + 'leistung-planung-einreichplan.jpg', A + 'photos/f14-t.jpg', A + 'photos/f10-t.jpg', A + 'photos/f04-t.jpg', A + 'photos/f64-t.jpg', A + 'photos/f05-t.jpg']
     services = ''.join(f'''<article class="svc">
         <div class="svc-img"><img src="{svc_imgs[i]}" alt="{E(n)} – Menzil-Bau" loading="lazy" draggable="false"></div>
         <div class="svc-body"><div class="svc-no">0{i + 1}</div><h3>{E(n)}</h3><p>{E(d)}</p>
