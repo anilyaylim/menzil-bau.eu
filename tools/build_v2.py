@@ -646,7 +646,7 @@ def page_zertifikate(c):
 def post_card(c, p, big=False):
     L = c.lang; P = p[L]; ui = BLOG_UI[L]
     return f'''<a class="post-card{' big' if big else ''}" href="blog-{p['slug']}.html">
-      <div class="post-img"><img src="{c.A}{p['img']}{'' if big else '-t'}.jpg" alt="" loading="lazy"></div>
+      <div class="post-img"><img src="{c.A}{p['img']}{'' if big else '-t'}.jpg" alt="{E(p['alt'][L])}" loading="lazy" width="{1128 if big else 720}" height="{768 if big else 402}"></div>
       <div class="post-body"><div class="post-meta"><span class="chip">{E(p['cat'][L])}</span><span>{p['read']} {E(ui['read'])}</span></div>
         <h3>{E(P['title'])}</h3><p>{E(P['lead'])}</p><span class="post-more">{E(ui['more'])} {ARROW}</span></div>
     </a>'''
@@ -667,7 +667,7 @@ def make_post_page(post):
         L = c.lang; P = post[L]; ui = BLOG_UI[L]
         body = ''.join(f'<h2>{E(h)}</h2><p>{E(t)}</p>' for h, t in P['body'])
         others = ''.join(post_card(c, p) for p in POSTS if p is not post)
-        return head(c, f"{P['title']} | Menzil-Bau", P['lead']) + nav(c) + f'''
+        return head(c, f"{P['title']} | Menzil-Bau", P['lead']).replace('<meta name="theme-color"', f'<meta property="og:image" content="{SITE['public_base']}assets/img/{post["img"]}.jpg">\n<meta property="og:title" content="{E(P["title"])}">\n<meta name="theme-color"', 1) + nav(c) + f'''
 <main>
 <article class="post">
   <header class="post-hero">
@@ -677,7 +677,7 @@ def make_post_page(post):
       <h1>{E(P['title'])}</h1>
       <p class="post-lead">{E(P['lead'])}</p>
     </div>
-    <div class="wrap"><div class="post-cover"><img src="{c.A}{post['img']}.jpg" alt=""></div></div>
+    <div class="wrap"><figure class="post-cover"><img src="{c.A}{post['img']}.jpg" alt="{E(post['alt'][L])}"></figure></div>
   </header>
   <div class="wrap post-content">{body}
     <div class="post-cta"><div><b>{E(ui['cta_title'])}</b><p>{E(ui['cta_p'])}</p></div>

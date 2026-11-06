@@ -9,7 +9,8 @@ BLOG_DATE = '2026-11-06'
 
 POSTS = [
  {
-  'slug': 'hausbau-ablauf', 'img': 'photos/f15', 'cat': {'de': 'Neubau', 'en': 'New build', 'tr': 'Yeni yapı'}, 'read': 4,
+  'slug': 'hausbau-ablauf', 'img': 'blog/hausbau-rohbau-einfamilienhaus-niederoesterreich',
+  'alt': {'de': 'Einfamilienhaus im Rohbau mit Ziegelmauerwerk, Dachstuhl, Gerüst und Baukran in Niederösterreich', 'en': 'Single-family house under construction with brick masonry, roof truss, scaffolding and tower crane in Lower Austria', 'tr': 'Aşağı Avusturya’da tuğla duvarları, çatı iskeleti, iskelesi ve kulesi vinciyle kaba inşaat halindeki müstakil ev'}, 'cat': {'de': 'Neubau', 'en': 'New build', 'tr': 'Yeni yapı'}, 'read': 4,
   'de': {
    'title': 'Hausbau in fünf Schritten: So läuft Ihr Projekt ab',
    'lead': 'Vom ersten Gespräch bis zur Schlüsselübergabe – ein Überblick, was in welcher Phase passiert und was Sie vorbereiten können.',
@@ -45,7 +46,8 @@ POSTS = [
   },
  },
  {
-  'slug': 'sanierung-oder-neubau', 'img': 'photos/f64', 'cat': {'de': 'Sanierung', 'en': 'Renovation', 'tr': 'Renovasyon'}, 'read': 3,
+  'slug': 'sanierung-oder-neubau', 'img': 'blog/altbau-sanierung-ziegelwand-innenraum',
+  'alt': {'de': 'Altbauwohnung während der Sanierung mit freigelegter Ziegelwand, neuem Fenster, Leiter und Malerwerkzeug', 'en': 'Old apartment during renovation with exposed brick wall, new window, ladder and painting tools', 'tr': 'Tuğla duvarı açığa çıkarılmış, yeni penceresi takılmış, merdiven ve boya malzemeleriyle renovasyondaki eski daire'}, 'cat': {'de': 'Sanierung', 'en': 'Renovation', 'tr': 'Renovasyon'}, 'read': 3,
   'de': {
    'title': 'Sanierung oder Neubau? Worauf es bei der Entscheidung ankommt',
    'lead': 'Ein älteres Haus kann ein Schatz sein – oder eine Baustelle ohne Ende. Diese Fragen helfen bei der Entscheidung.',
@@ -78,7 +80,8 @@ POSTS = [
   },
  },
  {
-  'slug': 'einreichplan', 'img': 'plans/mattersburg-1', 'cat': {'de': 'Planung', 'en': 'Planning', 'tr': 'Planlama'}, 'read': 3,
+  'slug': 'einreichplan', 'img': 'blog/einreichplan-bauplaene-baustelle',
+  'alt': {'de': 'Einreichplan mit Grundrissen auf einem Holztisch, daneben Bauhelm, Zollstock und Bleistift vor einer Baustelle', 'en': 'Permit plan with floor plans on a wooden table next to a hard hat, folding ruler and pencil in front of a building site', 'tr': 'Şantiye önünde ahşap masada kat planlarıyla ruhsat projesi; yanında baret, metre ve kalem'}, 'cat': {'de': 'Planung', 'en': 'Planning', 'tr': 'Planlama'}, 'read': 3,
   'de': {
    'title': 'Der Einreichplan: was er ist und warum er so wichtig ist',
    'lead': 'Ohne Einreichplan keine Baubewilligung. Was ein Einreichplan enthält und wie Sie Verzögerungen vermeiden.',
