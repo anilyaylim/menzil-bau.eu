@@ -8,7 +8,7 @@ TOUR = {
   'title': ['Virtueller', ('Rundgang.', 'red')],
   'sub': 'Betreten Sie ein Beispielhaus in 3D: erst von außen, dann Raum für Raum – mit Materialien und Details, wie wir sie planen und ausführen.',
   'demo': 'Beispielvisualisierung – kein reales Objekt',
-  'start': 'Haus betreten', 'hint': 'Ziehen zum Umsehen', 'full': 'Vollbild', 'go': 'Weiter zu', 'loading': '3D-Modell wird geladen …',
+  'start': 'Haus betreten', 'hint': 'Ziehen zum Umsehen', 'full': 'Vollbild', 'go': 'Weiter zu', 'back': 'Zurück', 'loading': '3D-Modell wird geladen …',
   'bar': 'Räume',
   'rooms': {
     'ext': {'name': 'Außenansicht', 'text': 'Einfamilienhaus mit Satteldach, ca. 150 m² Wohnfläche. Drehen Sie das Haus und treten Sie durch die Haustür ein.'},
@@ -52,7 +52,7 @@ TOUR = {
   'title': ['Virtual', ('house tour.', 'red')],
   'sub': 'Step into a sample house in 3D: first from outside, then room by room – with the materials and details we plan and build.',
   'demo': 'Sample visualisation – not a real property',
-  'start': 'Enter the house', 'hint': 'Drag to look around', 'full': 'Fullscreen', 'go': 'Go to', 'loading': 'Loading 3D model …',
+  'start': 'Enter the house', 'hint': 'Drag to look around', 'full': 'Fullscreen', 'go': 'Go to', 'back': 'Back', 'loading': 'Loading 3D model …',
   'bar': 'Rooms',
   'rooms': {
     'ext': {'name': 'Exterior', 'text': 'Family house with gable roof, approx. 150 m² living space. Rotate the house and step in through the front door.'},
@@ -96,7 +96,7 @@ TOUR = {
   'title': ['Sanal', ('ev turu.', 'red')],
   'sub': 'Örnek bir eve 3D olarak girin: önce dışarıdan, sonra oda oda – planladığımız ve uyguladığımız malzeme ve detaylarla.',
   'demo': 'Örnek görselleştirme – gerçek bir proje değildir',
-  'start': 'Eve gir', 'hint': 'Etrafa bakmak için sürükleyin', 'full': 'Tam ekran', 'go': 'Git', 'loading': '3D model yükleniyor …',
+  'start': 'Eve gir', 'hint': 'Etrafa bakmak için sürükleyin', 'full': 'Tam ekran', 'go': 'Git', 'back': 'Geri', 'loading': '3D model yükleniyor …',
   'bar': 'Odalar',
   'rooms': {
     'ext': {'name': 'Dış görünüm', 'text': 'Beşik çatılı müstakil ev, yaklaşık 150 m² yaşam alanı. Evi çevirin ve ana kapıdan içeri girin.'},
