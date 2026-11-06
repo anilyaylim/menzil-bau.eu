@@ -477,9 +477,8 @@ def page_index(c):
 <section class="services" id="leistungen">
   <div class="wrap services-head">
     <h2 class="mega" data-split>{lines(v['services'], 'muted')}</h2>
-    <div class="car-btns"><button class="car-btn" type="button" data-car="prev" aria-label="{E(v['prev'])}">{PREV}</button><button class="car-btn" type="button" data-car="next" aria-label="{E(v['next'])}">{NEXT}</button></div>
   </div>
-  <div class="carousel">{services}</div>
+  <div class="wrap svc-grid" data-rise>{services}</div>
 </section>
 
 <section class="scatter" id="projekte">
