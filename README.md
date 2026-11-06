@@ -47,3 +47,7 @@ An alternative single-page landing page with scroll animations and 3D models:
 - **Libraries:** GSAP + ScrollTrigger, Lenis smooth scroll, Three.js (all from CDNs, pinned versions)
 - **Files:** `v2/v2.css`, `v2/v2.js` (motion), `v2/houses.js` (procedural 3D house models: Einfamilienhaus, Doppelhaus, Wohnhausanlage)
 - **Build:** `python3 tools/build_v2.py` generates `v2/index.html` (DE), `v2/en/` and `v2/tr/` from `tools/data.py` (v2-only texts live in the `V` dict of `build_v2.py`)
+
+### v2 blog and site assistant
+- **Blog:** posts live in `tools/blog_data.py` (`POSTS`, DE/EN/TR). Each post becomes `v2/blog-<slug>.html`; the overview is `v2/blog.html`.
+- **Assistant (chat bubble):** rule-based and fully static (`v2/chat.js`). It matches keywords in DE/EN/TR against `INTENTS` in `tools/blog_data.py` and answers only with website content. Unknown questions are answered with phone, WhatsApp and contact-form links. No AI service, no server, nothing is stored.

@@ -12,6 +12,8 @@ sys.path.insert(0, os.path.join(ROOT, 'tools'))
 from data import SITE, T, PLACES, LANGS, LANG_NAMES
 from build import logo_a, ARROW, CAL, TEL, PIN, MAIL, WA, CLOCK, seal, COUNTRIES
 from data import LOREM
+import json
+from blog_data import POSTS, BLOG_UI, BLOG_DATE, CHAT_UI, INTENTS, CHAT_LINKS, CHIP_INTENTS
 
 E = html.escape
 YEAR = date.today().year
@@ -29,7 +31,7 @@ NEXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 V = {
  'de': {
   'title': 'Menzil-Bau · Bauen mit Verlass',
-  'nav': ['Leistungen', 'Bauablauf', '3D-Modelle', 'Projekte', 'Zertifikate', 'Kontakt'], 'classic': 'Klassisch', 'cta_short': 'Termin', 'menu': 'Menü', 'langs': 'Sprache',
+  'nav': ['Leistungen', 'Bauablauf', '3D-Modelle', 'Projekte', 'Zertifikate', 'Blog', 'Kontakt'], 'classic': 'Klassisch', 'cta_short': 'Termin', 'menu': 'Menü', 'langs': 'Sprache',
   'hero': ['Bauen mit', 'Verlass.', ('Termingerecht.', 'red')], 'cta2': '3D-Modelle ansehen', 'next': 'Weiter',
   'badge': ('Seit 2010', '120+ Projekte in Niederösterreich, Burgenland &amp; Wien'),
   'marquee': 'Gebaut, geplant und saniert in',
@@ -71,7 +73,7 @@ V = {
  },
  'en': {
   'title': 'Menzil-Bau · Built to rely on',
-  'nav': ['Services', 'How we build', '3D models', 'Projects', 'Certificates', 'Contact'], 'classic': 'Classic', 'cta_short': 'Book', 'menu': 'Menu', 'langs': 'Language',
+  'nav': ['Services', 'How we build', '3D models', 'Projects', 'Certificates', 'Blog', 'Contact'], 'classic': 'Classic', 'cta_short': 'Book', 'menu': 'Menu', 'langs': 'Language',
   'hero': ['Built to', 'rely on.', ('On time.', 'red')], 'cta2': 'View 3D models', 'next': 'Next',
   'badge': ('Since 2010', '120+ projects in Lower Austria, Burgenland &amp; Vienna'),
   'marquee': 'Built, planned and renovated in',
@@ -113,7 +115,7 @@ V = {
  },
  'tr': {
   'title': 'Menzil-Bau · Güvenle inşa',
-  'nav': ['Hizmetler', 'İnşa süreci', '3D modeller', 'Projeler', 'Sertifikalar', 'İletişim'], 'classic': 'Klasik', 'cta_short': 'Randevu Al', 'menu': 'Menü', 'langs': 'Dil',
+  'nav': ['Hizmetler', 'İnşa süreci', '3D modeller', 'Projeler', 'Sertifikalar', 'Blog', 'İletişim'], 'classic': 'Klasik', 'cta_short': 'Randevu Al', 'menu': 'Menü', 'langs': 'Dil',
   'hero': ['Güvenle inşa.', ('Zamanında', 'red'), ('teslim.', 'red')], 'cta2': '3D modelleri gör', 'next': 'Devam',
   'badge': ('2010’dan beri', 'Aşağı Avusturya, Burgenland ve Viyana’da 120+ proje'),
   'marquee': 'İnşa ettiğimiz, planladığımız ve yenilediğimiz yerler',
@@ -170,7 +172,8 @@ UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2
 DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 11h6M9 14h6M9 17h4"/></svg>'
 CHK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" width="12" height="12"><path d="M3 8.5l3 3 7-7"/></svg>'
 PIN_S = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'
-PAGE_FILES = {'index': 'index.html', 'kontakt': 'kontakt.html', 'zertifikate': 'zertifikate.html'}
+PAGE_FILES = {'index': 'index.html', 'kontakt': 'kontakt.html', 'zertifikate': 'zertifikate.html', 'blog': 'blog.html'}
+PAGE_FILES.update({f"blog-{p['slug']}": f"blog-{p['slug']}.html" for p in POSTS})
 
 
 class Ctx:
@@ -214,14 +217,14 @@ def nav(c):
     v, t, n = c.v, c.t, c.v['nav']
     langs = ''.join(f'<a href="{c.href(l)}" hreflang="{l}" lang="{l}"{" class=on aria-current=true" if l == c.lang else ""}>{LANG_NAMES[l]}</a>' for l in LANGS)
     items = [(c.anchor('leistungen'), n[0]), (c.anchor('bauablauf'), n[1]), (c.anchor('modelle'), n[2]), (c.anchor('projekte'), n[3]),
-             ('zertifikate.html', n[4]), ('kontakt.html', n[5])]
-    cur = {'zertifikate': 4, 'kontakt': 5}.get(c.page, -1)
+             ('zertifikate.html', n[4]), ('blog.html', n[5]), ('kontakt.html', n[6])]
+    cur = {'zertifikate': 4, 'blog': 5, 'kontakt': 6}.get(c.page, 5 if c.page.startswith('blog-') else -1)
     li = ''.join(f'<li><a href="{h}"{" aria-current=page class=cur" if i == cur else ""}>{E(x)}</a></li>' for i, (h, x) in enumerate(items))
     return f'''<div class="nav-wrap">
 <header class="nav" aria-label="Navigation">
   <a class="nav-logo" href="{"#top" if c.page == "index" else "index.html"}" aria-label="Menzil-Bau">{logo_a(w=150)}</a>
   <ul class="nav-links">{li}
-    <li class="nav-lang-m" aria-label="{E(v['langs'])}">{langs}</li>
+    <li class="nav-cta-m"><a class="pill pill-red" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(t['nav']['cta'])}</a></li>
   </ul>
   <div class="nav-right">
     <div class="nav-lang" role="group" aria-label="{E(v['langs'])}">{langs}</div>
@@ -258,7 +261,7 @@ def footer(c):
     <div class="foot-word" aria-label="Menzil-Bau">{''.join(f'<span{" class=r" if i in (0, 7) else ""}>{ch}</span>' for i, ch in enumerate('MENZIL-BAU'))}</div>
     <div class="foot-cols">
       <div>{logo_a(w=200)}<p style="margin-top:14px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;max-width:320px">{E(t['motto'])}.</p></div>
-      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="{c.CL}projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="{c.CL}referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="kontakt.html">{E(v['nav'][5])}</a></li></ul></div>
+      <div><h4>{E(f[0])}</h4><ul><li><a href="{c.anchor('leistungen')}">{E(v['nav'][0])}</a></li><li><a href="{c.anchor('modelle')}">{E(v['nav'][2])}</a></li><li><a href="{c.CL}projekte.html">{E(t['nav']['projekte'])}</a></li><li><a href="{c.CL}referenzen.html">{E(t['nav']['referenzen'])}</a></li><li><a href="zertifikate.html">{E(v['nav'][4])}</a></li><li><a href="blog.html">{E(v['nav'][5])}</a></li><li><a href="kontakt.html">{E(v['nav'][6])}</a></li></ul></div>
       <div><h4>{E(f[1])}</h4><ul><li><a href="{SITE['phone_href']}">{SITE['phone_local']}</a></li><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><a href="{SITE['whatsapp']}" target="_blank" rel="noopener">WhatsApp</a></li><li>{E(SITE['hours'])}</li></ul></div>
       <div><h4>{E(f[2])}</h4><ul>{''.join(f'<li>{E(x)}</li>' for x in SITE['addr1'])}<li style="margin-top:10px">{'</li><li>'.join(E(x) for x in SITE['addr2'])}</li></ul></div>
     </div>
@@ -276,7 +279,39 @@ def footer(c):
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script src="{c.VD}v2.js" defer></script>
+{chat_widget(c)}
 '''
+
+
+def chat_href(c, key):
+    if key == 'calendar': return SITE['calendar']
+    if key == 'phone': return SITE['phone_href']
+    if key == 'whatsapp': return SITE['whatsapp']
+    if key.startswith('home#'): return c.anchor(key[5:])
+    if key in ('projekte', 'referenzen'): return f'{c.CL}{key}.html'
+    return f'{key}.html'
+
+
+def chat_widget(c):
+    ui = CHAT_UI[c.lang]; L = c.lang
+    data = {'ui': ui, 'chipIntents': CHIP_INTENTS,
+            'intents': [{'id': i, 'kw': kw, 'a': ans[L], 'links': [{'l': CHAT_LINKS[k][L], 'h': chat_href(c, h)} for k, h in lk]} for i, kw, ans, lk in INTENTS],
+            'fallbackLinks': [{'l': CHAT_LINKS[k][L], 'h': chat_href(c, h)} for k, h in [('call', 'phone'), ('whatsapp', 'whatsapp'), ('contact', 'kontakt')]]}
+    js = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
+    BOT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke-width="2.6" stroke-linecap="round"/></svg>'
+    return f'''<div class="chat">
+  <div class="chat-panel" role="dialog" aria-label="{E(ui['name'])}">
+    <div class="chat-head"><span class="chat-ava"><svg viewBox="0 6 72 72"><path d="M14 62V32L25 21L36 32L47 21L58 32V62" fill="none" stroke="#fff" stroke-width="6"/><rect x="32" y="44" width="8" height="18" fill="#fff"/></svg></span>
+      <div><b>{E(ui['name'])}</b><small>{E(ui['sub'])}</small></div>
+      <button class="chat-x" type="button" aria-label="{E(ui['close'])}">{CLOSE}</button></div>
+    <div class="chat-log" aria-live="polite"></div>
+    <form class="chat-form"><input class="chat-in" type="text" maxlength="200" placeholder="{E(ui['placeholder'])}" aria-label="{E(ui['placeholder'])}" autocomplete="off"><button type="submit" aria-label="{E(ui['send'])}">{ARROW}</button></form>
+    <div class="chat-note">{E(ui['note'])}</div>
+  </div>
+  <button class="chat-fab" type="button" aria-label="{E(ui['open'])}" aria-expanded="false">{BOT}<span class="chat-fab-x">{CLOSE}</span></button>
+</div>
+<script>window.MENZIL_CHAT = {js};</script>
+<script src="{c.VD}chat.js" defer></script>'''
 
 
 def sub_hero(c, img, title_lines, sub, crumb):
@@ -608,7 +643,56 @@ def page_zertifikate(c):
 ''' + footer(c) + '</body>\n</html>\n'
 
 
-PAGES_V2 = {'index': page_index, 'kontakt': page_kontakt, 'zertifikate': page_zertifikate}
+def post_card(c, p, big=False):
+    L = c.lang; P = p[L]; ui = BLOG_UI[L]
+    return f'''<a class="post-card{' big' if big else ''}" href="blog-{p['slug']}.html">
+      <div class="post-img"><img src="{c.A}{p['img']}{'' if big else '-t'}.jpg" alt="" loading="lazy"></div>
+      <div class="post-body"><div class="post-meta"><span class="chip">{E(p['cat'][L])}</span><span>{p['read']} {E(ui['read'])}</span></div>
+        <h3>{E(P['title'])}</h3><p>{E(P['lead'])}</p><span class="post-more">{E(ui['more'])} {ARROW}</span></div>
+    </a>'''
+
+
+def page_blog(c):
+    ui = BLOG_UI[c.lang]
+    cards = post_card(c, POSTS[0], True) + ''.join(post_card(c, p) for p in POSTS[1:])
+    return head(c, ui['meta'], ui['meta_d']) + nav(c) + sub_hero(c, 'f10', ui['title'], ui['sub'], 'Blog') + f'''
+<main>
+<section class="blog"><div class="wrap"><div class="post-grid" data-rise>{cards}</div></div></section>
+</main>
+''' + footer(c) + '</body>\n</html>\n'
+
+
+def make_post_page(post):
+    def page(c):
+        L = c.lang; P = post[L]; ui = BLOG_UI[L]
+        body = ''.join(f'<h2>{E(h)}</h2><p>{E(t)}</p>' for h, t in P['body'])
+        others = ''.join(post_card(c, p) for p in POSTS if p is not post)
+        return head(c, f"{P['title']} | Menzil-Bau", P['lead']) + nav(c) + f'''
+<main>
+<article class="post">
+  <header class="post-hero">
+    <div class="wrap post-hero-in">
+      <div class="crumbs dark"><a href="index.html">Menzil-Bau</a> &nbsp;/&nbsp; <a href="blog.html">Blog</a></div>
+      <div class="post-meta"><span class="chip">{E(post['cat'][L])}</span><span>{post['read']} {E(ui['read'])}</span><time datetime="{BLOG_DATE}">{BLOG_DATE[8:10]}.{BLOG_DATE[5:7]}.{BLOG_DATE[:4]}</time></div>
+      <h1>{E(P['title'])}</h1>
+      <p class="post-lead">{E(P['lead'])}</p>
+    </div>
+    <div class="wrap"><div class="post-cover"><img src="{c.A}{post['img']}.jpg" alt=""></div></div>
+  </header>
+  <div class="wrap post-content">{body}
+    <div class="post-cta"><div><b>{E(ui['cta_title'])}</b><p>{E(ui['cta_p'])}</p></div>
+      <a class="pill pill-red" href="{SITE['calendar']}" target="_blank" rel="noopener">{CAL} {E(c.t['nav']['cta'])}</a></div>
+    <p><a class="post-back" href="blog.html">← {E(ui['back'])}</a></p>
+  </div>
+</article>
+<section class="blog related"><div class="wrap"><h2 class="mega" style="font-size:clamp(36px,4.5vw,64px);text-align:left;margin-bottom:26px">{E(ui['related'])}</h2><div class="post-grid two">{others}</div></div></section>
+</main>
+''' + footer(c) + '</body>\n</html>\n'
+    return page
+
+
+PAGES_V2 = {'index': page_index, 'kontakt': page_kontakt, 'zertifikate': page_zertifikate, 'blog': page_blog}
+PAGES_V2.update({f"blog-{p['slug']}": make_post_page(p) for p in POSTS})
 
 
 def main():
